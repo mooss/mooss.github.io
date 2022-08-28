@@ -1,0 +1,10 @@
+#+title: Subjectively pretty drawings I have made
+
+* Sierpiński birds
+
+#+attr_html: :alt Recursive bird-looking triangle-based patterns
+[[./Sierpiński-birds.jpg]]
+
+This drawing is a somewhat accidental hommage to the [[https://en.wikipedia.org/wiki/Sierpi%C5%84ski_triangle][Sierpiński triangle]].
+It started as a simple set of rules to establish an order in the subdivisions of the Sierpiński triangle.
+When it occured to me to illustrate this order by simply drawing a line between one triangle and the next, I started to see those strange bird-like patterns emerge and I was inspired to find a way to make those patterns stand out, resulting in this drawing.
