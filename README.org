@@ -1,0 +1,24 @@
+#+title: Org and Pandoc based personal website
+
+The contents of this website is written as Org documents and compiled to HTML using a Pandoc template.
+
+* Style
+
+The [[template.html][custom Pandoc template]] was created by modifying the default Pandoc HTML template:
+#+begin_src bash :eval never
+pandoc --print-default-template html > template.html
+#+end_src
+
+In a similar manner, a [[pandoc.css][custom CSS file]] was spun off from Pandoc's default CSS.
+
+
+* Dependencies
+
+#+begin_src bash
+pandoc --version | head -n1
+#+end_src
+
+#+RESULTS:
+:results:
+pandoc 2.18
+:end:
