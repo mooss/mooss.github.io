@@ -1,0 +1,32 @@
+#+title: Favicon generation
+
+The favicon for this website is a very pixelated version of an old drawing that has been lying around my computer for a few years.
+
+#+caption: The drawing in question
+[[../favicon-192x192.png]]
+
+* Generate other favicon sizes
+
+#+begin_src bash :dir ../ :exports both :wrap src text
+for size in 32x32 128x128 180x180; do
+    out=favicon-$size.png
+    magick favicon-192x192.png -resize $size $out
+    echo 'Before optimisation:' $(du -b $out)
+    pngout -y -q -c6 $out $out
+    echo 'After optimisation: ' $(du -b $out)
+    echo
+done
+#+end_src
+
+#+RESULTS:
+#+begin_src text
+Before optimisation: 3165 favicon-32x32.png
+After optimisation:  2904 favicon-32x32.png
+
+Before optimisation: 26726 favicon-128x128.png
+After optimisation:  25351 favicon-128x128.png
+
+Before optimisation: 45404 favicon-180x180.png
+After optimisation:  42500 favicon-180x180.png
+
+#+end_src
