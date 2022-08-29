@@ -7,6 +7,9 @@ The favicon for this website is a very pixelated version of an old drawing that 
 
 * Generate other favicon sizes
 
+To select which favicon sizes to generate, I have followed the guidelines from [[https://www.emergeinteractive.com/insights/detail/the-essentials-of-favicons/][this website]].
+I'm not sure how relevant they are, but since they were quite clear and well-writen, I've stuck to it.
+
 #+begin_src bash :dir ../ :exports both :wrap src text
 for size in 32x32 128x128 180x180; do
     out=favicon-$size.png
