@@ -3,4 +3,6 @@
 all: draw/index.html draw/favicon.html
 
 %.html: %.org
-	pandoc --standalone --template=template.html "$^" --output "$@"
+	pandoc "$^" --output "$@"\
+           --standalone --template=template.html\
+           --lua-filter lua-filters/links.lua
