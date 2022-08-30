@@ -21,3 +21,13 @@ I don't know if this confusion is working on other people, but it is certainly w
 You might have noticed that I decided to use this drawing as a favicon, because even though it is quite noisy and not as symmetrical as I would like, it is quite recognisable.
 It also features my three favorite colors.
 The Bash code used to generate all the favicon sizes can be found [[./favicon.org][here]].
+
+* Stairs, unfinished
+
+[[./unfinished-stairs.jpg]]
+
+This scan has been done before the drawing was completed so construction lines are still visible and various blobs are not properly filled.
+I made the mistake of not starting this drawing properly in the center so there was not enough room on the left side.
+It still is one of my favorites.
+I hope to eventually find a scan of the completed version.
+
