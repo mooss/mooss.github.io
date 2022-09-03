@@ -32,5 +32,24 @@ The Bash code used to generate all the favicon sizes can be found [[./favicon.or
 This scan was done before the drawing was completed so construction lines are still visible and various blobs are not properly filled.
 I made the mistake of not starting this drawing properly in the center so there was not enough room on the left side.
 Even so it is one of my favorites, if not my favorite.
+
 I hope to eventually find a scan of the completed version.
 
+
+* Octanet, hexacubes and a stairs arch
+
+[[./octanet-hexacubes-stairsarch.jpeg]]
+
+This is not even a scan but a picture not taken in the best lighting conditions, I also hope to eventually find a better version.
+
+By now some of my patterns are beginning to be visible:
+ 1. A neverending love of stairs[fn::Stairs should ideally be themselves neverending but I never managed to make a convincing Escher-style drawing.].
+ 2. An unhealthy obsession with nested geometric patterns.
+ 3. Hexacubes.
+
+I should definitely make a stairs-covered nested hexacube.
+
+This drawing is also the first apparition of another of my patterns, the net of my favorite platonic solid[fn::Everyone ought to have a favorite platonic solid.], [[https://en.wikipedia.org/wiki/Octahedron][octahedrons]].
+Here, the octahedron net is the pointy part in brownish colors with lots of hexacubes.
+
+I'm not that pleased with this drawing, it has not reached its full potential, in particular the looming hexacube figure in the background of the octahedron net is quite displeasing.
