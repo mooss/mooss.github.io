@@ -14,6 +14,9 @@ When it occured to me to illustrate this order by simply drawing a line between 
 #+attr_html: :alt Colorful hexagonal-shaped pixelated figure with confusing perspective
 [[../favicon-192x192.png]]
 
+What I call hexacubes are cubes drawn from a perspective giving them an hexagonal outline.
+Arguably, this figure is more nonsensical than hexacube.
+
 The charm of this drawing is supposed to come from the confusion that ensues when you try to make sense of it, to understand which parts are facing in which direction? What is it supposed to look like when rotated? Is it a tri-dimensional shape in the first place?
 
 I don't know if this confusion is working on other people, but it is certainly working on me.
