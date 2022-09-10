@@ -1,0 +1,6 @@
+[submodule "yliss"]
+	path = repo/yliss
+	url = git@github.com:mooss/yliss
+[submodule "litlib"]
+	path = repo/litlib
+	url = git@github.com:mooss/litlib
