@@ -1,0 +1,134 @@
+
+#+property: header-args:cpp :flags -std=c++20 -I ../repo/yliss/include -ldl -lGL -lglfw ../repo/yliss/src/glad.c :eval never :main no :exports both :noweb no-export
+
+* Prelude
+
+** Inclusion
+
+General include script:
+#+name: include
+#+begin_src sh :var args="" :results output :wrap "src cpp" :eval no-export :dir ../repo/yliss
+./litlib/include.pl "window.org litlib/cpp.org graphics.org ../../draw/imgen.org" "$args"
+#+end_src
+
+Specialised block for shaders (makes things slightly more readable):
+#+name: shd
+#+begin_src bash :var noweb="" sources="imgen.org" :results output :wrap "src text" :eval no-export
+../repo/litlib/include.pl "$sources" ":noweb $noweb :c-string"
+#+end_src
+
+** C++ image generation tools
+
+*** =square_writer=
+
+Creates an image writer able to construct a square crop of the given size.
+#+name: square_writer
+#+begin_src cpp
+template<int JpegQuality>
+auto square_writer(GLsizei pixels) {
+    using namespace compose;
+    using namespace image;
+    using namespace image::format;
+    return typename deduce<JpegQuality>::writer(square_crop{} | resize{pixels, pixels});
+}
+#+end_src
+#+depends:square_writer :noweb compose image/square_crop image/resize image/format/deduce
+
+*** =screenshot=
+
+The =screenshot= function used in renders one frame in the given window, takes a screenshot of the rendering, saves it and returns.
+#+name: screenshot
+#+begin_src cpp
+template<class Render, class ImageWriter>
+void screenshot(
+    const lazy_window& lazy, std::string_view destination,
+    const ImageWriter& writer, Render render
+) {
+    lazy.render_n(1, render);
+    writer(lazy, destination);
+    std::cout << "[[file:" << destination << "]]\n";
+}
+#+end_src
+#+depends:screenshot :noweb lazy_window :cpp iostream string_view
+
+*** =gen=
+
+The =gen= function can generate an image under the given path by opening a window and rendering one frame using the given shaders, vertices vertices layout and indexes.
+
+#+name: gen
+#+begin_src cpp :eval no-export :exports both
+void gen(
+    const char* vs_str, const char* fs_str,
+    const std::vector<GLfloat>& vtx_vec, const std::vector<unsigned int>& vtx_layout,
+    const std::vector<GLuint>& idx_vec,
+    std::string_view destination
+) {
+    lazy_window lazy("image generation", 640u, 480u);
+    shader_program shader{vertex_shader(vs_str), fragment_shader(fs_str)};
+    VAO vao{};
+    vertices<GLfloat> vtx(vtx_vec, vtx_layout);
+    indexes idx(idx_vec);
+    movipr viper(
+        transform(),
+        transform().translate({0, 0, -3}),
+        {.aspect = lazy.aspect()},
+        shader
+    );
+
+    auto render = [&]{
+        shader.use();
+        vao.bind();
+        idx.draw();
+    };
+    screenshot(lazy, destination, square_writer<90>(720), render);
+}
+#+end_src
+#+depends:gen :noweb lazy_window shader_program VAO vertices indexes movipr transform screenshot square_writer :cpp vector string_view
+
+
+*** Usage
+
+#+begin_src cpp :eval no-export :exports both :tangle debug.cpp
+<<include(":noweb gen")>>
+
+int main() {
+    const char *vs_str =
+        <<shd("model_view_projection_vs", "../repo/yliss/graphics.org")>>
+    ;
+    const char *fs_str =
+        <<shd("color_as_attribute_fs", "../repo/yliss/graphics.org")>>
+    ;
+    gen(vs_str, fs_str, {
+     // Positions    // Colors
+        .5,  .5,  .5,   1, 1, 0, // Yellow.
+       -.5,  .5,  .5,   1, 0, 1, // Magenta.
+        .5,  .5, -.5,   1, 1, 1, // White.
+       -.5,  .5, -.5,   0, 1, 1, // Cyan.
+        .5, -.5,  .5,   0, 1, 1, // Cyan.
+       -.5, -.5,  .5,   1, 1, 1, // White.
+       -.5, -.5, -.5,   1, 1, 0, // Yellow.
+        .5, -.5, -.5,   1, 0, 1  // Magenta.
+    },
+        {3, 3}, // Layout.
+        { 3, 2, 6,
+          2, 6, 7,
+          6, 7, 4,
+          7, 4, 2,
+          4, 2, 0,
+          2, 0, 3,
+          0, 3, 1,
+          3, 1, 6,
+          1, 6, 5,
+          6, 5, 4,
+          5, 4, 1,
+          4, 1, 0 }, // Indexes.
+        "usage.png"
+    );
+    return 0;
+}
+#+end_src
+
+#+RESULTS:
+:results:
+[[file:usage.png]]
+:end:
