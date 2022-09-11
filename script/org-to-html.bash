@@ -8,7 +8,13 @@ fi
 source="$1"
 output="$2"
 
-pandoc "$source" --output "$output"\
-       --highlight-style=tango\
-       --standalone --template=template.html\
-       --lua-filter lua-filters/links.lua
+function export-names() {
+    sed -r 's/^#\+name: (.*)/\n*=\1=*\n&/'
+}
+
+cat "$source" | export-names\
+    | pandoc --from org\
+             --output "$output"\
+             --highlight-style=tango\
+             --standalone --template=template.html\
+             --lua-filter lua-filters/links.lua

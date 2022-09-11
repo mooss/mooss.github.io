@@ -241,12 +241,14 @@
 <h1 id="prelude">Prelude</h1>
 <h2 id="inclusion">Inclusion</h2>
 <p>General include script:</p>
+<p><strong><code class="verbatim">include</code></strong></p>
 <div class="sourceCode" id="include" data-org-language="sh"
 data-var="args=&quot;&quot;" data-results="output"
 wrap="&quot;src cpp&quot;" data-eval="no-export"
 dir="../repo/yliss"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="include-1"><a href="#include-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./litlib/include.pl</span> <span class="st">&quot;window.org litlib/cpp.org graphics.org ../../draw/imgen.org&quot;</span> <span class="st">&quot;</span><span class="va">$args</span><span class="st">&quot;</span></span></code></pre></div>
 <p>Specialised block for shaders (makes things slightly more
 readable):</p>
+<p><strong><code class="verbatim">shd</code></strong></p>
 <div class="sourceCode" id="shd"
 data-var="noweb=&quot;&quot; sources=&quot;imgen.org&quot;"
 data-results="output" wrap="&quot;src text&quot;"
@@ -255,6 +257,7 @@ data-eval="no-export"><pre class="sourceCode bash"><code class="sourceCode bash"
 class="verbatim">imgspec</code>)</h1>
 <p>Gathers all the information needed to generate an image, with
 reasonable defaults for the vertex and fragment shaders.</p>
+<p><strong><code class="verbatim">imgspec</code></strong></p>
 <div class="sourceCode" id="imgspec"><pre
 class="sourceCode cpp"><code class="sourceCode cpp"><span id="imgspec-1"><a href="#imgspec-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> imgspec <span class="op">{</span></span>
 <span id="imgspec-2"><a href="#imgspec-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">const</span> <span class="dt">char</span> <span class="op">*</span>vs <span class="op">=</span></span>
