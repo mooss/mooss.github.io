@@ -3,7 +3,7 @@
 ###################
 # HTML generation #
 ###################
-all: draw/index.html draw/favicon.html
+all: draw/index.html draw/favicon.html draw/imgen.html
 
 %.html: %.org
 	pandoc "$^" --output "$@"\
