@@ -1,5 +1,4 @@
-
-#+property: header-args:cpp :flags -std=c++20 -I ../repo/yliss/include -ldl -lGL -lglfw ../repo/yliss/src/glad.c :eval never :main no :exports both :noweb no-export
+#+property: header-args:cpp :flags -std=c++20 -I ../repo/yliss/include -lGL -lOSMesa ../repo/yliss/src/glad.c :eval never :main no :exports both :noweb no-export
 
 * Prelude
 
@@ -18,23 +17,6 @@ Specialised block for shaders (makes things slightly more readable):
 #+end_src
 
 * C++ image generation tools
-
-** Primitives
-
-*** =square_writer=
-
-Creates an image writer able to construct a square crop of the given size.
-#+name: square_writer
-#+begin_src cpp
-template<int JpegQuality>
-auto square_writer(GLsizei pixels) {
-    using namespace compose;
-    using namespace image;
-    using namespace image::format;
-    return typename deduce<JpegQuality>::writer(square_crop{} | resize{pixels, pixels});
-}
-#+end_src
-#+depends:square_writer :noweb compose image/square_crop image/resize image/format/deduce
 
 ** Image specification (=imgspec=)
 
@@ -72,13 +54,14 @@ struct imgspec {
     <<imgspec/public>>
 };
 #+end_src
-#+depends:imgspec :noweb lazy_window shader_program VAO vertices indexes movipr transform gl_screen_one square_writer :cpp vector string_view
+#+depends:imgspec :noweb gl_context shader_program VAO vertices indexes movipr transform gl_screen_one image/format/deduce :cpp vector string_view
 
 The =gen= method can generate an image under the given path by opening a window and rendering one frame using the information contained in the =imgspec=.
 
 #+begin_src cpp :eval no-export :exports both :noweb-ref imgspec/public
 void gen(std::string_view destination) {
-    lazy_window lazy("image generation", 640u, 480u);
+    gl_context offscreen(512, 512);
+    glClearColor(.5f, .5f, .5f, 0.0f);
     shader_program shader{vertex_shader(vs), fragment_shader(fs)};
     VAO vao{};
     vertices<GLfloat> vtxobj(vtx, layout);
@@ -86,7 +69,7 @@ void gen(std::string_view destination) {
     movipr viper(
         transform(),
         transform().translate({0, 0, -3}),
-        {.aspect = lazy.aspect()},
+        {.aspect = offscreen.aspect()},
         shader
     );
 
@@ -95,7 +78,8 @@ void gen(std::string_view destination) {
         vao.bind();
         idxobj.draw();
     };
-    gl_screen_one(lazy, destination, square_writer<90>(720), render);
+    using writer = image::format::deduce<90>::writer<identity>;
+    gl_screen_one(offscreen, destination, writer(), render);
 }
 #+end_src
 
