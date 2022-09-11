@@ -283,9 +283,12 @@ class="sourceCode cpp"><code class="sourceCode cpp"><span id="imgspec-1"><a href
 <span id="imgspec-24"><a href="#imgspec-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">const</span> <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">float</span><span class="op">&gt;&amp;</span> vtx<span class="op">;</span></span>
 <span id="imgspec-25"><a href="#imgspec-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">const</span> <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">unsigned</span> <span class="dt">int</span><span class="op">&gt;&amp;</span> layout<span class="op">;</span></span>
 <span id="imgspec-26"><a href="#imgspec-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">const</span> <span class="bu">std::</span>vector<span class="op">&lt;</span><span class="dt">unsigned</span> <span class="dt">int</span><span class="op">&gt;&amp;</span> idx<span class="op">;</span></span>
-<span id="imgspec-27"><a href="#imgspec-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="imgspec-28"><a href="#imgspec-28" aria-hidden="true" tabindex="-1"></a>    <span class="op">&lt;&lt;</span>imgspec<span class="op">/</span><span class="kw">public</span><span class="op">&gt;&gt;</span></span>
-<span id="imgspec-29"><a href="#imgspec-29" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<span id="imgspec-27"><a href="#imgspec-27" aria-hidden="true" tabindex="-1"></a>    orthographic_projection proj<span class="op">{.</span>left <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> <span class="op">.</span>right <span class="op">=</span> <span class="dv">1</span><span class="op">,</span> <span class="op">.</span>bottom <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> <span class="op">.</span>top <span class="op">=</span> <span class="dv">1</span><span class="op">};</span></span>
+<span id="imgspec-28"><a href="#imgspec-28" aria-hidden="true" tabindex="-1"></a>    mandatory<span class="op">&lt;</span><span class="dt">unsigned</span> <span class="dt">int</span><span class="op">&gt;</span> width<span class="op">;</span></span>
+<span id="imgspec-29"><a href="#imgspec-29" aria-hidden="true" tabindex="-1"></a>    mandatory<span class="op">&lt;</span><span class="dt">unsigned</span> <span class="dt">int</span><span class="op">&gt;</span> height<span class="op">;</span></span>
+<span id="imgspec-30"><a href="#imgspec-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="imgspec-31"><a href="#imgspec-31" aria-hidden="true" tabindex="-1"></a>    <span class="op">&lt;&lt;</span>imgspec<span class="op">/</span><span class="kw">public</span><span class="op">&gt;&gt;</span></span>
+<span id="imgspec-32"><a href="#imgspec-32" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
 <p>The <code class="verbatim">gen</code> method can generate an image
 under the given path by creating an OpenGL context and rendering one
 frame using the information contained in the <code
@@ -295,7 +298,7 @@ class="verbatim">imgspec/public</code></strong></p>
 <div class="sourceCode" id="cb1" data-eval="no-export"
 data-exports="both" data-noweb-ref="imgspec/public"><pre
 class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> gen<span class="op">(</span><span class="bu">std::</span>string_view<span class="op"> </span>destination<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    gl_context offscreen<span class="op">(</span><span class="dv">64</span><span class="op">,</span> <span class="dv">64</span><span class="op">);</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    gl_context offscreen<span class="op">(*</span>width<span class="op">,</span> <span class="op">*</span>height<span class="op">);</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    glClearColor<span class="op">(</span><span class="fl">.5</span><span class="bu">f</span><span class="op">,</span> <span class="fl">.5</span><span class="bu">f</span><span class="op">,</span> <span class="fl">.5</span><span class="bu">f</span><span class="op">,</span> <span class="fl">0.0</span><span class="bu">f</span><span class="op">);</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    shader_program shader<span class="op">{</span>vertex_shader<span class="op">(</span>vs<span class="op">),</span> fragment_shader<span class="op">(</span>fs<span class="op">)};</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    VAO vao<span class="op">{};</span></span>
@@ -304,7 +307,7 @@ class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb1-1"><a href="#c
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    moviort viper<span class="op">(</span></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>        transform<span class="op">(),</span></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        transform<span class="op">().</span>translate<span class="op">({</span><span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="op">-</span><span class="dv">1</span><span class="op">}),</span> <span class="co">// Move the view otherwise it would get clipped by the near value.</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        <span class="op">{.</span>left <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> <span class="op">.</span>right <span class="op">=</span> <span class="dv">1</span><span class="op">,</span> <span class="op">.</span>bottom <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> <span class="op">.</span>top <span class="op">=</span> <span class="dv">1</span><span class="op">},</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        proj<span class="op">,</span></span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        shader</span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">);</span></span>
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
@@ -329,10 +332,11 @@ data-exports="both"><pre class="sourceCode cpp"><code class="sourceCode cpp"><sp
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>                    <span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span>        <span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">},</span> <span class="co">// Bottom left,  black.</span></span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>layout <span class="op">=</span> <span class="op">{</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">3</span> <span class="op">},</span></span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>idx <span class="op">=</span> <span class="op">{</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>                 <span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">3</span> <span class="op">}</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="op">}.</span>gen<span class="op">(</span><span class="st">&quot;usage.png&quot;</span><span class="op">);</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>                 <span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">3</span> <span class="op">},</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>width <span class="op">=</span> <span class="dv">64</span><span class="op">,</span> <span class="op">.</span>height <span class="op">=</span> <span class="dv">64</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="op">}.</span>gen<span class="op">(</span><span class="st">&quot;usage.png&quot;</span><span class="op">);</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <div class="RESULTS drawer">
 <p><img src="usage.png" /></p>
 </div>
