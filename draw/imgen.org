@@ -54,22 +54,22 @@ struct imgspec {
     <<imgspec/public>>
 };
 #+end_src
-#+depends:imgspec :noweb gl_context shader_program VAO vertices indexes movipr transform gl_screen_one image/format/deduce :cpp vector string_view
+#+depends:imgspec :noweb gl_context shader_program VAO vertices indexes moviort transform gl_screen_one image/format/deduce :cpp vector string_view
 
 The =gen= method can generate an image under the given path by opening a window and rendering one frame using the information contained in the =imgspec=.
 
 #+begin_src cpp :eval no-export :exports both :noweb-ref imgspec/public
 void gen(std::string_view destination) {
-    gl_context offscreen(512, 512);
+    gl_context offscreen(64, 64);
     glClearColor(.5f, .5f, .5f, 0.0f);
     shader_program shader{vertex_shader(vs), fragment_shader(fs)};
     VAO vao{};
     vertices<GLfloat> vtxobj(vtx, layout);
     indexes idxobj(idx);
-    movipr viper(
+    moviort viper(
         transform(),
-        transform().translate({0, 0, -3}),
-        {.aspect = offscreen.aspect()},
+        transform().translate({0, 0, -1}), // Move the view otherwise it would get clipped by the near value.
+        {.left = 0, .right = 1, .bottom = 0, .top = 1},
         shader
     );
 
@@ -86,16 +86,16 @@ void gen(std::string_view destination) {
 
 *** Usage
 
-#+begin_src cpp :eval no-export :exports both :tangle debug.cpp
+#+begin_src cpp :eval no-export :exports both
 <<include(":noweb imgspec")>>
 
 int main() {
     imgspec{
         .vtx = { // Positions // Colors
-                    .5,  .5,     1, 1, 0,  // Yellow.
-                   -.5,  .5,     1, 0, 1,  // Magenta.
-                    .5, -.5,     0, 1, 1,  // Cyan.
-                   -.5, -.5,     0, 0, 0}, // Black.
+                    1, 1,        1, 1, 0,  // Top right,    yellow.
+                    0, 1,        1, 0, 1,  // Top left,     magenta.
+                    1, 0,        0, 1, 1,  // Bottom right, cyan.
+                    0, 0,        0, 0, 0}, // Bottom left,  black.
         .layout = { 2, 3 },
         .idx = { 0, 1, 2,
                  1, 2, 3 }
