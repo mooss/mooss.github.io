@@ -6,10 +6,7 @@
 all: draw/index.html draw/favicon.html draw/imgen.html
 
 %.html: %.org
-	pandoc "$^" --output "$@"\
-           --highlight-style=tango\
-           --standalone --template=template.html\
-           --lua-filter lua-filters/links.lua
+	./script/org-to-html.bash "$^" "$@"
 
 ###############################
 # Dependencies initialisation #
