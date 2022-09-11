@@ -1,3 +1,5 @@
+#+title: Image generation tools
+
 #+property: header-args:cpp :flags -std=c++20 -I ../repo/yliss/include -lGL -lOSMesa ../repo/yliss/src/glad.c :eval never :main no :exports both :noweb no-export
 
 * Prelude
@@ -16,9 +18,7 @@ Specialised block for shaders (makes things slightly more readable):
 ../repo/litlib/include.pl "$sources" ":noweb $noweb :c-string"
 #+end_src
 
-* C++ image generation tools
-
-** Image specification (=imgspec=)
+* Image specification (=imgspec=)
 
 Gathers all the information needed to generate an image, with reasonable defaults for the vertex and fragment shaders.
 
@@ -56,7 +56,7 @@ struct imgspec {
 #+end_src
 #+depends:imgspec :noweb gl_context shader_program VAO vertices indexes moviort transform gl_screen_one image/format/deduce :cpp vector string_view
 
-The =gen= method can generate an image under the given path by opening a window and rendering one frame using the information contained in the =imgspec=.
+The =gen= method can generate an image under the given path by creating an OpenGL context and rendering one frame using the information contained in the =imgspec=.
 
 #+begin_src cpp :eval no-export :exports both :noweb-ref imgspec/public
 void gen(std::string_view destination) {
