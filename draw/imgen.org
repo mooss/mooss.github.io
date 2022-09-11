@@ -17,7 +17,9 @@ Specialised block for shaders (makes things slightly more readable):
 ../repo/litlib/include.pl "$sources" ":noweb $noweb :c-string"
 #+end_src
 
-** C++ image generation tools
+* C++ image generation tools
+
+** Primitives
 
 *** =square_writer=
 
@@ -34,24 +36,7 @@ auto square_writer(GLsizei pixels) {
 #+end_src
 #+depends:square_writer :noweb compose image/square_crop image/resize image/format/deduce
 
-*** =screenshot=
-
-The =screenshot= function used in renders one frame in the given window, takes a screenshot of the rendering, saves it and returns.
-#+name: screenshot
-#+begin_src cpp
-template<class Render, class ImageWriter>
-void screenshot(
-    const lazy_window& lazy, std::string_view destination,
-    const ImageWriter& writer, Render render
-) {
-    lazy.render_n(1, render);
-    writer(lazy, destination);
-    std::cout << "[[file:" << destination << "]]\n";
-}
-#+end_src
-#+depends:screenshot :noweb lazy_window :cpp iostream string_view
-
-*** =imgspec=
+** Image specification (=imgspec=)
 
 Gathers all the information needed to generate an image, with reasonable defaults for the vertex and fragment shaders.
 
@@ -87,7 +72,7 @@ struct imgspec {
     <<imgspec/public>>
 };
 #+end_src
-#+depends:imgspec :noweb lazy_window shader_program VAO vertices indexes movipr transform screenshot square_writer :cpp vector string_view
+#+depends:imgspec :noweb lazy_window shader_program VAO vertices indexes movipr transform gl_screen_one square_writer :cpp vector string_view
 
 The =gen= method can generate an image under the given path by opening a window and rendering one frame using the information contained in the =imgspec=.
 
@@ -110,7 +95,7 @@ void gen(std::string_view destination) {
         vao.bind();
         idxobj.draw();
     };
-    screenshot(lazy, destination, square_writer<90>(720), render);
+    gl_screen_one(lazy, destination, square_writer<90>(720), render);
 }
 #+end_src
 
