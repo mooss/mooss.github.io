@@ -108,3 +108,85 @@ int main() {
 :results:
 [[file:usage.png]]
 :end:
+
+** Command-line tool
+
+The goal is to write a tool able to read this kind of image specification format:
+#+begin_src txt :tangle usage.imgspec
+1 1 1 1 0
+0 1 1 0 1
+1 0 0 1 1
+0 0 0 0 0
+
+2 3
+
+0 1 2
+1 2 3
+
+64 64
+#+end_src
+
+This format is composed of 4 section separated by empty lines:
+ 1. The vertices.
+ 2. The layout.
+ 3. The indexes.
+ 4. The size of the generated image.
+
+*** Implementation
+
+#+name: imgen-cli
+#+begin_src cpp :eval no-export :exports both
+<<include(":noweb slurp split/sv keepin panic maybe mapassert <<vector print print_size :cpp string string_view cstdlib")>>
+
+bool is_space(char c) {
+    return c == ' ' || c == '\n';
+}
+
+sub next_spaces(const std::string_view s) {
+    for(std::size_t begin = 0; begin < s.size(); ++begin) {
+        if(is_space(s[begin])) {
+            auto end = begin;
+            while(++end < s.size() && is_space(s[end]));
+            return sub{.pos=begin, .len=end-begin};
+        }
+    }
+    return sub{};
+}
+
+bool not_spaces(const std::string_view str) {
+    for(auto c: str)
+        if(!is_space(c)) return true;
+    return false;
+}
+
+// TODO: utility to add more context to maybe error messages.
+maybe<float> to_float(const std::string_view str) {
+    double res = std::atof(str.data());
+    if(res == 0 && str != "0" && str != "0.0" && str != ".0") {
+        return sterr{std::string("invalid float value: ") + std::string(str)};
+    }
+    return float(res);
+}
+
+int main() {
+    auto raw = slurp("usage.imgspec");
+    auto splitted = split(raw, "\n\n");
+    keepin(not_spaces, splitted);
+    if(splitted.size() != 4) {
+        std::string err = "expected 4 sections to imgspec file but got ";
+        panic(err + std::to_string(splitted.size()));
+    }
+
+    auto vertices = mapassert(to_float, split(splitted[0], next_spaces));
+    print_size<decltype(vertices)>();
+    print{vertices};
+    return 0;
+}
+#+end_src
+
+#+RESULTS: imgen-cli
+:results:
+std::vector<float, std::allocator<float> > -> 24 bytes (192 bits)
+[1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0]
+:end:
+
