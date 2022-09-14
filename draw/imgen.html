@@ -249,8 +249,8 @@ merely assembles a few primitives.</p>
 <p><strong><code class="verbatim">include</code></strong></p>
 <div class="sourceCode" id="include" data-org-language="sh"
 data-var="args=&quot;&quot;" data-results="output"
-wrap="&quot;src cpp&quot;" data-eval="no-export"
-dir="../repo/yliss"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="include-1"><a href="#include-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./litlib/include.pl</span> <span class="st">&quot;window.org litlib/cpp.org graphics.org ../../draw/imgen.org&quot;</span> <span class="st">&quot;</span><span class="va">$args</span><span class="st">&quot;</span></span></code></pre></div>
+wrap="&quot;src cpp&quot;" data-eval="no-export"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="include-1"><a href="#include-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./litlib/include.pl</span> <span class="st">&quot;window.org litlib/cpp.org graphics.org imgen.org&quot;</span> <span class="st">&quot;</span><span class="va">$args</span><span class="st">&quot;</span></span></code></pre></div>
 <h1 id="image-specification-imgspec">Image specification (<code
 class="verbatim">imgspec</code>)</h1>
 <p>Gathers all the information needed to generate an image, with
@@ -334,16 +334,16 @@ data-exports="both"><pre class="sourceCode cpp"><code class="sourceCode cpp"><sp
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>idx <span class="op">=</span> <span class="op">{</span> <span class="dv">0</span><span class="op">,</span> <span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span></span>
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>                 <span class="dv">1</span><span class="op">,</span> <span class="dv">2</span><span class="op">,</span> <span class="dv">3</span> <span class="op">},</span></span>
 <span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>width <span class="op">=</span> <span class="dv">64</span><span class="op">,</span> <span class="op">.</span>height <span class="op">=</span> <span class="dv">64</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="op">}.</span>gen<span class="op">(</span><span class="st">&quot;usage.png&quot;</span><span class="op">);</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="op">}.</span>gen<span class="op">(</span><span class="st">&quot;images/imgen/usage.png&quot;</span><span class="op">);</span></span>
 <span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <div class="RESULTS drawer">
-<p><img src="usage.png" /></p>
+<p><img src="images/imgen/usage.png" /></p>
 </div>
 <h2 id="command-line-tool">Command-line tool</h2>
 <p>The goal is to write a tool able to read this kind of image
 specification format:</p>
-<div class="sourceCode" id="cb3" data-tangle="usage.imgspec"><pre
+<div class="sourceCode" id="cb3" data-tangle="tangle/usage.imgspec"><pre
 class="sourceCode txt"><code class="sourceCode default"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>1 1 1 1 0</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>0 1 1 0 1</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>1 0 0 1 1</span>
@@ -398,7 +398,7 @@ data-exports="both"><pre class="sourceCode cpp"><code class="sourceCode cpp"><sp
 <span id="imgen-cli-31"><a href="#imgen-cli-31" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
 <span id="imgen-cli-32"><a href="#imgen-cli-32" aria-hidden="true" tabindex="-1"></a></span>
 <span id="imgen-cli-33"><a href="#imgen-cli-33" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="imgen-cli-34"><a href="#imgen-cli-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> raw <span class="op">=</span> slurp<span class="op">(</span><span class="st">&quot;usage.imgspec&quot;</span><span class="op">);</span></span>
+<span id="imgen-cli-34"><a href="#imgen-cli-34" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> raw <span class="op">=</span> slurp<span class="op">(</span><span class="st">&quot;tangle/usage.imgspec&quot;</span><span class="op">);</span></span>
 <span id="imgen-cli-35"><a href="#imgen-cli-35" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> splitted <span class="op">=</span> split<span class="op">(</span>raw<span class="op">,</span> <span class="st">&quot;</span><span class="sc">\n\n</span><span class="st">&quot;</span><span class="op">);</span></span>
 <span id="imgen-cli-36"><a href="#imgen-cli-36" aria-hidden="true" tabindex="-1"></a>    keepin<span class="op">(</span>not_spaces<span class="op">,</span> splitted<span class="op">);</span></span>
 <span id="imgen-cli-37"><a href="#imgen-cli-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span><span class="op">(</span>splitted<span class="op">.</span>size<span class="op">()</span> <span class="op">!=</span> <span class="dv">4</span><span class="op">)</span> <span class="op">{</span></span>
