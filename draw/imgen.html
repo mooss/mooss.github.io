@@ -368,91 +368,56 @@ class="sourceCode cpp"><code class="sourceCode cpp"><span id="imgen-cli-1"><a hr
 <span id="imgen-cli-2"><a href="#imgen-cli-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> c <span class="op">==</span> <span class="ch">&#39; &#39;</span> <span class="op">||</span> c <span class="op">==</span> <span class="ch">&#39;</span><span class="sc">\n</span><span class="ch">&#39;</span><span class="op">;</span></span>
 <span id="imgen-cli-3"><a href="#imgen-cli-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
 <span id="imgen-cli-4"><a href="#imgen-cli-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="imgen-cli-5"><a href="#imgen-cli-5" aria-hidden="true" tabindex="-1"></a>sub next_spaces<span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>string_view<span class="op"> </span>s<span class="op">)</span> <span class="op">{</span></span>
-<span id="imgen-cli-6"><a href="#imgen-cli-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span><span class="op">(</span><span class="bu">std::</span>size_t<span class="op"> </span>begin <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> begin <span class="op">&lt;</span> s<span class="op">.</span>size<span class="op">();</span> <span class="op">++</span>begin<span class="op">)</span> <span class="op">{</span></span>
-<span id="imgen-cli-7"><a href="#imgen-cli-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span><span class="op">(</span>is_space<span class="op">(</span>s<span class="op">[</span>begin<span class="op">]))</span> <span class="op">{</span></span>
-<span id="imgen-cli-8"><a href="#imgen-cli-8" aria-hidden="true" tabindex="-1"></a>            <span class="kw">auto</span> end <span class="op">=</span> begin<span class="op">;</span></span>
-<span id="imgen-cli-9"><a href="#imgen-cli-9" aria-hidden="true" tabindex="-1"></a>            <span class="cf">while</span><span class="op">(++</span>end <span class="op">&lt;</span> s<span class="op">.</span>size<span class="op">()</span> <span class="op">&amp;&amp;</span> is_space<span class="op">(</span>s<span class="op">[</span>end<span class="op">]));</span></span>
-<span id="imgen-cli-10"><a href="#imgen-cli-10" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> sub<span class="op">{.</span>pos<span class="op">=</span>begin<span class="op">,</span> <span class="op">.</span>len<span class="op">=</span>end<span class="op">-</span>begin<span class="op">};</span></span>
-<span id="imgen-cli-11"><a href="#imgen-cli-11" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
-<span id="imgen-cli-12"><a href="#imgen-cli-12" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="imgen-cli-13"><a href="#imgen-cli-13" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> sub<span class="op">{};</span></span>
-<span id="imgen-cli-14"><a href="#imgen-cli-14" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="imgen-cli-15"><a href="#imgen-cli-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="imgen-cli-16"><a href="#imgen-cli-16" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> not_spaces<span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>string_view<span class="op"> </span>str<span class="op">)</span> <span class="op">{</span></span>
-<span id="imgen-cli-17"><a href="#imgen-cli-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span><span class="op">(</span><span class="kw">auto</span> c<span class="op">:</span> str<span class="op">)</span></span>
-<span id="imgen-cli-18"><a href="#imgen-cli-18" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span><span class="op">(!</span>is_space<span class="op">(</span>c<span class="op">))</span> <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
-<span id="imgen-cli-19"><a href="#imgen-cli-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span>
-<span id="imgen-cli-20"><a href="#imgen-cli-20" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="imgen-cli-21"><a href="#imgen-cli-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="imgen-cli-22"><a href="#imgen-cli-22" aria-hidden="true" tabindex="-1"></a>sterr conv_error<span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>string<span class="op"> </span>message<span class="op">,</span> <span class="at">const</span> <span class="bu">std::</span>string_view<span class="op"> </span>str<span class="op">)</span> <span class="op">{</span></span>
-<span id="imgen-cli-23"><a href="#imgen-cli-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> sterr<span class="op">{</span>message <span class="op">+</span> <span class="bu">std::</span>string<span class="op">(</span>str<span class="op">)};</span></span>
-<span id="imgen-cli-24"><a href="#imgen-cli-24" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="imgen-cli-25"><a href="#imgen-cli-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="imgen-cli-26"><a href="#imgen-cli-26" aria-hidden="true" tabindex="-1"></a><span class="co">// </span><span class="al">TODO</span><span class="co">: utility to add more context to maybe error messages.</span></span>
-<span id="imgen-cli-27"><a href="#imgen-cli-27" aria-hidden="true" tabindex="-1"></a>maybe<span class="op">&lt;</span><span class="dt">float</span><span class="op">&gt;</span> to_float<span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>string_view<span class="op"> </span>str<span class="op">)</span> <span class="op">{</span></span>
-<span id="imgen-cli-28"><a href="#imgen-cli-28" aria-hidden="true" tabindex="-1"></a>    <span class="dt">double</span> res <span class="op">=</span> <span class="bu">std::</span>atof<span class="op">(</span>str<span class="op">.</span>data<span class="op">());</span> <span class="co">// The fact that str might not be null-terminated is problematic.</span></span>
-<span id="imgen-cli-29"><a href="#imgen-cli-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span><span class="op">(</span>res <span class="op">==</span> <span class="dv">0</span> <span class="op">&amp;&amp;</span> str <span class="op">!=</span> <span class="st">&quot;0&quot;</span> <span class="op">&amp;&amp;</span> str <span class="op">!=</span> <span class="st">&quot;0.0&quot;</span> <span class="op">&amp;&amp;</span> str <span class="op">!=</span> <span class="st">&quot;.0&quot;</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="imgen-cli-30"><a href="#imgen-cli-30" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> conv_error<span class="op">(</span><span class="st">&quot;failed to parse value as float: &quot;</span><span class="op">,</span> str<span class="op">);</span></span>
-<span id="imgen-cli-31"><a href="#imgen-cli-31" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="imgen-cli-32"><a href="#imgen-cli-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dt">float</span><span class="op">(</span>res<span class="op">);</span></span>
-<span id="imgen-cli-33"><a href="#imgen-cli-33" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="imgen-cli-34"><a href="#imgen-cli-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="imgen-cli-35"><a href="#imgen-cli-35" aria-hidden="true" tabindex="-1"></a>maybe<span class="op">&lt;</span><span class="dt">unsigned</span> <span class="dt">int</span><span class="op">&gt;</span> to_uint<span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>string_view<span class="op"> </span>str<span class="op">)</span> <span class="op">{</span></span>
-<span id="imgen-cli-36"><a href="#imgen-cli-36" aria-hidden="true" tabindex="-1"></a>    <span class="dt">long</span> res <span class="op">=</span> <span class="bu">std::</span>atol<span class="op">(</span>str<span class="op">.</span>data<span class="op">());</span></span>
-<span id="imgen-cli-37"><a href="#imgen-cli-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span><span class="op">(</span>res <span class="op">&lt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="imgen-cli-38"><a href="#imgen-cli-38" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> conv_error<span class="op">(</span><span class="st">&quot;expected an unsigned int: &quot;</span><span class="op">,</span> str<span class="op">);</span></span>
-<span id="imgen-cli-39"><a href="#imgen-cli-39" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="imgen-cli-40"><a href="#imgen-cli-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span><span class="op">(</span>res <span class="op">==</span> <span class="dv">0</span> <span class="op">&amp;&amp;</span> str <span class="op">!=</span> <span class="st">&quot;0&quot;</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="imgen-cli-41"><a href="#imgen-cli-41" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> conv_error<span class="op">(</span><span class="st">&quot;failed to parse value as unsigned int: &quot;</span><span class="op">,</span> str<span class="op">);</span></span>
-<span id="imgen-cli-42"><a href="#imgen-cli-42" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="imgen-cli-43"><a href="#imgen-cli-43" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="op">(</span><span class="dt">unsigned</span> <span class="dt">int</span><span class="op">)</span> res<span class="op">;</span></span>
-<span id="imgen-cli-44"><a href="#imgen-cli-44" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
-<span id="imgen-cli-45"><a href="#imgen-cli-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="imgen-cli-46"><a href="#imgen-cli-46" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">int</span> argc<span class="op">,</span> <span class="dt">char</span> <span class="op">*</span>argv<span class="op">[])</span> <span class="op">{</span></span>
-<span id="imgen-cli-47"><a href="#imgen-cli-47" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span><span class="op">(</span>argc <span class="op">!=</span> <span class="dv">3</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="imgen-cli-48"><a href="#imgen-cli-48" aria-hidden="true" tabindex="-1"></a>        panic<span class="op">(</span><span class="st">&quot;expected 2 arguments, got &quot;</span> <span class="op">+</span> <span class="bu">std::</span>to_string<span class="op">(</span>argc<span class="op">-</span><span class="dv">1</span><span class="op">));</span></span>
-<span id="imgen-cli-49"><a href="#imgen-cli-49" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="imgen-cli-50"><a href="#imgen-cli-50" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> spec <span class="op">=</span> argv<span class="op">[</span><span class="dv">1</span><span class="op">];</span></span>
-<span id="imgen-cli-51"><a href="#imgen-cli-51" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> dest <span class="op">=</span> argv<span class="op">[</span><span class="dv">2</span><span class="op">];</span></span>
+<span id="imgen-cli-5"><a href="#imgen-cli-5" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> not_spaces<span class="op">(</span><span class="at">const</span> <span class="bu">std::</span>string_view<span class="op"> </span>str<span class="op">)</span> <span class="op">{</span></span>
+<span id="imgen-cli-6"><a href="#imgen-cli-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span><span class="op">(</span><span class="kw">auto</span> c<span class="op">:</span> str<span class="op">)</span></span>
+<span id="imgen-cli-7"><a href="#imgen-cli-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span><span class="op">(!</span>is_space<span class="op">(</span>c<span class="op">))</span> <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
+<span id="imgen-cli-8"><a href="#imgen-cli-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="imgen-cli-9"><a href="#imgen-cli-9" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="imgen-cli-10"><a href="#imgen-cli-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="imgen-cli-11"><a href="#imgen-cli-11" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">int</span> argc<span class="op">,</span> <span class="dt">char</span> <span class="op">*</span>argv<span class="op">[])</span> <span class="op">{</span></span>
+<span id="imgen-cli-12"><a href="#imgen-cli-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span><span class="op">(</span>argc <span class="op">!=</span> <span class="dv">3</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="imgen-cli-13"><a href="#imgen-cli-13" aria-hidden="true" tabindex="-1"></a>        panic<span class="op">(</span><span class="st">&quot;expected 2 arguments, got &quot;</span> <span class="op">+</span> <span class="bu">std::</span>to_string<span class="op">(</span>argc<span class="op">-</span><span class="dv">1</span><span class="op">));</span></span>
+<span id="imgen-cli-14"><a href="#imgen-cli-14" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="imgen-cli-15"><a href="#imgen-cli-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> spec <span class="op">=</span> argv<span class="op">[</span><span class="dv">1</span><span class="op">];</span></span>
+<span id="imgen-cli-16"><a href="#imgen-cli-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> dest <span class="op">=</span> argv<span class="op">[</span><span class="dv">2</span><span class="op">];</span></span>
+<span id="imgen-cli-17"><a href="#imgen-cli-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="imgen-cli-18"><a href="#imgen-cli-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> cleansplit <span class="op">=</span> <span class="op">[](</span><span class="at">const</span> <span class="kw">auto</span><span class="op">&amp;</span> range<span class="op">,</span> <span class="kw">auto</span> splitter<span class="op">)</span> <span class="op">{</span></span>
+<span id="imgen-cli-19"><a href="#imgen-cli-19" aria-hidden="true" tabindex="-1"></a>        <span class="kw">auto</span> res <span class="op">=</span> split<span class="op">(</span>range<span class="op">,</span> splitter<span class="op">);</span></span>
+<span id="imgen-cli-20"><a href="#imgen-cli-20" aria-hidden="true" tabindex="-1"></a>        keepin<span class="op">(</span>not_spaces<span class="op">,</span> res<span class="op">);</span></span>
+<span id="imgen-cli-21"><a href="#imgen-cli-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> res<span class="op">;</span></span>
+<span id="imgen-cli-22"><a href="#imgen-cli-22" aria-hidden="true" tabindex="-1"></a>    <span class="op">};</span></span>
+<span id="imgen-cli-23"><a href="#imgen-cli-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="imgen-cli-24"><a href="#imgen-cli-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> raw <span class="op">=</span> slurp<span class="op">(</span>spec<span class="op">);</span> <span class="co">// </span><span class="al">TODO</span><span class="co">: ensure it exists.</span></span>
+<span id="imgen-cli-25"><a href="#imgen-cli-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> splitted <span class="op">=</span> cleansplit<span class="op">(</span>raw<span class="op">,</span> <span class="st">&quot;</span><span class="sc">\n\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="imgen-cli-26"><a href="#imgen-cli-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="imgen-cli-27"><a href="#imgen-cli-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span><span class="op">(</span>splitted<span class="op">.</span>size<span class="op">()</span> <span class="op">!=</span> <span class="dv">4</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="imgen-cli-28"><a href="#imgen-cli-28" aria-hidden="true" tabindex="-1"></a>        <span class="bu">std::</span>string<span class="op"> </span>err <span class="op">=</span> <span class="st">&quot;expected 4 sections to imgspec file but got &quot;</span><span class="op">;</span></span>
+<span id="imgen-cli-29"><a href="#imgen-cli-29" aria-hidden="true" tabindex="-1"></a>        panic<span class="op">(</span>err <span class="op">+</span> <span class="bu">std::</span>to_string<span class="op">(</span>splitted<span class="op">.</span>size<span class="op">()));</span></span>
+<span id="imgen-cli-30"><a href="#imgen-cli-30" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="imgen-cli-31"><a href="#imgen-cli-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="imgen-cli-32"><a href="#imgen-cli-32" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> parse <span class="op">=</span> <span class="op">[&amp;](</span><span class="kw">auto</span> i<span class="op">,</span> <span class="kw">auto</span> convert<span class="op">)</span> <span class="op">{</span></span>
+<span id="imgen-cli-33"><a href="#imgen-cli-33" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> mapassert<span class="op">(</span>convert<span class="op">,</span> cleansplit<span class="op">(</span>splitted<span class="op">[</span>i<span class="op">],</span> greedy_finder<span class="op">(</span>is_space<span class="op">)));</span></span>
+<span id="imgen-cli-34"><a href="#imgen-cli-34" aria-hidden="true" tabindex="-1"></a>    <span class="op">};</span></span>
+<span id="imgen-cli-35"><a href="#imgen-cli-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="imgen-cli-36"><a href="#imgen-cli-36" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> vertices <span class="op">=</span> parse<span class="op">(</span><span class="dv">0</span><span class="op">,</span> to_float<span class="op">);</span></span>
+<span id="imgen-cli-37"><a href="#imgen-cli-37" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> layout <span class="op">=</span> parse<span class="op">(</span><span class="dv">1</span><span class="op">,</span> to_uint<span class="op">);</span></span>
+<span id="imgen-cli-38"><a href="#imgen-cli-38" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> indexes <span class="op">=</span> parse<span class="op">(</span><span class="dv">2</span><span class="op">,</span> to_uint<span class="op">);</span></span>
+<span id="imgen-cli-39"><a href="#imgen-cli-39" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> imsize <span class="op">=</span> parse<span class="op">(</span><span class="dv">3</span><span class="op">,</span> to_uint<span class="op">);</span></span>
+<span id="imgen-cli-40"><a href="#imgen-cli-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="imgen-cli-41"><a href="#imgen-cli-41" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span><span class="op">(</span>imsize<span class="op">.</span>size<span class="op">()</span> <span class="op">!=</span> <span class="dv">2</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="imgen-cli-42"><a href="#imgen-cli-42" aria-hidden="true" tabindex="-1"></a>        panic<span class="op">(</span><span class="bu">std::</span>string<span class="op">(</span><span class="st">&quot;expected image size section to be 2 uint, got&quot;</span><span class="op">)</span> <span class="op">+</span> <span class="bu">std::</span>to_string<span class="op">(</span>imsize<span class="op">.</span>size<span class="op">()));</span></span>
+<span id="imgen-cli-43"><a href="#imgen-cli-43" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="imgen-cli-44"><a href="#imgen-cli-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="imgen-cli-45"><a href="#imgen-cli-45" aria-hidden="true" tabindex="-1"></a>    imgspec<span class="op">{</span></span>
+<span id="imgen-cli-46"><a href="#imgen-cli-46" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>vtx <span class="op">=</span> vertices<span class="op">,</span></span>
+<span id="imgen-cli-47"><a href="#imgen-cli-47" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>layout <span class="op">=</span> layout<span class="op">,</span></span>
+<span id="imgen-cli-48"><a href="#imgen-cli-48" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>idx <span class="op">=</span> indexes<span class="op">,</span></span>
+<span id="imgen-cli-49"><a href="#imgen-cli-49" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>width <span class="op">=</span> imsize<span class="op">[</span><span class="dv">0</span><span class="op">],</span></span>
+<span id="imgen-cli-50"><a href="#imgen-cli-50" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>height <span class="op">=</span> imsize<span class="op">[</span><span class="dv">1</span><span class="op">],</span></span>
+<span id="imgen-cli-51"><a href="#imgen-cli-51" aria-hidden="true" tabindex="-1"></a>    <span class="op">}.</span>gen<span class="op">(</span>dest<span class="op">);</span></span>
 <span id="imgen-cli-52"><a href="#imgen-cli-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="imgen-cli-53"><a href="#imgen-cli-53" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> cleansplit <span class="op">=</span> <span class="op">[](</span><span class="at">const</span> <span class="kw">auto</span><span class="op">&amp;</span> range<span class="op">,</span> <span class="kw">auto</span> splitter<span class="op">)</span> <span class="op">{</span></span>
-<span id="imgen-cli-54"><a href="#imgen-cli-54" aria-hidden="true" tabindex="-1"></a>        <span class="kw">auto</span> res <span class="op">=</span> split<span class="op">(</span>range<span class="op">,</span> splitter<span class="op">);</span></span>
-<span id="imgen-cli-55"><a href="#imgen-cli-55" aria-hidden="true" tabindex="-1"></a>        keepin<span class="op">(</span>not_spaces<span class="op">,</span> res<span class="op">);</span></span>
-<span id="imgen-cli-56"><a href="#imgen-cli-56" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> res<span class="op">;</span></span>
-<span id="imgen-cli-57"><a href="#imgen-cli-57" aria-hidden="true" tabindex="-1"></a>    <span class="op">};</span></span>
-<span id="imgen-cli-58"><a href="#imgen-cli-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="imgen-cli-59"><a href="#imgen-cli-59" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> raw <span class="op">=</span> slurp<span class="op">(</span>spec<span class="op">);</span> <span class="co">// </span><span class="al">TODO</span><span class="co">: ensure it exists.</span></span>
-<span id="imgen-cli-60"><a href="#imgen-cli-60" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> splitted <span class="op">=</span> cleansplit<span class="op">(</span>raw<span class="op">,</span> <span class="st">&quot;</span><span class="sc">\n\n</span><span class="st">&quot;</span><span class="op">);</span></span>
-<span id="imgen-cli-61"><a href="#imgen-cli-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="imgen-cli-62"><a href="#imgen-cli-62" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span><span class="op">(</span>splitted<span class="op">.</span>size<span class="op">()</span> <span class="op">!=</span> <span class="dv">4</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="imgen-cli-63"><a href="#imgen-cli-63" aria-hidden="true" tabindex="-1"></a>        <span class="bu">std::</span>string<span class="op"> </span>err <span class="op">=</span> <span class="st">&quot;expected 4 sections to imgspec file but got &quot;</span><span class="op">;</span></span>
-<span id="imgen-cli-64"><a href="#imgen-cli-64" aria-hidden="true" tabindex="-1"></a>        panic<span class="op">(</span>err <span class="op">+</span> <span class="bu">std::</span>to_string<span class="op">(</span>splitted<span class="op">.</span>size<span class="op">()));</span></span>
-<span id="imgen-cli-65"><a href="#imgen-cli-65" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="imgen-cli-66"><a href="#imgen-cli-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="imgen-cli-67"><a href="#imgen-cli-67" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> parse <span class="op">=</span> <span class="op">[&amp;](</span><span class="kw">auto</span> i<span class="op">,</span> <span class="kw">auto</span> convert<span class="op">)</span> <span class="op">{</span></span>
-<span id="imgen-cli-68"><a href="#imgen-cli-68" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> mapassert<span class="op">(</span>convert<span class="op">,</span> cleansplit<span class="op">(</span>splitted<span class="op">[</span>i<span class="op">],</span> next_spaces<span class="op">));</span></span>
-<span id="imgen-cli-69"><a href="#imgen-cli-69" aria-hidden="true" tabindex="-1"></a>    <span class="op">};</span></span>
-<span id="imgen-cli-70"><a href="#imgen-cli-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="imgen-cli-71"><a href="#imgen-cli-71" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> vertices <span class="op">=</span> parse<span class="op">(</span><span class="dv">0</span><span class="op">,</span> to_float<span class="op">);</span></span>
-<span id="imgen-cli-72"><a href="#imgen-cli-72" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> layout <span class="op">=</span> parse<span class="op">(</span><span class="dv">1</span><span class="op">,</span> to_uint<span class="op">);</span></span>
-<span id="imgen-cli-73"><a href="#imgen-cli-73" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> indexes <span class="op">=</span> parse<span class="op">(</span><span class="dv">2</span><span class="op">,</span> to_uint<span class="op">);</span></span>
-<span id="imgen-cli-74"><a href="#imgen-cli-74" aria-hidden="true" tabindex="-1"></a>    <span class="kw">auto</span> imsize <span class="op">=</span> parse<span class="op">(</span><span class="dv">3</span><span class="op">,</span> to_uint<span class="op">);</span></span>
-<span id="imgen-cli-75"><a href="#imgen-cli-75" aria-hidden="true" tabindex="-1"></a></span>
-<span id="imgen-cli-76"><a href="#imgen-cli-76" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span><span class="op">(</span>imsize<span class="op">.</span>size<span class="op">()</span> <span class="op">!=</span> <span class="dv">2</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="imgen-cli-77"><a href="#imgen-cli-77" aria-hidden="true" tabindex="-1"></a>        panic<span class="op">(</span><span class="bu">std::</span>string<span class="op">(</span><span class="st">&quot;expected image size section to be 2 uint, got&quot;</span><span class="op">)</span> <span class="op">+</span> <span class="bu">std::</span>to_string<span class="op">(</span>imsize<span class="op">.</span>size<span class="op">()));</span></span>
-<span id="imgen-cli-78"><a href="#imgen-cli-78" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
-<span id="imgen-cli-79"><a href="#imgen-cli-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="imgen-cli-80"><a href="#imgen-cli-80" aria-hidden="true" tabindex="-1"></a>    imgspec<span class="op">{</span></span>
-<span id="imgen-cli-81"><a href="#imgen-cli-81" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>vtx <span class="op">=</span> vertices<span class="op">,</span></span>
-<span id="imgen-cli-82"><a href="#imgen-cli-82" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>layout <span class="op">=</span> layout<span class="op">,</span></span>
-<span id="imgen-cli-83"><a href="#imgen-cli-83" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>idx <span class="op">=</span> indexes<span class="op">,</span></span>
-<span id="imgen-cli-84"><a href="#imgen-cli-84" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>width <span class="op">=</span> imsize<span class="op">[</span><span class="dv">0</span><span class="op">],</span></span>
-<span id="imgen-cli-85"><a href="#imgen-cli-85" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>height <span class="op">=</span> imsize<span class="op">[</span><span class="dv">1</span><span class="op">],</span></span>
-<span id="imgen-cli-86"><a href="#imgen-cli-86" aria-hidden="true" tabindex="-1"></a>    <span class="op">}.</span>gen<span class="op">(</span>dest<span class="op">);</span></span>
-<span id="imgen-cli-87"><a href="#imgen-cli-87" aria-hidden="true" tabindex="-1"></a></span>
-<span id="imgen-cli-88"><a href="#imgen-cli-88" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="imgen-cli-89"><a href="#imgen-cli-89" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<span id="imgen-cli-53"><a href="#imgen-cli-53" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="imgen-cli-54"><a href="#imgen-cli-54" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <h3 id="compilation">Compilation</h3>
 <p>This compiles <code class="verbatim">imgen</code> into <code
 class="verbatim">./bin</code>:</p>
@@ -469,9 +434,191 @@ class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="
 <div class="sourceCode" id="imgen"
 data-var="spec=&quot;&quot; dest=&quot;&quot;"><pre
 class="sourceCode bash"><code class="sourceCode bash"><span id="imgen-1"><a href="#imgen-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[[</span> <span class="ot">-f</span> <span class="st">&quot;</span><span class="va">$spec</span><span class="st">&quot;</span> <span class="kw">]]</span> <span class="kw">||</span> <span class="kw">{</span> <span class="bu">echo</span> <span class="st">&quot;Specification file </span><span class="dt">\`</span><span class="va">$spec</span><span class="dt">\`</span><span class="st"> does not exist.&quot;</span><span class="kw">;</span> <span class="bu">exit</span><span class="kw">;</span> <span class="kw">}</span></span>
-<span id="imgen-2"><a href="#imgen-2" aria-hidden="true" tabindex="-1"></a><span class="va">destdir</span><span class="op">=</span><span class="va">$(</span><span class="fu">dirname</span> <span class="st">&quot;</span><span class="va">$dest</span><span class="st">&quot;</span><span class="va">)</span></span>
-<span id="imgen-3"><a href="#imgen-3" aria-hidden="true" tabindex="-1"></a><span class="kw">[[</span> <span class="ot">-d</span> <span class="st">&quot;</span><span class="va">$destdir</span><span class="st">&quot;</span> <span class="kw">]]</span> <span class="kw">||</span> <span class="fu">mkdir</span> <span class="at">-p</span> <span class="st">&quot;</span><span class="va">$destdir</span><span class="st">&quot;</span></span>
-<span id="imgen-4"><a href="#imgen-4" aria-hidden="true" tabindex="-1"></a><span class="ex">./bin/imgen</span> <span class="st">&quot;</span><span class="va">$spec</span><span class="st">&quot;</span> <span class="st">&quot;</span><span class="va">$dest</span><span class="st">&quot;</span></span></code></pre></div>
+<span id="imgen-2"><a href="#imgen-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="st">&quot;</span><span class="va">$(</span><span class="fu">dirname</span> <span class="st">&quot;</span><span class="va">$dest</span><span class="st">&quot;</span><span class="va">)</span><span class="st">&quot;</span></span>
+<span id="imgen-3"><a href="#imgen-3" aria-hidden="true" tabindex="-1"></a><span class="ex">./bin/imgen</span> <span class="st">&quot;</span><span class="va">$spec</span><span class="st">&quot;</span> <span class="st">&quot;</span><span class="va">$dest</span><span class="st">&quot;</span></span></code></pre></div>
+<div class="RESULTS drawer">
+<p><img src="images/imgen/usage.png" /></p>
+</div>
+<h1 id="image-specification-generation-pymgen">Image specification
+generation (<code class="verbatim">pymgen</code>)</h1>
+<p>The idea is to use an expressive language with fast compilation or
+fast enough interpretation to quickly output image specifications. This
+implementation is based on Python and is called <code
+class="verbatim">pymgen</code>.</p>
+<p>The proper implementation is splitted into three parts:</p>
+<ol>
+<li><strong>Primitives</strong> directly related to image
+generation.</li>
+<li><strong>Generation</strong> of the imgspec data.</li>
+<li><strong>Definition</strong> of the image to generate.</li>
+</ol>
+<p>An additional <strong>Code blocks and usage</strong> section then
+sets up a few code blocks and shows <code class="verbatim">pymgen</code>
+in action.</p>
+<h2 id="primitives">Primitives</h2>
+<p><code class="verbatim">enumerator</code> automatically associates an
+increasing number to the keys that have not been defined yet. It can be
+seen as an handy way to associate a numerical index to potentially
+duplicated data points.</p>
+<p><strong><code class="verbatim">enumerator</code></strong></p>
+<div class="sourceCode" id="enumerator"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="enumerator-1"><a href="#enumerator-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> enumerator(<span class="bu">dict</span>):</span>
+<span id="enumerator-2"><a href="#enumerator-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="enumerator-3"><a href="#enumerator-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.i <span class="op">=</span> <span class="dv">0</span></span>
+<span id="enumerator-4"><a href="#enumerator-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__getitem__</span>(<span class="va">self</span>, key):</span>
+<span id="enumerator-5"><a href="#enumerator-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> key <span class="kw">in</span> <span class="va">self</span>:</span>
+<span id="enumerator-6"><a href="#enumerator-6" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> <span class="bu">super</span>().<span class="fu">__getitem__</span>(key)</span>
+<span id="enumerator-7"><a href="#enumerator-7" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>[key] <span class="op">=</span> <span class="va">self</span>.i</span>
+<span id="enumerator-8"><a href="#enumerator-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.i <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="enumerator-9"><a href="#enumerator-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.i <span class="op">-</span> <span class="dv">1</span></span></code></pre></div>
+<p>Usage:</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;&lt;</span>include(<span class="st">&quot;:noweb enumerator&quot;</span>)<span class="op">&gt;&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>lost <span class="op">=</span> enumerator()</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>indexes <span class="op">=</span> [lost[i] <span class="cf">for</span> i <span class="kw">in</span> (<span class="dv">4</span>, <span class="dv">8</span>, <span class="dv">15</span>, <span class="dv">16</span>, <span class="dv">23</span>, <span class="dv">42</span>, <span class="dv">16</span>, <span class="dv">16</span>, <span class="dv">16</span>, <span class="dv">42</span>, <span class="dv">108</span>)]</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(indexes)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(lost)</span></code></pre></div>
+<h2 id="generation">Generation</h2>
+<p>Generation is mainly concerned with two things:</p>
+<ol>
+<li>Ensuring that the initial definition is correct.</li>
+<li>Transforming this definition to a textual specification.</li>
+</ol>
+<h3 id="vertices">Vertices</h3>
+<p>Vertices can be defined with the <code class="verbatim">vertex</code>
+class. The main design principle is to not bother with error checking.
+If there is an error, execution is immediately stopped.</p>
+<p>Addition to <strong><code class="verbatim">pymgen</code></strong></p>
+<div class="sourceCode" id="cb6" data-noweb-ref="pymgen"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> within_bounds(coord):</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> coord <span class="op">&gt;=</span> <span class="dv">0</span> <span class="kw">and</span> coord <span class="op">&lt;=</span> <span class="dv">1</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> vertex:</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, <span class="op">*</span>spec):</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        <span class="kw">def</span> assert5():</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>            s <span class="op">=</span> <span class="bu">tuple</span>(spec)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="bu">len</span>(spec) <span class="op">==</span> <span class="dv">1</span>:</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>                s <span class="op">=</span> spec[<span class="dv">0</span>]</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="bu">len</span>(s) <span class="op">==</span> <span class="dv">2</span>:</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> <span class="bu">list</span>(s) <span class="op">+</span> [<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>] <span class="co"># Black.</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>            <span class="cf">assert</span> <span class="bu">len</span>(s) <span class="op">==</span> <span class="dv">5</span>, <span class="ss">f&quot;invalid vertex spec `</span><span class="sc">{</span>s<span class="sc">}</span><span class="ss">`&quot;</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> s</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>        spec <span class="op">=</span> assert5()</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.x, <span class="va">self</span>.y, <span class="va">self</span>.r, <span class="va">self</span>.g, <span class="va">self</span>.b <span class="op">=</span> spec</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> <span class="va">self</span>.valid(), <span class="ss">f&#39;invalid vertex `</span><span class="sc">{</span><span class="va">self</span><span class="sc">}</span><span class="ss">`, all components should be between 0 and 1&#39;</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__repr__</span>(<span class="va">self</span>):</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">&#39; &#39;</span>.join(<span class="bu">map</span>(<span class="bu">str</span>, (<span class="va">self</span>.x, <span class="va">self</span>.y, <span class="va">self</span>.r, <span class="va">self</span>.g, <span class="va">self</span>.b)))</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> valid(<span class="va">self</span>):</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> within_bounds(<span class="va">self</span>.x) <span class="kw">and</span> within_bounds(<span class="va">self</span>.y)<span class="op">\</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>          <span class="kw">and</span> within_bounds(<span class="va">self</span>.r) <span class="kw">and</span> within_bounds(<span class="va">self</span>.g) <span class="kw">and</span> within_bounds(<span class="va">self</span>.b)</span></code></pre></div>
+<h2 id="assembly-of-vertices">Assembly of vertices</h2>
+<p>This is the last step of imgspec generation, instantiating the raw
+vertices into text. The raw vertices are manipulated as triangles
+defined as sequences of vertices. <code
+class="verbatim">triangle</code>'s role is to assert that its argument
+is indeed a sequence of 3 vertices (ultimately relying on <code
+class="verbatim">vertex</code> to do so).</p>
+<p>Addition to <strong><code class="verbatim">pymgen</code></strong></p>
+<div class="sourceCode" id="cb7" data-noweb-ref="pymgen"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> vstr(<span class="op">*</span>spec):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">str</span>(vertex(<span class="op">*</span>spec))</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> triangle(spec):</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="bu">len</span>(spec) <span class="op">==</span> <span class="dv">3</span>, <span class="ss">f&#39;invalid triangle spec </span><span class="sc">{</span>spec<span class="sc">}</span><span class="ss">&#39;</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">tuple</span>(<span class="bu">map</span>(vstr, spec))</span></code></pre></div>
+<p>The ultimate function of this image specification generator takes a
+sequence of triangles and turns it into</p>
+<p>Addition to <strong><code class="verbatim">pymgen</code></strong></p>
+<div class="sourceCode" id="cb8" data-noweb-ref="pymgen"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> imgspec(triangles, width, height):</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    indexes <span class="op">=</span> <span class="bu">list</span>()</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    vertices <span class="op">=</span> enumerator()</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> tri <span class="kw">in</span> triangles:</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>        idxstr <span class="op">=</span> <span class="st">&#39; &#39;</span>.join(<span class="bu">str</span>(vertices[vtx]) <span class="cf">for</span> vtx <span class="kw">in</span> triangle(tri))</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>        indexes.append(idxstr)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>.join(vertices.keys()))</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>()</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="dv">2</span>, <span class="dv">3</span>)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>()</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>.join(indexes))</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>()</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(width, height)</span></code></pre></div>
+<h2 id="definition">Definition</h2>
+<p>This part is concerned with setting up primitives to help defining
+and combining geometric shapes.</p>
+<h3 id="predefined-constants">Predefined constants</h3>
+<p>Positions:</p>
+<p>Addition to <strong><code class="verbatim">pymgen</code></strong></p>
+<div class="sourceCode" id="cb9" data-noweb-ref="pymgen"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>lu <span class="op">=</span> left_up       <span class="op">=</span> (<span class="dv">0</span>,   <span class="dv">1</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>ru <span class="op">=</span> right_up      <span class="op">=</span> (<span class="dv">1</span>,   <span class="dv">1</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>lb <span class="op">=</span> left_bottom   <span class="op">=</span> (<span class="dv">0</span>,   <span class="dv">0</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>rb <span class="op">=</span> right_bottom  <span class="op">=</span> (<span class="dv">1</span>,   <span class="dv">0</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>mu <span class="op">=</span> middle_up     <span class="op">=</span> (<span class="fl">0.5</span>, <span class="dv">1</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>mb <span class="op">=</span> middle_bottom <span class="op">=</span> (<span class="fl">0.5</span>, <span class="dv">0</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>lm <span class="op">=</span> left_middle   <span class="op">=</span> (<span class="dv">0</span>,   <span class="fl">0.5</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>rm <span class="op">=</span> right_middle  <span class="op">=</span> (<span class="dv">1</span>,   <span class="fl">0.5</span>)</span></code></pre></div>
+<p>Colors:</p>
+<p>Addition to <strong><code class="verbatim">pymgen</code></strong></p>
+<div class="sourceCode" id="cb10" data-noweb-ref="pymgen"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> red     <span class="op">=</span> (<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> green   <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> blue    <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> cyan    <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> magenta <span class="op">=</span> (<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> yellow  <span class="op">=</span> (<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> black   <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> white   <span class="op">=</span> (<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span></code></pre></div>
+<h3 id="vertex-manipulation">Vertex manipulation</h3>
+<p>Instantiate a quad (simply as two triangles):</p>
+<p>Addition to <strong><code class="verbatim">pymgen</code></strong></p>
+<div class="sourceCode" id="cb11" data-noweb-ref="pymgen"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> quad(a, b, c,  d):</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [(a, b, c), (b, c, d)]</span></code></pre></div>
+<h2 id="code-blocks-and-usage">Code blocks and usage</h2>
+<p>This Python one-liner is <code class="verbatim">pymgen</code>'s
+equivalent of the colorful square specification, which is for now the
+only image that has been generated:</p>
+<p><strong><code class="verbatim">usage</code></strong></p>
+<div class="sourceCode" id="usage"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="usage-1"><a href="#usage-1" aria-hidden="true" tabindex="-1"></a>imgspec(quad(ru <span class="op">+</span> y, lu <span class="op">+</span> m, rb <span class="op">+</span> c, lb <span class="op">+</span> k), <span class="dv">64</span>, <span class="dv">64</span>)</span></code></pre></div>
+<h3 id="display-an-image-spec">Display an image spec</h3>
+<p>This is just a matter of using <code class="verbatim">LitLib</code>'s
+<code class="verbatim">include.pl</code> to fetch the given code block,
+with the added <code class="verbatim">pymgen</code> dependency and to
+execute it with Python.</p>
+<p><strong><code class="verbatim">spec</code></strong></p>
+<div class="sourceCode" id="spec" data-var="definition=&quot;&quot;"
+wrap="example"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="spec-1"><a href="#spec-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./litlib/include.pl</span> imgen.org <span class="st">&quot;:noweb pymgen </span><span class="va">$definition</span><span class="st">&quot;</span> <span class="kw">|</span> <span class="ex">python</span></span></code></pre></div>
+<pre class="example"><code>1 1 1 1 0
+0 1 1 0 1
+1 0 0 1 1
+0 0 0 0 0
+
+2 3
+
+0 1 2
+1 2 3
+
+64 64
+</code></pre>
+<h3 id="generate-the-image">Generate the image</h3>
+<p>This is basically the same thing, except that the image is also
+forwarded to the <code class="verbatim">imgen</code> binary.</p>
+<p><strong><code class="verbatim">py</code></strong></p>
+<div class="sourceCode" id="py"
+data-var="definition=&quot;&quot; destination=&quot;&quot;"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="py-1"><a href="#py-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[[</span> <span class="ot">-n</span> <span class="st">&quot;</span><span class="va">$definition</span><span class="st">&quot;</span> <span class="kw">]]</span> <span class="kw">||</span> <span class="kw">{</span> <span class="bu">echo</span> <span class="st">&quot;A definition code block is required.&quot;</span><span class="kw">;</span> <span class="bu">exit</span><span class="kw">;</span> <span class="kw">}</span></span>
+<span id="py-2"><a href="#py-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">[[</span> <span class="ot">-z</span> <span class="st">&quot;</span><span class="va">$destination</span><span class="st">&quot;</span> <span class="kw">]];</span> <span class="cf">then</span></span>
+<span id="py-3"><a href="#py-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">destination</span><span class="op">=</span><span class="st">&quot;images/imgen/</span><span class="va">$definition</span><span class="st">.png&quot;</span></span>
+<span id="py-4"><a href="#py-4" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="py-5"><a href="#py-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="st">&quot;</span><span class="va">$(</span><span class="fu">dirname</span> <span class="st">&quot;</span><span class="va">$dest</span><span class="st">&quot;</span><span class="va">)</span><span class="st">&quot;</span></span>
+<span id="py-6"><a href="#py-6" aria-hidden="true" tabindex="-1"></a><span class="ex">./litlib/include.pl</span> imgen.org <span class="st">&quot;:noweb pymgen </span><span class="va">$definition</span><span class="st">&quot;</span> <span class="kw">|</span> <span class="ex">python</span> <span class="op">&gt;</span> removeme.imspec</span>
+<span id="py-7"><a href="#py-7" aria-hidden="true" tabindex="-1"></a><span class="ex">./bin/imgen</span> removeme.imspec <span class="st">&quot;</span><span class="va">$destination</span><span class="st">&quot;</span></span>
+<span id="py-8"><a href="#py-8" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> removeme.imspec</span></code></pre></div>
 <div class="RESULTS drawer">
 <p><img src="images/imgen/usage.png" /></p>
 </div>
