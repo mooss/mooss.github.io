@@ -695,8 +695,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a h
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sierec(a, b, c, n<span class="op">=</span><span class="dv">1</span>):</span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> n <span class="op">&lt;=</span> <span class="dv">0</span>: <span class="cf">return</span> [(a, b, c)]</span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    ab, ac, bc <span class="op">=</span> mid(a, b), mid(a, c), mid(b, c)</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    n <span class="op">-=</span> <span class="dv">1</span></span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> sierec(a, ab, ac, n) <span class="op">+</span> sierec(b, ab, bc, n) <span class="op">+</span> sierec(c, ac, bc, n)</span></code></pre></div>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> sierec(a, ab, ac, n<span class="op">-</span><span class="dv">1</span>) <span class="op">+</span> sierec(b, ab, bc, n<span class="op">-</span><span class="dv">1</span>) <span class="op">+</span> sierec(c, ac, bc, n<span class="op">-</span><span class="dv">1</span>)</span></code></pre></div>
 <p>Then <code class="verbatim">sierpinski</code> assembles the triangles
 into lines, with the help of <code class="verbatim">toline</code>:</p>
 <p>Addition to <strong><code
@@ -729,14 +728,13 @@ class="verbatim">sierpiński</code></strong></p>
 <div class="sourceCode" id="cb17" data-noweb-ref="sierpiński"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> height():</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">int</span>(math.sqrt((<span class="dv">3</span> <span class="op">*</span> width <span class="op">*</span> width) <span class="op">/</span> <span class="dv">4</span>))</span></code></pre></div>
-<p>Only image specification generation remains, with a reasonable width
-and a turquoise background:</p>
+<p>Only image specification generation remains, with a reasonable
+width:</p>
 <p>Addition to <strong><code
 class="verbatim">sierpiński</code></strong></p>
 <div class="sourceCode" id="cb18" data-noweb-ref="sierpiński"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>width <span class="op">=</span> <span class="dv">1024</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> (<span class="dv">0</span>, <span class="fl">.6</span>, <span class="fl">.7</span>) <span class="co"># Turquoise.</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>imgspec(quad(lb<span class="op">+</span>t, rb<span class="op">+</span>t, lt<span class="op">+</span>t, rt<span class="op">+</span>t) <span class="op">+</span> sierpinski(lb, rb, mt, <span class="dv">7</span>, <span class="fl">.0015</span>), width, height())</span></code></pre></div>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>imgspec(sierpinski(lb, rb, mt, <span class="dv">7</span>, <span class="fl">.0015</span>), width, height())</span></code></pre></div>
 <div class="RESULTS drawer">
 <p><img src="images/imgen/sierpiński.png" /></p>
 </div>
