@@ -8,5 +8,5 @@ function copy() {
        repo/yliss/$1
 }
 
-copy images/imgen/usage.png
+copy images/imgen
 copy imgen.org
