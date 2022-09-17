@@ -472,12 +472,16 @@ class="sourceCode python"><code class="sourceCode python"><span id="enumerator-1
 <span id="enumerator-8"><a href="#enumerator-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.i <span class="op">+=</span> <span class="dv">1</span></span>
 <span id="enumerator-9"><a href="#enumerator-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.i <span class="op">-</span> <span class="dv">1</span></span></code></pre></div>
 <p>Usage:</p>
-<div class="sourceCode" id="cb5"><pre
+<div class="sourceCode" id="cb5" data-exports="both"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;&lt;</span>include(<span class="st">&quot;:noweb enumerator&quot;</span>)<span class="op">&gt;&gt;</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>lost <span class="op">=</span> enumerator()</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>indexes <span class="op">=</span> [lost[i] <span class="cf">for</span> i <span class="kw">in</span> (<span class="dv">4</span>, <span class="dv">8</span>, <span class="dv">15</span>, <span class="dv">16</span>, <span class="dv">23</span>, <span class="dv">42</span>, <span class="dv">16</span>, <span class="dv">16</span>, <span class="dv">16</span>, <span class="dv">42</span>, <span class="dv">108</span>)]</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(indexes)</span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(lost)</span></code></pre></div>
+<div class="RESULTS drawer">
+<p>[0, 1, 2, 3, 4, 5, 3, 3, 3, 5, 6] {4: 0, 8: 1, 15: 2, 16: 3, 23: 4,
+42: 5, 108: 6}</p>
+</div>
 <h2 id="generation">Generation</h2>
 <p>Generation is mainly concerned with two things:</p>
 <ol>
@@ -486,7 +490,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a hr
 </ol>
 <h3 id="vertices">Vertices</h3>
 <p>Vertices can be defined with the <code class="verbatim">vertex</code>
-class. The main design principle is to not bother with error checking.
+class. The main design principle is to not bother with error handling.
 If there is an error, execution is immediately stopped.</p>
 <p>Addition to <strong><code class="verbatim">pymgen</code></strong></p>
 <div class="sourceCode" id="cb6" data-noweb-ref="pymgen"><pre
@@ -507,37 +511,36 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a hr
 <span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__repr__</span>(<span class="va">self</span>):</span>
 <span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">&#39; &#39;</span>.join(<span class="bu">map</span>(<span class="bu">str</span>, (<span class="va">self</span>.x, <span class="va">self</span>.y, <span class="va">self</span>.r, <span class="va">self</span>.g, <span class="va">self</span>.b)))</span></code></pre></div>
 <h2 id="assembly-of-vertices">Assembly of vertices</h2>
-<p>This is the last step of imgspec generation, instantiating the raw
-vertices into text. The raw vertices are manipulated as triangles
-defined as sequences of vertices. <code
+<p>This is the last step of image specification generation,
+instantiating the raw vertices into text. The main geometric primitive
+is the triangle, defined as sequences of 3 vertices. <code
 class="verbatim">triangle</code>'s role is to assert that its argument
-is indeed a sequence of 3 vertices (ultimately relying on <code
-class="verbatim">vertex</code> to do so).</p>
+is indeed a sequence of 3 vertices and to convert each of those vertices
+to strings (ultimately relying on <code class="verbatim">vertex</code>
+to do so).</p>
 <p>Addition to <strong><code class="verbatim">pymgen</code></strong></p>
 <div class="sourceCode" id="cb7" data-noweb-ref="pymgen"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> vstr(<span class="op">*</span>spec):</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">str</span>(vertex(<span class="op">*</span>spec))</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> triangle(spec):</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="bu">len</span>(spec) <span class="op">==</span> <span class="dv">3</span>, <span class="ss">f&#39;invalid triangle spec </span><span class="sc">{</span>spec<span class="sc">}</span><span class="ss">&#39;</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">tuple</span>(<span class="bu">map</span>(vstr, spec))</span></code></pre></div>
-<p>The ultimate function of this image specification generator takes a
-sequence of triangles and turns it into</p>
+class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> triangle(spec):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="bu">len</span>(spec) <span class="op">==</span> <span class="dv">3</span>, <span class="ss">f&#39;invalid triangle spec </span><span class="sc">{</span>spec<span class="sc">}</span><span class="ss">&#39;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">str</span>(vertex(spec[<span class="dv">0</span>])), <span class="bu">str</span>(vertex(spec[<span class="dv">1</span>])), <span class="bu">str</span>(vertex(spec[<span class="dv">2</span>]))</span></code></pre></div>
+<p>The ultimate function of the specification generation part is <code
+class="verbatim">imgspec</code>, which takes a sequence of triangles and
+turns it into an image specification. Unique, non-duplicated indexes are
+attributed via an instance of <code class="verbatim">enumerator</code>,
+which is quite neat.</p>
 <p>Addition to <strong><code class="verbatim">pymgen</code></strong></p>
 <div class="sourceCode" id="cb8" data-noweb-ref="pymgen"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> imgspec(triangles, width, height):</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    indexes <span class="op">=</span> <span class="bu">list</span>()</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    vertices <span class="op">=</span> enumerator()</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> tri <span class="kw">in</span> triangles:</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>        idxstr <span class="op">=</span> <span class="st">&#39; &#39;</span>.join(<span class="bu">str</span>(vertices[vtx]) <span class="cf">for</span> vtx <span class="kw">in</span> triangle(tri))</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>        indexes.append(idxstr)</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>.join(vertices.keys()))</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    vertices <span class="op">=</span> enumerator()</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    indexes <span class="op">=</span> [ <span class="st">&#39; &#39;</span>.join(<span class="bu">str</span>(vertices[vtx]) <span class="cf">for</span> vtx <span class="kw">in</span> triangle(tri))</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>                <span class="cf">for</span> tri <span class="kw">in</span> triangles ]</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>.join(vertices.keys()))</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>()</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="dv">2</span>, <span class="dv">3</span>)</span>
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>()</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="dv">2</span>, <span class="dv">3</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>.join(indexes))</span>
 <span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>()</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>.join(indexes))</span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>()</span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(width, height)</span></code></pre></div>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(width, height)</span></code></pre></div>
 <h2 id="definition">Definition</h2>
 <p>This part is concerned with setting up primitives to help defining
 and combining geometric shapes.</p>
@@ -565,11 +568,14 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a h
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> black   <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)</span>
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> white   <span class="op">=</span> (<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span></code></pre></div>
 <h3 id="vertex-manipulation">Vertex manipulation</h3>
+<ol>
+<li><p><code class="verbatim">quad</code></p>
 <p>A <code class="verbatim">quad</code> is made of two triangles:</p>
 <p>Addition to <strong><code class="verbatim">pymgen</code></strong></p>
 <div class="sourceCode" id="cb11" data-noweb-ref="pymgen"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> quad(a, b, c,  d):</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [(a, b, c), (b, c, d)]</span></code></pre></div>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [(a, b, c), (b, c, d)]</span></code></pre></div></li>
+<li><p><code class="verbatim">line</code></p>
 <p>A <code class="verbatim">line</code> is also represented as two
 triangles, except that it is only defined as two points and a <span
 class="math inline"><em>w</em><em>i</em><em>d</em><em>t</em><em>h</em></span>.</p>
@@ -595,7 +601,8 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a h
 <span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    a1, a2, b1, b2 <span class="op">=</span> <span class="bu">list</span>(a), <span class="bu">list</span>(a), <span class="bu">list</span>(b), <span class="bu">list</span>(b)</span>
 <span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    a1[<span class="dv">0</span>] <span class="op">-=</span> dy<span class="op">;</span> a1[<span class="dv">1</span>] <span class="op">+=</span> dx<span class="op">;</span> a2[<span class="dv">0</span>] <span class="op">+=</span> dy<span class="op">;</span> a2[<span class="dv">1</span>] <span class="op">-=</span> dx</span>
 <span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    b1[<span class="dv">0</span>] <span class="op">-=</span> dy<span class="op">;</span> b1[<span class="dv">1</span>] <span class="op">+=</span> dx<span class="op">;</span> b2[<span class="dv">0</span>] <span class="op">+=</span> dy<span class="op">;</span> b2[<span class="dv">1</span>] <span class="op">-=</span> dx</span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [(a1, a2, b1), (a2, b1, b2)]</span></code></pre></div>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [(a1, a2, b1), (a2, b1, b2)]</span></code></pre></div></li>
+</ol>
 <h2 id="code-blocks">Code blocks</h2>
 <p>This Python one-liner is <code class="verbatim">pymgen</code>'s
 equivalent of the colorful square specification, which is for now the
