@@ -1,8 +1,8 @@
-.PHONY: all init copy-assets pull update
-
 ###################
 # HTML generation #
 ###################
+.PHONY: all
+
 all: draw/index.html draw/favicon.html draw/imgen.html
 
 %.html: %.org
@@ -11,11 +11,17 @@ all: draw/index.html draw/favicon.html draw/imgen.html
 ##############
 # Submodules #
 ##############
-init:
+.PHONY: submodules yliss/litlib init pull copy-assets update cli
+
+submodules:
 	git submodule init
 	git submodule update
+
+yliss/litlib:
 	[[ -L repo/yliss/litlib ]] || rmdir repo/yliss/litlib
-	ln -s $(CURDIR)/repo/litlib repo/yliss/litlib
+	ln -sf $(CURDIR)/repo/litlib repo/yliss/litlib
+
+init: submodules yliss/litlib
 	cd repo/yliss && make init
 
 pull:
@@ -26,3 +32,6 @@ copy-assets:
 	./script/copy-assets.bash
 
 update: pull copy-assets all
+
+cli: yliss/litlib
+	cd repo/yliss && make clean && make cli

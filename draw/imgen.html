@@ -419,16 +419,12 @@ class="sourceCode cpp"><code class="sourceCode cpp"><span id="imgen-cli-1"><a hr
 <span id="imgen-cli-53"><a href="#imgen-cli-53" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
 <span id="imgen-cli-54"><a href="#imgen-cli-54" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <h3 id="compilation">Compilation</h3>
-<p>This compiles <code class="verbatim">imgen</code> into <code
-class="verbatim">./bin</code>:</p>
+<p>The imgen binary is made to be used from the outside and its
+compilation is therefore defined as a target in the <code
+class="verbatim">Makefile</code>:</p>
 <div class="sourceCode" id="cb4" wrap="src compilation"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> bin</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="va">tangled</span><span class="op">=</span>tangle/imgen.cpp</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ex">./litlib/include.pl</span> <span class="st">&#39;window.org litlib/cpp.org graphics.org imgen.org&#39;</span> <span class="st">&#39;:noweb imgen-cli&#39;</span> <span class="op">&gt;</span> <span class="va">$tangled</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ex">g++</span> <span class="at">-Wall</span> <span class="at">-std</span><span class="op">=</span>c++20 <span class="at">-O2</span> <span class="at">-I</span> include <span class="at">-lGL</span> <span class="at">-lOSMesa</span> src/glad.c <span class="va">$tangled</span> <span class="at">-o</span> bin/imgen</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">du</span> <span class="at">-sh</span> bin/imgen</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">wc</span> <span class="at">-l</span> <span class="va">$tangled</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> <span class="va">$tangled</span></span></code></pre></div>
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> bin/imgen <span class="op">&gt;</span>/dev/null</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">du</span> <span class="at">-h</span> bin/imgen</span></code></pre></div>
 <h3 id="code-block">Code block</h3>
 <p><strong><code class="verbatim">imgen</code></strong></p>
 <div class="sourceCode" id="imgen"
@@ -635,18 +631,30 @@ wrap="example"><pre class="sourceCode bash"><code class="sourceCode bash"><span 
 forwarded to the <code class="verbatim">imgen</code> binary.</p>
 <p><strong><code class="verbatim">py</code></strong></p>
 <div class="sourceCode" id="py"
-data-var="definition=&quot;&quot; destination=&quot;&quot;"><pre
+data-var="definition=&quot;&quot; destination=&quot;&quot; sources=&quot;imgen.org&quot;"><pre
 class="sourceCode bash"><code class="sourceCode bash"><span id="py-1"><a href="#py-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[[</span> <span class="ot">-n</span> <span class="st">&quot;</span><span class="va">$definition</span><span class="st">&quot;</span> <span class="kw">]]</span> <span class="kw">||</span> <span class="kw">{</span> <span class="bu">echo</span> <span class="st">&quot;A definition code block is required.&quot;</span><span class="kw">;</span> <span class="bu">exit</span><span class="kw">;</span> <span class="kw">}</span></span>
 <span id="py-2"><a href="#py-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">[[</span> <span class="ot">-z</span> <span class="st">&quot;</span><span class="va">$destination</span><span class="st">&quot;</span> <span class="kw">]];</span> <span class="cf">then</span></span>
 <span id="py-3"><a href="#py-3" aria-hidden="true" tabindex="-1"></a>    <span class="va">destination</span><span class="op">=</span><span class="st">&quot;images/imgen/</span><span class="va">$definition</span><span class="st">.png&quot;</span></span>
 <span id="py-4"><a href="#py-4" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
 <span id="py-5"><a href="#py-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> <span class="st">&quot;</span><span class="va">$(</span><span class="fu">dirname</span> <span class="st">&quot;</span><span class="va">$dest</span><span class="st">&quot;</span><span class="va">)</span><span class="st">&quot;</span></span>
-<span id="py-6"><a href="#py-6" aria-hidden="true" tabindex="-1"></a><span class="ex">./litlib/include.pl</span> imgen.org <span class="st">&quot;:noweb pymgen </span><span class="va">$definition</span><span class="st">&quot;</span> <span class="kw">|</span> <span class="ex">python</span> <span class="op">&gt;</span> removeme.imspec</span>
+<span id="py-6"><a href="#py-6" aria-hidden="true" tabindex="-1"></a><span class="ex">./litlib/include.pl</span> <span class="st">&quot;</span><span class="va">$sources</span><span class="st">&quot;</span> <span class="st">&quot;:noweb pymgen </span><span class="va">$definition</span><span class="st">&quot;</span> <span class="kw">|</span> <span class="ex">python</span> <span class="op">&gt;</span> removeme.imspec</span>
 <span id="py-7"><a href="#py-7" aria-hidden="true" tabindex="-1"></a><span class="ex">./bin/imgen</span> removeme.imspec <span class="st">&quot;</span><span class="va">$destination</span><span class="st">&quot;</span></span>
 <span id="py-8"><a href="#py-8" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> removeme.imspec</span></code></pre></div>
 <div class="RESULTS drawer">
 <p><img src="images/imgen/usage.png" /></p>
 </div>
+<p><code class="verbatim">pymgen-cli</code> specifies a script allowing
+to interact with pymgen from outside this file.</p>
+<p><strong><code class="verbatim">pymgen-cli-impl</code></strong></p>
+<div class="sourceCode" id="pymgen-cli-impl"
+data-shebang="&quot;#!/usr/bin/env bash&quot;"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="pymgen-cli-impl-1"><a href="#pymgen-cli-impl-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">[[</span> <span class="va">$#</span> <span class="ot">-ne</span> 3 <span class="kw">]];</span> <span class="cf">then</span></span>
+<span id="pymgen-cli-impl-2"><a href="#pymgen-cli-impl-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">echo</span> <span class="st">&quot;Usage: </span><span class="va">$0</span><span class="st"> source definition destination&quot;</span></span>
+<span id="pymgen-cli-impl-3"><a href="#pymgen-cli-impl-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">exit</span> 1</span>
+<span id="pymgen-cli-impl-4"><a href="#pymgen-cli-impl-4" aria-hidden="true" tabindex="-1"></a><span class="cf">fi</span></span>
+<span id="pymgen-cli-impl-5"><a href="#pymgen-cli-impl-5" aria-hidden="true" tabindex="-1"></a><span class="va">source</span><span class="op">=</span><span class="st">&quot;</span><span class="va">$1</span><span class="st">&quot;</span></span>
+<span id="pymgen-cli-impl-6"><a href="#pymgen-cli-impl-6" aria-hidden="true" tabindex="-1"></a><span class="va">definition</span><span class="op">=</span><span class="st">&quot;</span><span class="va">$2</span><span class="st">&quot;</span></span>
+<span id="pymgen-cli-impl-7"><a href="#pymgen-cli-impl-7" aria-hidden="true" tabindex="-1"></a><span class="va">destination</span><span class="op">=</span><span class="st">&quot;</span><span class="va">$3</span><span class="st">&quot;</span></span></code></pre></div>
 <h2 id="usage-1">Usage</h2>
 <h3 id="colorful-square-with-added-line">Colorful square, with added
 line</h3>
