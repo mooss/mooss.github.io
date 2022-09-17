@@ -549,7 +549,7 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a hr
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>rt <span class="op">=</span> right_top     <span class="op">=</span> (<span class="dv">1</span>,   <span class="dv">1</span>)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>lb <span class="op">=</span> left_bottom   <span class="op">=</span> (<span class="dv">0</span>,   <span class="dv">0</span>)</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>rb <span class="op">=</span> right_bottom  <span class="op">=</span> (<span class="dv">1</span>,   <span class="dv">0</span>)</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>mu <span class="op">=</span> middle_top    <span class="op">=</span> (<span class="fl">0.5</span>, <span class="dv">1</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>mt <span class="op">=</span> middle_top    <span class="op">=</span> (<span class="fl">0.5</span>, <span class="dv">1</span>)</span>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>mb <span class="op">=</span> middle_bottom <span class="op">=</span> (<span class="fl">0.5</span>, <span class="dv">0</span>)</span>
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>lm <span class="op">=</span> left_middle   <span class="op">=</span> (<span class="dv">0</span>,   <span class="fl">0.5</span>)</span>
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>rm <span class="op">=</span> right_middle  <span class="op">=</span> (<span class="dv">1</span>,   <span class="fl">0.5</span>)</span></code></pre></div>
@@ -673,6 +673,66 @@ id="fnref1" role="doc-noteref"><sup>1</sup></a>:</p>
 
 128 64
 </code></pre>
+<h3 id="a-less-trivial-example-sierpiński-triangle">A less trivial
+example, Sierpiński triangle</h3>
+<p>Constructing the coordinates of a Sierpiński triangle is a matter of
+recursing through each subtriangle, this is done in <code
+class="verbatim">sierec</code>. Those subtriangles are themselves
+constructed using midpoints computed with the <code
+class="verbatim">mid</code> function.</p>
+<p>Addition to <strong><code
+class="verbatim">sierpiński</code></strong></p>
+<div class="sourceCode" id="cb15" data-noweb-ref="sierpiński"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mid(l, r):</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (l[<span class="dv">0</span>] <span class="op">+</span> r[<span class="dv">0</span>]) <span class="op">/</span> <span class="dv">2</span>, (l[<span class="dv">1</span>] <span class="op">+</span> r[<span class="dv">1</span>]) <span class="op">/</span> <span class="dv">2</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sierec(a, b, c, n<span class="op">=</span><span class="dv">1</span>):</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> n <span class="op">&lt;=</span> <span class="dv">0</span>: <span class="cf">return</span> [(a, b, c)]</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    ab, ac, bc <span class="op">=</span> mid(a, b), mid(a, c), mid(b, c)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    n <span class="op">-=</span> <span class="dv">1</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> sierec(a, ab, ac, n) <span class="op">+</span> sierec(b, ab, bc, n) <span class="op">+</span> sierec(c, ac, bc, n)</span></code></pre></div>
+<p>Then <code class="verbatim">sierpinski</code> assembles the triangles
+into lines, with the help of <code class="verbatim">toline</code>:</p>
+<p>Addition to <strong><code
+class="verbatim">sierpiński</code></strong></p>
+<div class="sourceCode" id="cb16" data-noweb-ref="sierpiński"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> toline(tri, width):</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    a, b, c <span class="op">=</span> tri</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> line(a, b, width) <span class="op">+</span> line(a, c, width) <span class="op">+</span> line(b, c, width)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sierpinski(a, b, c, n<span class="op">=</span><span class="dv">1</span>, width<span class="op">=</span><span class="fl">.01</span>):</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [ triangle_line</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>             <span class="cf">for</span> triangle      <span class="kw">in</span> sierec(a, b, c, n)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>             <span class="cf">for</span> triangle_line <span class="kw">in</span> toline(triangle, width) ]</span></code></pre></div>
+<p>Since the sierpinski triangle uses equilateral triangle, the size of
+the canvas mush be adjusted so that the length of the width is equal to
+the length of the other sides of the triangles. This is done by solving
+<span class="math inline">$(\frac{width}{2})^2 + height^2 =
+side^2$</span>, with <span
+class="math inline"><em>s</em><em>i</em><em>d</em><em>e</em></span>
+being the length of the left and right sides of the triangle. Since we
+want <span
+class="math inline"><em>s</em><em>i</em><em>d</em><em>e</em></span> to
+be equal to <span
+class="math inline"><em>w</em><em>i</em><em>d</em><em>t</em><em>h</em></span>,
+this can be rewritten as <span class="math inline">$(\frac{width}{2})^2
++ height^2 = width^2$</span>, which eventually gives the formula <span
+class="math inline">$height = \sqrt{\frac{3 \times width^2}{4}}$</span>,
+implemented below:</p>
+<p>Addition to <strong><code
+class="verbatim">sierpiński</code></strong></p>
+<div class="sourceCode" id="cb17" data-noweb-ref="sierpiński"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> height():</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">int</span>(math.sqrt((<span class="dv">3</span> <span class="op">*</span> width <span class="op">*</span> width) <span class="op">/</span> <span class="dv">4</span>))</span></code></pre></div>
+<p>Only image specification generation remains, with a reasonable width
+and a turquoise background:</p>
+<p>Addition to <strong><code
+class="verbatim">sierpiński</code></strong></p>
+<div class="sourceCode" id="cb18" data-noweb-ref="sierpiński"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>width <span class="op">=</span> <span class="dv">1024</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> (<span class="dv">0</span>, <span class="fl">.6</span>, <span class="fl">.7</span>) <span class="co"># Turquoise.</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>imgspec(quad(lb<span class="op">+</span>t, rb<span class="op">+</span>t, lt<span class="op">+</span>t, rt<span class="op">+</span>t) <span class="op">+</span> sierpinski(lb, rb, mt, <span class="dv">7</span>, <span class="fl">.0015</span>), width, height())</span></code></pre></div>
+<div class="RESULTS drawer">
+<p><img src="images/imgen/sierpiński.png" /></p>
+</div>
 <section class="footnotes footnotes-end-of-document"
 role="doc-endnotes">
 <hr />
