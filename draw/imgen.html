@@ -443,15 +443,152 @@ implementation is based on Python and is called <code
 class="verbatim">pymgen</code>.</p>
 <p>The proper implementation is splitted into three parts:</p>
 <ol>
-<li><strong>Primitives</strong> not directly related to image
-generation.</li>
-<li><strong>Generation</strong> of the imgspec data.</li>
-<li><strong>Definition</strong> of the image to generate.</li>
+<li><strong>Primitives</strong>.</li>
+<li><strong>Shapes</strong>.</li>
+<li><strong>Generation</strong>.</li>
 </ol>
 <p>Two additional sections, <strong>Code blocks</strong> and
 <strong>Usage</strong> are appended at the end to set up code blocks and
 to show <code class="verbatim">pymgen</code> in action.</p>
+<p>A pattern used throughout the implementation of <code
+class="verbatim">pymgen</code> is defining three-letter aliases to
+various entities. The goal is to help keeping definitions concise. Also,
+when appropriate the short versions are making additional assertions,
+the idea is to ensure that manually-defined instances are correct,
+whereas the long versions provide a way to define instances without
+assertions. This separation is required, otherwise things like making a
+line at the edge of the canvas would trigger an assertion failure
+because of the added width.</p>
 <h2 id="primitives">Primitives</h2>
+<h3 id="color">Color</h3>
+<p>Addition to <strong><code class="verbatim">pymgen</code></strong></p>
+<div class="sourceCode" id="cb5" data-noweb-ref="pymgen"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> color:</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, r:<span class="bu">float</span>, g:<span class="bu">float</span>, b:<span class="bu">float</span>):</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.r <span class="op">=</span> r<span class="op">;</span> <span class="va">self</span>.g <span class="op">=</span> g<span class="op">;</span> <span class="va">self</span>.b <span class="op">=</span> b</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__repr__</span>(<span class="va">self</span>):</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">str</span>(<span class="va">self</span>.r) <span class="op">+</span> <span class="st">&#39; &#39;</span> <span class="op">+</span> <span class="bu">str</span>(<span class="va">self</span>.g) <span class="op">+</span> <span class="st">&#39; &#39;</span> <span class="op">+</span> <span class="bu">str</span>(<span class="va">self</span>.b)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> copy(<span class="va">self</span>): <span class="cf">return</span> color(<span class="va">self</span>.r, <span class="va">self</span>.g, <span class="va">self</span>.b)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> col(r:<span class="bu">float</span>, g:<span class="bu">float</span>, b:<span class="bu">float</span>):</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="dv">0</span> <span class="op">&lt;=</span> r <span class="op">&lt;=</span> <span class="dv">1</span> <span class="kw">and</span> <span class="dv">0</span> <span class="op">&lt;=</span> g <span class="op">&lt;=</span> <span class="dv">1</span> <span class="kw">and</span> <span class="dv">0</span> <span class="op">&lt;=</span> b <span class="op">&lt;=</span> <span class="dv">1</span><span class="op">;</span> <span class="cf">return</span> color(r, g, b)</span></code></pre></div>
+<p>Predefined colors:</p>
+<p>Addition to <strong><code class="verbatim">pymgen</code></strong></p>
+<div class="sourceCode" id="cb6" data-noweb-ref="pymgen"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> red     <span class="op">=</span> col(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> green   <span class="op">=</span> col(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> blue    <span class="op">=</span> col(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> cyan    <span class="op">=</span> col(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> magenta <span class="op">=</span> col(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> yellow  <span class="op">=</span> col(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> black   <span class="op">=</span> col(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> white   <span class="op">=</span> col(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span></code></pre></div>
+<h3 id="coordinates">Coordinates</h3>
+<p>Addition to <strong><code class="verbatim">pymgen</code></strong></p>
+<div class="sourceCode" id="cb7" data-noweb-ref="pymgen"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> coord:</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, x:<span class="bu">float</span>, y:<span class="bu">float</span>):</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.x <span class="op">=</span> x<span class="op">;</span> <span class="va">self</span>.y <span class="op">=</span> y</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__or__</span>(<span class="va">self</span>, other:<span class="st">&#39;coord&#39;</span>): <span class="co"># self|other, midpoint of self and other.</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> coord((<span class="va">self</span>.x <span class="op">+</span> other.x) <span class="op">/</span> <span class="dv">2</span>, (<span class="va">self</span>.y <span class="op">+</span> other.y) <span class="op">/</span> <span class="dv">2</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__sub__</span>(<span class="va">self</span>, other:<span class="st">&#39;coord&#39;</span>): <span class="co"># self-other, substraction.</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> coord(<span class="va">self</span>.x <span class="op">-</span> other.x, <span class="va">self</span>.y <span class="op">-</span> other.y)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__imul__</span>(<span class="va">self</span>, coeff: <span class="bu">float</span>): <span class="co"># self *= coeff, in-place multiplication.</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.x <span class="op">*=</span> coeff<span class="op">;</span> <span class="va">self</span>.y <span class="op">*=</span> coeff<span class="op">;</span> <span class="cf">return</span> <span class="va">self</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__and__</span>(<span class="va">self</span>, col:color): <span class="co"># self&amp;col, combine position and color in a vertex.</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> vertex(<span class="va">self</span>, col)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> copy(<span class="va">self</span>):     <span class="cf">return</span> coord(<span class="va">self</span>.x, <span class="va">self</span>.y)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> norm(<span class="va">self</span>):     <span class="cf">return</span> math.sqrt(<span class="va">self</span>.x <span class="op">*</span> <span class="va">self</span>.x <span class="op">+</span> <span class="va">self</span>.y <span class="op">*</span> <span class="va">self</span>.y)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__repr__</span>(<span class="va">self</span>): <span class="cf">return</span> <span class="bu">str</span>(<span class="va">self</span>.x) <span class="op">+</span> <span class="st">&#39; &#39;</span> <span class="op">+</span> <span class="bu">str</span>(<span class="va">self</span>.y)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> pos(x:<span class="bu">float</span>, y:<span class="bu">float</span>):</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="dv">0</span> <span class="op">&lt;=</span> x <span class="op">&lt;=</span> <span class="dv">1</span> <span class="kw">and</span> <span class="dv">0</span> <span class="op">&lt;=</span> y <span class="op">&lt;=</span> <span class="dv">1</span><span class="op">;</span> <span class="cf">return</span> coord(x, y)</span></code></pre></div>
+<p>Predefined coordinates:</p>
+<p>Addition to <strong><code class="verbatim">pymgen</code></strong></p>
+<div class="sourceCode" id="cb8" data-noweb-ref="pymgen"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>lt <span class="op">=</span> left_top      <span class="op">=</span> pos(<span class="dv">0</span>,   <span class="dv">1</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>rt <span class="op">=</span> right_top     <span class="op">=</span> pos(<span class="dv">1</span>,   <span class="dv">1</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>lb <span class="op">=</span> left_bottom   <span class="op">=</span> pos(<span class="dv">0</span>,   <span class="dv">0</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>rb <span class="op">=</span> right_bottom  <span class="op">=</span> pos(<span class="dv">1</span>,   <span class="dv">0</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>mt <span class="op">=</span> middle_top    <span class="op">=</span> pos(<span class="fl">0.5</span>, <span class="dv">1</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>mb <span class="op">=</span> middle_bottom <span class="op">=</span> pos(<span class="fl">0.5</span>, <span class="dv">0</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>lm <span class="op">=</span> left_middle   <span class="op">=</span> pos(<span class="dv">0</span>,   <span class="fl">0.5</span>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>rm <span class="op">=</span> right_middle  <span class="op">=</span> pos(<span class="dv">1</span>,   <span class="fl">0.5</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>mm <span class="op">=</span> center        <span class="op">=</span> pos(<span class="fl">0.5</span>, <span class="fl">0.5</span>)</span></code></pre></div>
+<h3 id="vertices">Vertices</h3>
+<p>Addition to <strong><code class="verbatim">pymgen</code></strong></p>
+<div class="sourceCode" id="cb9" data-noweb-ref="pymgen"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> vertex:</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, pos:coord, col:color<span class="op">=</span>color(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)):</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.pos <span class="op">=</span> pos</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.col <span class="op">=</span> col</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__repr__</span>(<span class="va">self</span>):</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">str</span>(<span class="va">self</span>.pos) <span class="op">+</span> <span class="st">&#39; &#39;</span> <span class="op">+</span> <span class="bu">str</span>(<span class="va">self</span>.col)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> copy(<span class="va">self</span>): <span class="cf">return</span> vertex(<span class="va">self</span>.pos.copy(), <span class="va">self</span>.col.copy())</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">@property</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> x(<span class="va">self</span>): <span class="cf">return</span> <span class="va">self</span>.pos.x</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">@x.setter</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> x(<span class="va">self</span>, x): <span class="va">self</span>.pos.x <span class="op">=</span> x</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">@property</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> y(<span class="va">self</span>): <span class="cf">return</span> <span class="va">self</span>.pos.y</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">@y.setter</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> y(<span class="va">self</span>, y): <span class="va">self</span>.pos.y <span class="op">=</span> y</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>vtx <span class="op">=</span> vertex</span></code></pre></div>
+<h2 id="shapes">Shapes</h2>
+<h3 id="polygon">Polygon</h3>
+<p>A polygon is a shape with any number of sides. Everything in Imgen is
+triangle-based so <code class="verbatim">polygon</code> can be seen as a
+sequence of triangles, represented as a sequence of vertices. It must
+therefore maintain the invariant that its underlying vertices are a
+multiple of 3.</p>
+<p>Addition to <strong><code class="verbatim">pymgen</code></strong></p>
+<div class="sourceCode" id="cb10" data-noweb-ref="pymgen"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> polygon:</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    vertices: <span class="bu">list</span>[vertex]</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, <span class="op">*</span>args:vertex):</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> <span class="bu">len</span>(args) <span class="op">%</span><span class="dv">3</span> <span class="op">==</span> <span class="dv">0</span>, <span class="ss">f&#39;invalid length of polygon vertices: </span><span class="sc">{</span><span class="bu">len</span>(args)<span class="sc">}</span><span class="ss">&#39;</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.vertices <span class="op">=</span> args</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="bu">str</span>(<span class="va">self</span>): <span class="cf">return</span> <span class="bu">map</span>(<span class="bu">str</span>, <span class="va">self</span>.vertices)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__add__</span>(<span class="va">self</span>, other): <span class="cf">return</span> polygon(<span class="op">*</span>(<span class="va">self</span>.vertices <span class="op">+</span> other.vertices))</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__iter__</span>(<span class="va">self</span>): <span class="co"># Iterate on triangles, from https://stackoverflow.com/a/71273919.</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>        it <span class="op">=</span> <span class="bu">iter</span>(<span class="va">self</span>.vertices)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="bu">zip</span>(it, it, it)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>pol <span class="op">=</span> polygon</span></code></pre></div>
+<h3 id="triangles">Triangles</h3>
+<p>Addition to <strong><code class="verbatim">pymgen</code></strong></p>
+<div class="sourceCode" id="cb11" data-noweb-ref="pymgen"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> triangle(a, b, c): <span class="cf">return</span> polygon(a, b, c)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>tri <span class="op">=</span> triangle</span></code></pre></div>
+<h3 id="quadrangles">Quadrangles</h3>
+<p>Addition to <strong><code class="verbatim">pymgen</code></strong></p>
+<div class="sourceCode" id="cb12" data-noweb-ref="pymgen"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> quadrangle(a, b, c, d): <span class="cf">return</span> polygon(a, b, c, b, c, d)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>quad <span class="op">=</span> quadrangle</span></code></pre></div>
+<h3 id="lines">Lines</h3>
+<p>A <code class="verbatim">line</code> is also represented as two
+triangles, except that it is only defined as two points and a <span
+class="math inline"><em>w</em><em>i</em><em>d</em><em>t</em><em>h</em></span>.</p>
+<p>Its implementation is more complex because each of the two initial
+points must splitted in two new points in order to generate a line with
+a width. The position of those new points is computed by shifting them
+towards each of the normal directions by an amount of <span
+class="math inline"><em>w</em><em>i</em><em>d</em><em>t</em><em>h</em>/2</span>,
+thus making the distance between them equal to <span
+class="math inline"><em>w</em><em>i</em><em>d</em><em>t</em><em>h</em></span>.</p>
+<p>Addition to <strong><code class="verbatim">pymgen</code></strong></p>
+<div class="sourceCode" id="cb13" data-noweb-ref="pymgen"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> line(a, b, width<span class="op">=</span><span class="fl">.01</span>):</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Compute the tangent.</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    t <span class="op">=</span> b.pos<span class="op">-</span>a.pos</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Apply the width:</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    width <span class="op">/=</span> <span class="dv">2</span> <span class="op">*</span> t.norm()</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    t <span class="op">*=</span> width</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Shift the points.</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    a1, a2, b1, b2 <span class="op">=</span> a.copy(), a.copy(), b.copy(), b.copy()</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    a1.x <span class="op">-=</span> t.y<span class="op">;</span> a1.y <span class="op">+=</span> t.x<span class="op">;</span> a2.x <span class="op">+=</span> t.y<span class="op">;</span> a2.y <span class="op">-=</span> t.x</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>    b1.x <span class="op">-=</span> t.y<span class="op">;</span> b1.y <span class="op">+=</span> t.x<span class="op">;</span> b2.x <span class="op">+=</span> t.y<span class="op">;</span> b2.y <span class="op">-=</span> t.x</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> quadrangle(a1, a2, b1, b2)</span></code></pre></div>
+<h2 id="generation">Generation</h2>
+<h3 id="utilities">Utilities</h3>
 <p><code class="verbatim">enumerator</code> automatically associates an
 increasing number to the keys that have not been defined yet. It can be
 seen as an handy way to associate a numerical index to potentially
@@ -468,144 +605,41 @@ class="sourceCode python"><code class="sourceCode python"><span id="enumerator-1
 <span id="enumerator-8"><a href="#enumerator-8" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.i <span class="op">+=</span> <span class="dv">1</span></span>
 <span id="enumerator-9"><a href="#enumerator-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span>.i <span class="op">-</span> <span class="dv">1</span></span></code></pre></div>
 <p>Usage:</p>
-<div class="sourceCode" id="cb5" data-exports="both"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;&lt;</span>include(<span class="st">&quot;:noweb enumerator&quot;</span>)<span class="op">&gt;&gt;</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>lost <span class="op">=</span> enumerator()</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>indexes <span class="op">=</span> [lost[i] <span class="cf">for</span> i <span class="kw">in</span> (<span class="dv">4</span>, <span class="dv">8</span>, <span class="dv">15</span>, <span class="dv">16</span>, <span class="dv">23</span>, <span class="dv">42</span>, <span class="dv">16</span>, <span class="dv">16</span>, <span class="dv">16</span>, <span class="dv">42</span>, <span class="dv">108</span>)]</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(indexes)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(lost)</span></code></pre></div>
+<div class="sourceCode" id="cb14" data-exports="both"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="op">&lt;&lt;</span>include(<span class="st">&quot;:noweb enumerator&quot;</span>)<span class="op">&gt;&gt;</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>lost <span class="op">=</span> enumerator()</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>indexes <span class="op">=</span> [lost[i] <span class="cf">for</span> i <span class="kw">in</span> (<span class="dv">4</span>, <span class="dv">8</span>, <span class="dv">15</span>, <span class="dv">16</span>, <span class="dv">23</span>, <span class="dv">42</span>, <span class="dv">16</span>, <span class="dv">16</span>, <span class="dv">16</span>, <span class="dv">42</span>, <span class="dv">108</span>)]</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(indexes)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(lost)</span></code></pre></div>
 <div class="RESULTS drawer">
 <p>[0, 1, 2, 3, 4, 5, 3, 3, 3, 5, 6] {4: 0, 8: 1, 15: 2, 16: 3, 23: 4,
 42: 5, 108: 6}</p>
 </div>
-<h2 id="generation">Generation</h2>
-<p>Generation is mainly concerned with two things:</p>
-<ol>
-<li>Ensuring that the initial definition is correct.</li>
-<li>Transforming this definition to a textual specification.</li>
-</ol>
-<h3 id="vertices">Vertices</h3>
-<p>Vertices can be defined with the <code class="verbatim">vertex</code>
-class. The main design principle is to not bother with error handling.
-If there is an error, execution is immediately stopped.</p>
+<h3 id="specification-generation">Specification generation</h3>
+<p><code class="verbatim">imgspec</code> takes a sequence of triangles
+and turns it into an image specification. Unique, non-duplicated indexes
+are attributed via an instance of <code
+class="verbatim">enumerator</code>, which is quite neat.</p>
 <p>Addition to <strong><code class="verbatim">pymgen</code></strong></p>
-<div class="sourceCode" id="cb6" data-noweb-ref="pymgen"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> vertex:</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, <span class="op">*</span>spec):</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>        <span class="kw">def</span> assert5():</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>            s <span class="op">=</span> <span class="bu">tuple</span>(spec)</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="bu">len</span>(spec) <span class="op">==</span> <span class="dv">1</span>:</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>                s <span class="op">=</span> spec[<span class="dv">0</span>]</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="bu">len</span>(s) <span class="op">==</span> <span class="dv">2</span>:</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>                <span class="cf">return</span> <span class="bu">list</span>(s) <span class="op">+</span> [<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>] <span class="co"># Black.</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>            <span class="cf">assert</span> <span class="bu">len</span>(s) <span class="op">==</span> <span class="dv">5</span>, <span class="ss">f&quot;invalid vertex spec `</span><span class="sc">{</span>s<span class="sc">}</span><span class="ss">`&quot;</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> s</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>        spec <span class="op">=</span> assert5()</span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.x, <span class="va">self</span>.y, <span class="va">self</span>.r, <span class="va">self</span>.g, <span class="va">self</span>.b <span class="op">=</span> spec</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__repr__</span>(<span class="va">self</span>):</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="st">&#39; &#39;</span>.join(<span class="bu">map</span>(<span class="bu">str</span>, (<span class="va">self</span>.x, <span class="va">self</span>.y, <span class="va">self</span>.r, <span class="va">self</span>.g, <span class="va">self</span>.b)))</span></code></pre></div>
-<h2 id="assembly-of-vertices">Assembly of vertices</h2>
-<p>This is the last step of image specification generation,
-instantiating the raw vertices into text. The main geometric primitive
-is the triangle, defined as sequences of 3 vertices. <code
-class="verbatim">triangle</code>'s role is to assert that its argument
-is indeed a sequence of 3 vertices and to convert each of those vertices
-to strings (ultimately relying on <code class="verbatim">vertex</code>
-to do so).</p>
-<p>Addition to <strong><code class="verbatim">pymgen</code></strong></p>
-<div class="sourceCode" id="cb7" data-noweb-ref="pymgen"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> triangle(spec):</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="bu">len</span>(spec) <span class="op">==</span> <span class="dv">3</span>, <span class="ss">f&#39;invalid triangle spec </span><span class="sc">{</span>spec<span class="sc">}</span><span class="ss">&#39;</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">str</span>(vertex(spec[<span class="dv">0</span>])), <span class="bu">str</span>(vertex(spec[<span class="dv">1</span>])), <span class="bu">str</span>(vertex(spec[<span class="dv">2</span>]))</span></code></pre></div>
-<p>The ultimate function of the specification generation part is <code
-class="verbatim">imgspec</code>, which takes a sequence of triangles and
-turns it into an image specification. Unique, non-duplicated indexes are
-attributed via an instance of <code class="verbatim">enumerator</code>,
-which is quite neat.</p>
-<p>Addition to <strong><code class="verbatim">pymgen</code></strong></p>
-<div class="sourceCode" id="cb8" data-noweb-ref="pymgen"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> imgspec(triangles, width, height):</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    vertices <span class="op">=</span> enumerator()</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    indexes <span class="op">=</span> [ <span class="st">&#39; &#39;</span>.join(<span class="bu">str</span>(vertices[vtx]) <span class="cf">for</span> vtx <span class="kw">in</span> triangle(tri))</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>                <span class="cf">for</span> tri <span class="kw">in</span> triangles ]</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>.join(vertices.keys()))</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>()</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="dv">2</span>, <span class="dv">3</span>)</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>()</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>.join(indexes))</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>()</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(width, height)</span></code></pre></div>
-<h2 id="definition">Definition</h2>
-<p>This part is concerned with setting up primitives to help defining
-and combining geometric shapes.</p>
-<h3 id="predefined-constants">Predefined constants</h3>
-<p>Positions:</p>
-<p>Addition to <strong><code class="verbatim">pymgen</code></strong></p>
-<div class="sourceCode" id="cb9" data-noweb-ref="pymgen"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>lt <span class="op">=</span> left_top      <span class="op">=</span> (<span class="dv">0</span>,   <span class="dv">1</span>)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>rt <span class="op">=</span> right_top     <span class="op">=</span> (<span class="dv">1</span>,   <span class="dv">1</span>)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>lb <span class="op">=</span> left_bottom   <span class="op">=</span> (<span class="dv">0</span>,   <span class="dv">0</span>)</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>rb <span class="op">=</span> right_bottom  <span class="op">=</span> (<span class="dv">1</span>,   <span class="dv">0</span>)</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>mt <span class="op">=</span> middle_top    <span class="op">=</span> (<span class="fl">0.5</span>, <span class="dv">1</span>)</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>mb <span class="op">=</span> middle_bottom <span class="op">=</span> (<span class="fl">0.5</span>, <span class="dv">0</span>)</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>lm <span class="op">=</span> left_middle   <span class="op">=</span> (<span class="dv">0</span>,   <span class="fl">0.5</span>)</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>rm <span class="op">=</span> right_middle  <span class="op">=</span> (<span class="dv">1</span>,   <span class="fl">0.5</span>)</span></code></pre></div>
-<p>Colors:</p>
-<p>Addition to <strong><code class="verbatim">pymgen</code></strong></p>
-<div class="sourceCode" id="cb10" data-noweb-ref="pymgen"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> red     <span class="op">=</span> (<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> green   <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> blue    <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>)</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> cyan    <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> magenta <span class="op">=</span> (<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>)</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> yellow  <span class="op">=</span> (<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> black   <span class="op">=</span> (<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> white   <span class="op">=</span> (<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span></code></pre></div>
-<h3 id="vertex-manipulation">Vertex manipulation</h3>
-<ol>
-<li><p><code class="verbatim">quad</code></p>
-<p>A <code class="verbatim">quad</code> is made of two triangles:</p>
-<p>Addition to <strong><code class="verbatim">pymgen</code></strong></p>
-<div class="sourceCode" id="cb11" data-noweb-ref="pymgen"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> quad(a, b, c,  d):</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [(a, b, c), (b, c, d)]</span></code></pre></div></li>
-<li><p><code class="verbatim">line</code></p>
-<p>A <code class="verbatim">line</code> is also represented as two
-triangles, except that it is only defined as two points and a <span
-class="math inline"><em>w</em><em>i</em><em>d</em><em>t</em><em>h</em></span>.</p>
-<p>Its implementation is more complex because each of the two initial
-points must splitted in two new points in order to generate a line with
-a width. The position of those new points is computed by shifting them
-towards each of the normal directions by an amount of <span
-class="math inline"><em>w</em><em>i</em><em>d</em><em>t</em><em>h</em>/2</span>,
-thus making the distance between them equal to <span
-class="math inline"><em>w</em><em>i</em><em>d</em><em>t</em><em>h</em></span>.</p>
-<p>Addition to <strong><code class="verbatim">pymgen</code></strong></p>
-<div class="sourceCode" id="cb12" data-noweb-ref="pymgen"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> line(a, b, width<span class="op">=</span><span class="fl">.01</span>):</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Compute the tangent components (that once flipped become the normal components).</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    dx <span class="op">=</span> (b[<span class="dv">0</span>] <span class="op">-</span> a[<span class="dv">0</span>])</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    dy <span class="op">=</span> (b[<span class="dv">1</span>] <span class="op">-</span> a[<span class="dv">1</span>])</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Apply the width:</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    width <span class="op">=</span> width <span class="op">/</span> (<span class="dv">2</span> <span class="op">*</span> math.sqrt(dx <span class="op">*</span> dx <span class="op">+</span> dy <span class="op">*</span> dy))</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    dx <span class="op">*=</span> width</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    dy <span class="op">*=</span> width</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Shift the points.</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    a1, a2, b1, b2 <span class="op">=</span> <span class="bu">list</span>(a), <span class="bu">list</span>(a), <span class="bu">list</span>(b), <span class="bu">list</span>(b)</span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    a1[<span class="dv">0</span>] <span class="op">-=</span> dy<span class="op">;</span> a1[<span class="dv">1</span>] <span class="op">+=</span> dx<span class="op">;</span> a2[<span class="dv">0</span>] <span class="op">+=</span> dy<span class="op">;</span> a2[<span class="dv">1</span>] <span class="op">-=</span> dx</span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    b1[<span class="dv">0</span>] <span class="op">-=</span> dy<span class="op">;</span> b1[<span class="dv">1</span>] <span class="op">+=</span> dx<span class="op">;</span> b2[<span class="dv">0</span>] <span class="op">+=</span> dy<span class="op">;</span> b2[<span class="dv">1</span>] <span class="op">-=</span> dx</span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [(a1, a2, b1), (a2, b1, b2)]</span></code></pre></div></li>
-</ol>
+<div class="sourceCode" id="cb15" data-noweb-ref="pymgen"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> imgspec(polygon, width, height):</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    vertices <span class="op">=</span> enumerator()</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    indexes <span class="op">=</span> [ <span class="st">&#39; &#39;</span>.join(<span class="bu">str</span>(vertices[<span class="bu">str</span>(v)]) <span class="cf">for</span> v <span class="kw">in</span> triangle)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>                <span class="cf">for</span> triangle <span class="kw">in</span> polygon ]</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>.join(vertices.keys()))</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>()</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="dv">2</span>, <span class="dv">3</span>)</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>()</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&#39;</span><span class="ch">\n</span><span class="st">&#39;</span>.join(indexes))</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>()</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(width, height)</span></code></pre></div>
 <h2 id="code-blocks">Code blocks</h2>
 <p>This Python one-liner is <code class="verbatim">pymgen</code>'s
 equivalent of the colorful square specification, which is for now the
 only image that has been generated:</p>
 <p><strong><code class="verbatim">usage</code></strong></p>
 <div class="sourceCode" id="usage"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="usage-1"><a href="#usage-1" aria-hidden="true" tabindex="-1"></a>imgspec(quad(rt <span class="op">+</span> y, lt <span class="op">+</span> m, rb <span class="op">+</span> c, lb <span class="op">+</span> k), <span class="dv">64</span>, <span class="dv">64</span>)</span></code></pre></div>
+class="sourceCode python"><code class="sourceCode python"><span id="usage-1"><a href="#usage-1" aria-hidden="true" tabindex="-1"></a>imgspec(quad(rt<span class="op">&amp;</span>y, lt<span class="op">&amp;</span>m, rb<span class="op">&amp;</span>c, lb<span class="op">&amp;</span>k), <span class="dv">64</span>, <span class="dv">64</span>)</span></code></pre></div>
 <h3 id="display-an-image-spec">Display an image spec</h3>
 <p>This is just a matter of using <code class="verbatim">LitLib</code>'s
 <code class="verbatim">include.pl</code> to fetch the given code block,
@@ -664,7 +698,7 @@ image is doubled to 128.</p>
 <p><strong><code
 class="verbatim">colorful-square+line</code></strong></p>
 <div class="sourceCode" id="colorful-square+line"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="colorful-square+line-1"><a href="#colorful-square+line-1" aria-hidden="true" tabindex="-1"></a>imgspec(quad(rt <span class="op">+</span> y, lt <span class="op">+</span> m, rb <span class="op">+</span> c, lb <span class="op">+</span> k) <span class="op">+</span> line(lb, rt, <span class="fl">.1</span>), <span class="dv">128</span>, <span class="dv">64</span>)</span></code></pre></div>
+class="sourceCode python"><code class="sourceCode python"><span id="colorful-square+line-1"><a href="#colorful-square+line-1" aria-hidden="true" tabindex="-1"></a>imgspec(quad(rt<span class="op">&amp;</span>y, lt<span class="op">&amp;</span>m, rb<span class="op">&amp;</span>c, lb<span class="op">&amp;</span>k) <span class="op">+</span> line(lb<span class="op">&amp;</span>k, rt<span class="op">&amp;</span>k, <span class="fl">.1</span>), <span class="dv">128</span>, <span class="dv">64</span>)</span></code></pre></div>
 <div class="RESULTS drawer">
 <p><img src="images/imgen/colorful-square+line.png" /></p>
 </div>
@@ -697,25 +731,23 @@ constructed using midpoints computed with the <code
 class="verbatim">mid</code> function.</p>
 <p>Addition to <strong><code
 class="verbatim">sierpiński</code></strong></p>
-<div class="sourceCode" id="cb15" data-noweb-ref="sierpiński"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> mid(l, r):</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (l[<span class="dv">0</span>] <span class="op">+</span> r[<span class="dv">0</span>]) <span class="op">/</span> <span class="dv">2</span>, (l[<span class="dv">1</span>] <span class="op">+</span> r[<span class="dv">1</span>]) <span class="op">/</span> <span class="dv">2</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sierec(a, b, c, n<span class="op">=</span><span class="dv">1</span>):</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> n <span class="op">&lt;=</span> <span class="dv">0</span>: <span class="cf">return</span> [(a, b, c)]</span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    ab, ac, bc <span class="op">=</span> mid(a, b), mid(a, c), mid(b, c)</span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> sierec(a, ab, ac, n<span class="op">-</span><span class="dv">1</span>) <span class="op">+</span> sierec(b, ab, bc, n<span class="op">-</span><span class="dv">1</span>) <span class="op">+</span> sierec(c, ac, bc, n<span class="op">-</span><span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb18" data-noweb-ref="sierpiński"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sierec(a, b, c, n<span class="op">=</span><span class="dv">1</span>):</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> n <span class="op">&lt;=</span> <span class="dv">0</span>: <span class="cf">return</span> [(a, b, c)]</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    ab, ac, bc <span class="op">=</span> a<span class="op">|</span>b, a<span class="op">|</span>c, b<span class="op">|</span>c</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> sierec(a, ab, ac, n<span class="op">-</span><span class="dv">1</span>) <span class="op">+</span> sierec(b, ab, bc, n<span class="op">-</span><span class="dv">1</span>) <span class="op">+</span> sierec(c, ac, bc, n<span class="op">-</span><span class="dv">1</span>)</span></code></pre></div>
 <p>Then <code class="verbatim">sierpinski</code> assembles the triangles
 into lines, with the help of <code class="verbatim">toline</code>:</p>
 <p>Addition to <strong><code
 class="verbatim">sierpiński</code></strong></p>
-<div class="sourceCode" id="cb16" data-noweb-ref="sierpiński"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> toline(tri, width):</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    a, b, c <span class="op">=</span> tri</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> line(a, b, width) <span class="op">+</span> line(a, c, width) <span class="op">+</span> line(b, c, width)</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sierpinski(a, b, c, n<span class="op">=</span><span class="dv">1</span>, width<span class="op">=</span><span class="fl">.01</span>):</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [ triangle_line</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>             <span class="cf">for</span> triangle      <span class="kw">in</span> sierec(a, b, c, n)</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>             <span class="cf">for</span> triangle_line <span class="kw">in</span> toline(triangle, width) ]</span></code></pre></div>
+<div class="sourceCode" id="cb19" data-noweb-ref="sierpiński"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> toline(tri, width):</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    a, b, c <span class="op">=</span> tri</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> line(a<span class="op">&amp;</span>k, b<span class="op">&amp;</span>k, width) <span class="op">+</span> line(a<span class="op">&amp;</span>k, c<span class="op">&amp;</span>k, width) <span class="op">+</span> line(b<span class="op">&amp;</span>k, c<span class="op">&amp;</span>k, width)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sierpinski(a, b, c, n<span class="op">=</span><span class="dv">1</span>, width<span class="op">=</span><span class="fl">.01</span>):</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [ triangle_line</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>             <span class="cf">for</span> triangle      <span class="kw">in</span> sierec(a, b, c, n)</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>             <span class="cf">for</span> triangle_line <span class="kw">in</span> toline(triangle, width) ]</span></code></pre></div>
 <p>Since the sierpinski triangle uses equilateral triangle, the size of
 the canvas mush be adjusted so that the length of the width is equal to
 the length of the other sides of the triangles. This is done by solving
@@ -733,16 +765,16 @@ class="math inline">$height = \sqrt{\frac{3 \times width^2}{4}}$</span>,
 implemented below:</p>
 <p>Addition to <strong><code
 class="verbatim">sierpiński</code></strong></p>
-<div class="sourceCode" id="cb17" data-noweb-ref="sierpiński"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> height():</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">int</span>(math.sqrt((<span class="dv">3</span> <span class="op">*</span> width <span class="op">*</span> width) <span class="op">/</span> <span class="dv">4</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb20" data-noweb-ref="sierpiński"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> height():</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">int</span>(math.sqrt((<span class="dv">3</span> <span class="op">*</span> width <span class="op">*</span> width) <span class="op">/</span> <span class="dv">4</span>))</span></code></pre></div>
 <p>Only image specification generation remains, with a reasonable
 width:</p>
 <p>Addition to <strong><code
 class="verbatim">sierpiński</code></strong></p>
-<div class="sourceCode" id="cb18" data-noweb-ref="sierpiński"><pre
-class="sourceCode python"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>width <span class="op">=</span> <span class="dv">1024</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>imgspec(sierpinski(lb, rb, mt, <span class="dv">7</span>, <span class="fl">.0015</span>), width, height())</span></code></pre></div>
+<div class="sourceCode" id="cb21" data-noweb-ref="sierpiński"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>width <span class="op">=</span> <span class="dv">1024</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>imgspec(sierpinski(lb, rb, mt, <span class="dv">7</span>, <span class="fl">.0015</span>), width, height())</span></code></pre></div>
 <div class="RESULTS drawer">
 <p><img src="images/imgen/sierpiński.png" /></p>
 </div>
