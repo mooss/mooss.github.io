@@ -8,12 +8,21 @@ fi
 source="$1"
 output="$2"
 
-function export-names() {
-    sed -re 's|^#\+name: (.*)|\n*=\1=* /===/\n&|'\
-        -e 's|^#\+begin_src .*:noweb-ref +([^ ]+).*|\n*=\1=* /=+==/\n&|'
+function export-names-html() {
+    # This exports to HTML named code blocks (defined via `#+name:` line) and
+    # reffed code blocks (defined via `:noweb-ref` noweb argument).
+
+    # pre, mid and post are used to introduce the HTML that together with css
+    # classes defined in pandoc.css slightly prettify code blocks and their
+    # legends.
+    local -r pre="#+html: <p class='code-legend'><strong><code class='verbatim'>"
+    local -r mid="</code></strong> <em><code class='verbatim'>"
+    local -r post="</code></em></p>"
+    sed -re "s|^#\+name: (.*)|\n$pre\1$mid=$post\n&|"\
+        -e "s|^#\+begin_src .*:noweb-ref +([^ ]+).*|\n$pre\1$mid+=$post\n&|"
 }
 
-cat "$source" | export-names\
+cat "$source" | export-names-html\
     | pandoc --from org\
              --output "$output"\
              --highlight-style=tango\
