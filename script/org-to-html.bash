@@ -9,8 +9,8 @@ source="$1"
 output="$2"
 
 function export-names() {
-    sed -re 's/^#\+name: (.*)/\n*=\1=*\n&/'\
-        -e 's/^#\+begin_src .*:noweb-ref +([^ ]+).*/\nAddition to *=\1=*\n&/'
+    sed -re 's|^#\+name: (.*)|\n*=\1=* /===/\n&|'\
+        -e 's|^#\+begin_src .*:noweb-ref +([^ ]+).*|\n*=\1=* /=+==/\n&|'
 }
 
 cat "$source" | export-names\

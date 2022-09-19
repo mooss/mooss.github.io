@@ -246,7 +246,8 @@ class="verbatim">Yliss</code> and <code class="verbatim">LitLib</code>,
 along with their dependencies. Most of the work to generate images is
 defined in in those other documents, the current document merely
 assembles a few primitives.</p>
-<p><strong><code class="verbatim">include</code></strong></p>
+<p><strong><code class="verbatim">include</code></strong> <em><code
+class="verbatim">=</code></em></p>
 <div class="sourceCode" id="include" data-org-language="sh"
 data-var="args=&quot;&quot;" data-results="output" wrap="src cpp"
 data-eval="no-export"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="include-1"><a href="#include-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./litlib/include.pl</span> <span class="st">&#39;window.org litlib/cpp.org graphics.org imgen.org&#39;</span> <span class="st">&quot;</span><span class="va">$args</span><span class="st">&quot;</span></span></code></pre></div>
@@ -254,7 +255,8 @@ data-eval="no-export"><pre class="sourceCode bash"><code class="sourceCode bash"
 class="verbatim">imgspec</code>)</h1>
 <p>Gathers all the information needed to generate an image, with
 reasonable defaults for the vertex and fragment shaders.</p>
-<p><strong><code class="verbatim">imgspec</code></strong></p>
+<p><strong><code class="verbatim">imgspec</code></strong> <em><code
+class="verbatim">=</code></em></p>
 <div class="sourceCode" id="imgspec"><pre
 class="sourceCode cpp"><code class="sourceCode cpp"><span id="imgspec-1"><a href="#imgspec-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> imgspec <span class="op">{</span></span>
 <span id="imgspec-2"><a href="#imgspec-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">const</span> <span class="dt">char</span> <span class="op">*</span>vs <span class="op">=</span></span>
@@ -292,8 +294,8 @@ class="sourceCode cpp"><code class="sourceCode cpp"><span id="imgspec-1"><a href
 under the given path by creating an OpenGL context and rendering one
 frame using the information contained in the <code
 class="verbatim">imgspec</code>.</p>
-<p>Addition to <strong><code
-class="verbatim">imgspec/public</code></strong></p>
+<p><strong><code class="verbatim">imgspec/public</code></strong>
+<em><code class="verbatim">+=</code></em></p>
 <div class="sourceCode" id="cb1" data-eval="no-export"
 data-exports="both" data-noweb-ref="imgspec/public"><pre
 class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> gen<span class="op">(</span><span class="bu">std::</span>string_view<span class="op"> </span>destination<span class="op">)</span> <span class="op">{</span></span>
@@ -362,7 +364,8 @@ class="sourceCode txt"><code class="sourceCode default"><span id="cb3-1"><a href
 <li>The size of the generated image.</li>
 </ol>
 <h3 id="implementation">Implementation</h3>
-<p><strong><code class="verbatim">imgen-cli</code></strong></p>
+<p><strong><code class="verbatim">imgen-cli</code></strong> <em><code
+class="verbatim">=</code></em></p>
 <div class="sourceCode" id="imgen-cli"><pre
 class="sourceCode cpp"><code class="sourceCode cpp"><span id="imgen-cli-1"><a href="#imgen-cli-1" aria-hidden="true" tabindex="-1"></a><span class="dt">bool</span> is_space<span class="op">(</span><span class="dt">char</span> c<span class="op">)</span> <span class="op">{</span></span>
 <span id="imgen-cli-2"><a href="#imgen-cli-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> c <span class="op">==</span> <span class="ch">&#39; &#39;</span> <span class="op">||</span> c <span class="op">==</span> <span class="ch">&#39;</span><span class="sc">\n</span><span class="ch">&#39;</span><span class="op">;</span></span>
@@ -426,7 +429,8 @@ class="verbatim">Makefile</code>:</p>
 class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">make</span> bin/imgen <span class="op">&gt;</span>/dev/null</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">du</span> <span class="at">-h</span> bin/imgen</span></code></pre></div>
 <h3 id="code-block">Code block</h3>
-<p><strong><code class="verbatim">imgen</code></strong></p>
+<p><strong><code class="verbatim">imgen</code></strong> <em><code
+class="verbatim">=</code></em></p>
 <div class="sourceCode" id="imgen"
 data-var="spec=&quot;&quot; dest=&quot;&quot;"><pre
 class="sourceCode bash"><code class="sourceCode bash"><span id="imgen-1"><a href="#imgen-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[[</span> <span class="ot">-f</span> <span class="st">&quot;</span><span class="va">$spec</span><span class="st">&quot;</span> <span class="kw">]]</span> <span class="kw">||</span> <span class="kw">{</span> <span class="bu">echo</span> <span class="st">&quot;Specification file </span><span class="dt">\`</span><span class="va">$spec</span><span class="dt">\`</span><span class="st"> does not exist.&quot;</span><span class="kw">;</span> <span class="bu">exit</span><span class="kw">;</span> <span class="kw">}</span></span>
@@ -456,7 +460,8 @@ because of the added width.</p>
 functionalities. This way the initial definition can focus on the
 essentials.</p>
 <h3 id="color">Color</h3>
-<p>Addition to <strong><code class="verbatim">pymgen</code></strong></p>
+<p><strong><code class="verbatim">pymgen</code></strong> <em><code
+class="verbatim">+=</code></em></p>
 <div class="sourceCode" id="cb5" data-noweb-ref="pymgen"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> color:</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, r:<span class="bu">float</span>, g:<span class="bu">float</span>, b:<span class="bu">float</span>):</span>
@@ -467,7 +472,8 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a hr
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> col(r:<span class="bu">float</span>, g:<span class="bu">float</span>, b:<span class="bu">float</span>):</span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="dv">0</span> <span class="op">&lt;=</span> r <span class="op">&lt;=</span> <span class="dv">1</span> <span class="kw">and</span> <span class="dv">0</span> <span class="op">&lt;=</span> g <span class="op">&lt;=</span> <span class="dv">1</span> <span class="kw">and</span> <span class="dv">0</span> <span class="op">&lt;=</span> b <span class="op">&lt;=</span> <span class="dv">1</span><span class="op">;</span> <span class="cf">return</span> color(r, g, b)</span></code></pre></div>
 <p>Predefined colors:</p>
-<p>Addition to <strong><code class="verbatim">pymgen</code></strong></p>
+<p><strong><code class="verbatim">pymgen</code></strong> <em><code
+class="verbatim">+=</code></em></p>
 <div class="sourceCode" id="cb6" data-noweb-ref="pymgen"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> red     <span class="op">=</span> col(<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> green   <span class="op">=</span> col(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>)</span>
@@ -478,7 +484,8 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a hr
 <span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> black   <span class="op">=</span> col(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)</span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> white   <span class="op">=</span> col(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span></code></pre></div>
 <h3 id="coordinates">Coordinates</h3>
-<p>Addition to <strong><code class="verbatim">pymgen</code></strong></p>
+<p><strong><code class="verbatim">pymgen</code></strong> <em><code
+class="verbatim">+=</code></em></p>
 <div class="sourceCode" id="cb7" data-noweb-ref="pymgen"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> coord:</span>
@@ -489,7 +496,8 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a hr
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> pos(x:<span class="bu">float</span>, y:<span class="bu">float</span>):</span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">assert</span> <span class="dv">0</span> <span class="op">&lt;=</span> x <span class="op">&lt;=</span> <span class="dv">1</span> <span class="kw">and</span> <span class="dv">0</span> <span class="op">&lt;=</span> y <span class="op">&lt;=</span> <span class="dv">1</span><span class="op">;</span> <span class="cf">return</span> coord(x, y)</span></code></pre></div>
 <p>Predefined coordinates:</p>
-<p>Addition to <strong><code class="verbatim">pymgen</code></strong></p>
+<p><strong><code class="verbatim">pymgen</code></strong> <em><code
+class="verbatim">+=</code></em></p>
 <div class="sourceCode" id="cb8" data-noweb-ref="pymgen"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>lt <span class="op">=</span> left_top      <span class="op">=</span> pos(<span class="dv">0</span>,   <span class="dv">1</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>rt <span class="op">=</span> right_top     <span class="op">=</span> pos(<span class="dv">1</span>,   <span class="dv">1</span>)</span>
@@ -501,7 +509,8 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a hr
 <span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>rm <span class="op">=</span> right_middle  <span class="op">=</span> pos(<span class="dv">1</span>,   <span class="fl">0.5</span>)</span>
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>mm <span class="op">=</span> center        <span class="op">=</span> pos(<span class="fl">0.5</span>, <span class="fl">0.5</span>)</span></code></pre></div>
 <h3 id="vertices">Vertices</h3>
-<p>Addition to <strong><code class="verbatim">pymgen</code></strong></p>
+<p><strong><code class="verbatim">pymgen</code></strong> <em><code
+class="verbatim">+=</code></em></p>
 <div class="sourceCode" id="cb9" data-noweb-ref="pymgen"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> vertex:</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, pos:coord, col:color<span class="op">=</span>color(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>)):</span>
@@ -517,7 +526,8 @@ triangle-based so <code class="verbatim">polygon</code> can be seen as a
 sequence of triangles, represented as a sequence of vertices. It must
 therefore maintain the invariant that its underlying vertices are a
 multiple of 3.</p>
-<p>Addition to <strong><code class="verbatim">pymgen</code></strong></p>
+<p><strong><code class="verbatim">pymgen</code></strong> <em><code
+class="verbatim">+=</code></em></p>
 <div class="sourceCode" id="cb10" data-noweb-ref="pymgen"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> polygon:</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    vertices: <span class="bu">list</span>[vertex]</span>
@@ -531,12 +541,14 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a h
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">&lt;&lt;</span>polygon<span class="op">/&gt;&gt;</span></span>
 <span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>pol <span class="op">=</span> polygon</span></code></pre></div>
 <h3 id="triangle">Triangle</h3>
-<p>Addition to <strong><code class="verbatim">pymgen</code></strong></p>
+<p><strong><code class="verbatim">pymgen</code></strong> <em><code
+class="verbatim">+=</code></em></p>
 <div class="sourceCode" id="cb11" data-noweb-ref="pymgen"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> triangle(a, b, c): <span class="cf">return</span> polygon(a, b, c)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>tri <span class="op">=</span> triangle</span></code></pre></div>
 <h3 id="quadrangle">Quadrangle</h3>
-<p>Addition to <strong><code class="verbatim">pymgen</code></strong></p>
+<p><strong><code class="verbatim">pymgen</code></strong> <em><code
+class="verbatim">+=</code></em></p>
 <div class="sourceCode" id="cb12" data-noweb-ref="pymgen"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> quadrangle(a, b, c, d): <span class="cf">return</span> polygon(a, b, c, b, c, d)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>quad <span class="op">=</span> quadrangle</span></code></pre></div>
@@ -546,7 +558,8 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a h
 increasing number to the keys that have not been defined yet. It can be
 seen as an handy way to associate a numerical index to potentially
 duplicated data points.</p>
-<p><strong><code class="verbatim">enumerator</code></strong></p>
+<p><strong><code class="verbatim">enumerator</code></strong> <em><code
+class="verbatim">=</code></em></p>
 <div class="sourceCode" id="enumerator"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="enumerator-1"><a href="#enumerator-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> enumerator(<span class="bu">dict</span>):</span>
 <span id="enumerator-2"><a href="#enumerator-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
@@ -573,7 +586,8 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a h
 and turns it into an image specification. Unique, non-duplicated indexes
 are attributed via an instance of <code
 class="verbatim">enumerator</code>, which is quite neat.</p>
-<p>Addition to <strong><code class="verbatim">pymgen</code></strong></p>
+<p><strong><code class="verbatim">pymgen</code></strong> <em><code
+class="verbatim">+=</code></em></p>
 <div class="sourceCode" id="cb14" data-noweb-ref="pymgen"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> imgspec(polygon, width, height):</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    vertices <span class="op">=</span> enumerator()</span>
@@ -590,7 +604,8 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a h
 <p>This Python one-liner is <code class="verbatim">pymgen</code>'s
 equivalent of the colorful square specification, which is for now the
 only image that has been generated:</p>
-<p><strong><code class="verbatim">usage</code></strong></p>
+<p><strong><code class="verbatim">usage</code></strong> <em><code
+class="verbatim">=</code></em></p>
 <div class="sourceCode" id="usage"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="usage-1"><a href="#usage-1" aria-hidden="true" tabindex="-1"></a>imgspec(quad(vtx(rt, y), vtx(lt, m), vtx(rb, c), vtx(lb, k)), <span class="dv">64</span>, <span class="dv">64</span>)</span></code></pre></div>
 <h3 id="display-an-image-spec">Display an image spec</h3>
@@ -598,7 +613,8 @@ class="sourceCode python"><code class="sourceCode python"><span id="usage-1"><a 
 <code class="verbatim">include.pl</code> to fetch the given code block,
 with the added <code class="verbatim">pymgen</code> dependency and to
 execute it with Python.</p>
-<p><strong><code class="verbatim">spec</code></strong></p>
+<p><strong><code class="verbatim">spec</code></strong> <em><code
+class="verbatim">=</code></em></p>
 <div class="sourceCode" id="spec"
 data-var="definition=&quot;&quot; interpreter=&quot;python&quot;"
 wrap="example"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="spec-1"><a href="#spec-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./litlib/include.pl</span> imgen.org <span class="st">&quot;:noweb pymgen </span><span class="va">$definition</span><span class="st">&quot;</span> <span class="kw">|</span> <span class="va">$interpreter</span></span></code></pre></div>
@@ -617,7 +633,8 @@ wrap="example"><pre class="sourceCode bash"><code class="sourceCode bash"><span 
 <h3 id="generate-the-image">Generate the image</h3>
 <p>This is basically the same thing, except that the image is also
 forwarded to the <code class="verbatim">imgen</code> binary.</p>
-<p><strong><code class="verbatim">py</code></strong></p>
+<p><strong><code class="verbatim">py</code></strong> <em><code
+class="verbatim">=</code></em></p>
 <div class="sourceCode" id="py"
 data-var="definition=&quot;&quot; destination=&quot;&quot; sources=&quot;imgen.org&quot;"><pre
 class="sourceCode bash"><code class="sourceCode bash"><span id="py-1"><a href="#py-1" aria-hidden="true" tabindex="-1"></a><span class="kw">[[</span> <span class="ot">-n</span> <span class="st">&quot;</span><span class="va">$definition</span><span class="st">&quot;</span> <span class="kw">]]</span> <span class="kw">||</span> <span class="kw">{</span> <span class="bu">echo</span> <span class="st">&quot;A definition code block is required.&quot;</span><span class="kw">;</span> <span class="bu">exit</span><span class="kw">;</span> <span class="kw">}</span></span>
@@ -633,7 +650,8 @@ class="sourceCode bash"><code class="sourceCode bash"><span id="py-1"><a href="#
 </div>
 <p><code class="verbatim">pymgen-cli</code> specifies a script allowing
 to interact with pymgen from outside this file.</p>
-<p><strong><code class="verbatim">pymgen-cli-impl</code></strong></p>
+<p><strong><code class="verbatim">pymgen-cli-impl</code></strong>
+<em><code class="verbatim">=</code></em></p>
 <div class="sourceCode" id="pymgen-cli-impl"
 data-shebang="&quot;#!/usr/bin/env bash&quot;"><pre
 class="sourceCode bash"><code class="sourceCode bash"><span id="pymgen-cli-impl-1"><a href="#pymgen-cli-impl-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">[[</span> <span class="va">$#</span> <span class="ot">-ne</span> 3 <span class="kw">]];</span> <span class="cf">then</span></span>
@@ -649,12 +667,14 @@ class="sourceCode bash"><code class="sourceCode bash"><span id="pymgen-cli-impl-
 available primitives, along with its dependencies and will be followed
 by an illustration of what was implemented.</p>
 <h3 id="easy-vertex-creation">Easy vertex creation</h3>
-<p>Addition to <strong><code class="verbatim">coord/</code></strong></p>
+<p><strong><code class="verbatim">coord/</code></strong> <em><code
+class="verbatim">+=</code></em></p>
 <div class="sourceCode" id="cb16" data-noweb-ref="coord/"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="fu">__and__</span>(<span class="va">self</span>, col:color): <span class="co"># self&amp;col, combine position and color in a vertex.</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> vertex(<span class="va">self</span>, col)</span></code></pre></div>
 <p>This is the same image as always:</p>
-<p><strong><code class="verbatim">usage2</code></strong></p>
+<p><strong><code class="verbatim">usage2</code></strong> <em><code
+class="verbatim">=</code></em></p>
 <div class="sourceCode" id="usage2"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="usage2-1"><a href="#usage2-1" aria-hidden="true" tabindex="-1"></a>imgspec(quad(rt<span class="op">&amp;</span>y, lt<span class="op">&amp;</span>m, rb<span class="op">&amp;</span>c, lb<span class="op">&amp;</span>k), <span class="dv">64</span>, <span class="dv">64</span>)</span></code></pre></div>
 <div class="RESULTS drawer">
@@ -667,13 +687,14 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a h
 <h3 id="concatenation-of-polygons">Concatenation of polygons</h3>
 <p>This allows the <code class="verbatim">+</code> operator to be used
 to concatenate polygons:</p>
-<p>Addition to <strong><code
-class="verbatim">polygon/</code></strong></p>
+<p><strong><code class="verbatim">polygon/</code></strong> <em><code
+class="verbatim">+=</code></em></p>
 <div class="sourceCode" id="cb18" data-noweb-ref="polygon/"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="fu">__add__</span>(<span class="va">self</span>, other:<span class="st">&#39;polygon&#39;</span>): <span class="cf">return</span> polygon(<span class="op">*</span>(<span class="va">self</span>.vertices <span class="op">+</span> other.vertices))</span></code></pre></div>
 <p>Using this, we can set a background and draw a triangle over it on
 the top right corner:</p>
-<p><strong><code class="verbatim">tricorner</code></strong></p>
+<p><strong><code class="verbatim">tricorner</code></strong> <em><code
+class="verbatim">=</code></em></p>
 <div class="sourceCode" id="tricorner"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="tricorner-1"><a href="#tricorner-1" aria-hidden="true" tabindex="-1"></a>imgspec(quad(lb<span class="op">&amp;</span>k, rb<span class="op">&amp;</span>w, lt<span class="op">&amp;</span>w, rt<span class="op">&amp;</span>k) <span class="op">+</span> tri(rt<span class="op">&amp;</span>c, rm<span class="op">&amp;</span>y, mt<span class="op">&amp;</span>m), <span class="dv">64</span>, <span class="dv">64</span>)</span></code></pre></div>
 <div class="RESULTS drawer">
@@ -693,7 +714,8 @@ each of the normal directions by an amount of <span
 class="math inline"><em>w</em><em>i</em><em>d</em><em>t</em><em>h</em>/2</span>,
 thus making the distance between them equal to <span
 class="math inline"><em>w</em><em>i</em><em>d</em><em>t</em><em>h</em></span>.</p>
-<p>Addition to <strong><code class="verbatim">pymgen</code></strong></p>
+<p><strong><code class="verbatim">pymgen</code></strong> <em><code
+class="verbatim">+=</code></em></p>
 <div class="sourceCode" id="cb19" data-noweb-ref="pymgen"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> line(a, b, width<span class="op">=</span><span class="fl">.01</span>):</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Compute the tangent.</span></span>
@@ -729,7 +751,8 @@ and <span class="math inline"><em>y</em></span> components for the <code
 class="verbatim">vertex</code> class.</p></li>
 </ol>
 <p>This implements 1, 2, and 3, in that order:</p>
-<p>Addition to <strong><code class="verbatim">coord/</code></strong></p>
+<p><strong><code class="verbatim">coord/</code></strong> <em><code
+class="verbatim">+=</code></em></p>
 <div class="sourceCode" id="cb21" data-noweb-ref="coord/"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="fu">__sub__</span>(<span class="va">self</span>, other:<span class="st">&#39;coord&#39;</span>): <span class="co"># self-other, substraction.</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> coord(<span class="va">self</span>.x <span class="op">-</span> other.x, <span class="va">self</span>.y <span class="op">-</span> other.y)</span>
@@ -741,23 +764,25 @@ simply assigning a <code class="verbatim">vertex</code> creates a
 reference, thus any operation on the "new" <code
 class="verbatim">vertex</code> will modify the original. This implement
 <code class="verbatim">vertex</code> copy:</p>
-<p>Addition to <strong><code
-class="verbatim">vertex/</code></strong></p>
+<p><strong><code class="verbatim">vertex/</code></strong> <em><code
+class="verbatim">+=</code></em></p>
 <div class="sourceCode" id="cb22" data-noweb-ref="vertex/"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> copy(<span class="va">self</span>): <span class="cf">return</span> vertex(<span class="va">self</span>.pos.copy(), <span class="va">self</span>.col.copy())</span></code></pre></div>
 <p>But it in turn requires <code class="verbatim">coord</code> copy:</p>
-<p>Addition to <strong><code class="verbatim">coord/</code></strong></p>
+<p><strong><code class="verbatim">coord/</code></strong> <em><code
+class="verbatim">+=</code></em></p>
 <div class="sourceCode" id="cb23" data-noweb-ref="coord/"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> copy(<span class="va">self</span>): <span class="cf">return</span> coord(<span class="va">self</span>.x, <span class="va">self</span>.y)</span></code></pre></div>
 <p>As well as <code class="verbatim">color</code> copy:</p>
-<p>Addition to <strong><code class="verbatim">color/</code></strong></p>
+<p><strong><code class="verbatim">color/</code></strong> <em><code
+class="verbatim">+=</code></em></p>
 <div class="sourceCode" id="cb24" data-noweb-ref="color/"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> copy(<span class="va">self</span>): <span class="cf">return</span> color(<span class="va">self</span>.r, <span class="va">self</span>.g, <span class="va">self</span>.b)</span></code></pre></div>
 <p>Finally this implements <span class="math inline"><em>x</em></span>
 and <span class="math inline"><em>y</em></span> accessors on <code
 class="verbatim">vertex</code>:</p>
-<p>Addition to <strong><code
-class="verbatim">vertex/</code></strong></p>
+<p><strong><code class="verbatim">vertex/</code></strong> <em><code
+class="verbatim">+=</code></em></p>
 <div class="sourceCode" id="cb25" data-noweb-ref="vertex/"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="at">@property</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> x(<span class="va">self</span>): <span class="cf">return</span> <span class="va">self</span>.pos.x</span>
@@ -772,8 +797,8 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb25-1"><a h
 <p>This is the same basic example, but with an additional line going
 from the left-bottom point to the right-top one. Also the width of this
 image is doubled to 128.</p>
-<p><strong><code
-class="verbatim">colorful-square+line</code></strong></p>
+<p><strong><code class="verbatim">colorful-square+line</code></strong>
+<em><code class="verbatim">=</code></em></p>
 <div class="sourceCode" id="colorful-square+line"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="colorful-square+line-1"><a href="#colorful-square+line-1" aria-hidden="true" tabindex="-1"></a>imgspec(quad(rt<span class="op">&amp;</span>y, lt<span class="op">&amp;</span>m, rb<span class="op">&amp;</span>c, lb<span class="op">&amp;</span>k) <span class="op">+</span> line(lb<span class="op">&amp;</span>k, rt<span class="op">&amp;</span>k, <span class="fl">.1</span>), <span class="dv">128</span>, <span class="dv">64</span>)</span></code></pre></div>
 <div class="RESULTS drawer">
@@ -804,7 +829,8 @@ id="fnref1" role="doc-noteref"><sup>1</sup></a>:</p>
 <p>This <code class="verbatim">|</code> operator can be used to return
 the midpoint of two coordinates, i.e. the coordinates right between
 them.</p>
-<p>Addition to <strong><code class="verbatim">coord/</code></strong></p>
+<p><strong><code class="verbatim">coord/</code></strong> <em><code
+class="verbatim">+=</code></em></p>
 <div class="sourceCode" id="cb27" data-noweb-ref="coord/"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> <span class="fu">__or__</span>(<span class="va">self</span>, other:<span class="st">&#39;coord&#39;</span>):</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> coord((<span class="va">self</span>.x <span class="op">+</span> other.x) <span class="op">/</span> <span class="dv">2</span>, (<span class="va">self</span>.y <span class="op">+</span> other.y) <span class="op">/</span> <span class="dv">2</span>)</span></code></pre></div>
@@ -819,8 +845,8 @@ recursing through each subtriangle, this is done in <code
 class="verbatim">sierec</code>. Those subtriangles are themselves
 constructed using midpoints computed with the <code
 class="verbatim">mid</code> function.</p>
-<p>Addition to <strong><code
-class="verbatim">sierpiński</code></strong></p>
+<p><strong><code class="verbatim">sierpiński</code></strong> <em><code
+class="verbatim">+=</code></em></p>
 <div class="sourceCode" id="cb28" data-noweb-ref="sierpiński"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> sierec(a, b, c, n<span class="op">=</span><span class="dv">1</span>):</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> n <span class="op">&lt;=</span> <span class="dv">0</span>: <span class="cf">return</span> [(a, b, c)]</span>
@@ -829,8 +855,8 @@ class="sourceCode python"><code class="sourceCode python"><span id="cb28-1"><a h
 <p>Then <code class="verbatim">sierpinski</code> assembles the triangles
 into lines, uniformly colored in black, with the help of <code
 class="verbatim">toline</code>:</p>
-<p>Addition to <strong><code
-class="verbatim">sierpiński</code></strong></p>
+<p><strong><code class="verbatim">sierpiński</code></strong> <em><code
+class="verbatim">+=</code></em></p>
 <div class="sourceCode" id="cb29" data-noweb-ref="sierpiński"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> toline(tri, width):</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    a, b, c <span class="op">=</span> tri</span>
@@ -854,15 +880,15 @@ this can be rewritten as <span class="math inline">$(\frac{width}{2})^2
 + height^2 = width^2$</span>, which eventually gives the formula <span
 class="math inline">$height = \sqrt{\frac{3 \times width^2}{4}}$</span>,
 implemented below:</p>
-<p>Addition to <strong><code
-class="verbatim">sierpiński</code></strong></p>
+<p><strong><code class="verbatim">sierpiński</code></strong> <em><code
+class="verbatim">+=</code></em></p>
 <div class="sourceCode" id="cb30" data-noweb-ref="sierpiński"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> height():</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="bu">int</span>(math.sqrt((<span class="dv">3</span> <span class="op">*</span> width <span class="op">*</span> width) <span class="op">/</span> <span class="dv">4</span>))</span></code></pre></div>
 <p>Only image specification generation remains, with a reasonable
 width:</p>
-<p>Addition to <strong><code
-class="verbatim">sierpiński</code></strong></p>
+<p><strong><code class="verbatim">sierpiński</code></strong> <em><code
+class="verbatim">+=</code></em></p>
 <div class="sourceCode" id="cb31" data-noweb-ref="sierpiński"><pre
 class="sourceCode python"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>width <span class="op">=</span> <span class="dv">1024</span></span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>imgspec(sierpinski(lb, rb, mt, <span class="dv">7</span>, <span class="fl">.0015</span>), width, height())</span></code></pre></div>
