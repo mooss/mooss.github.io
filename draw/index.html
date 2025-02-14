@@ -8,12 +8,9 @@
   <link rel="icon" type="image/png" href="/favicon-128x128.png" sizes="128x128">
   <link rel="icon" type="image/png" href="/favicon-180x180.png" sizes="180x180">
   <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
-  <title>Subjectively pretty drawings I have made</title>
+  <title>Drawings</title>
   <style>
     html {
-      line-height: 1.5;
-      font-family: Georgia, serif;
-      font-size: 20px;
       color: #1a1a1a;
       background-color: #fdfdfd;
     }
@@ -32,13 +29,16 @@
     @media (max-width: 600px) {
       body {
         font-size: 0.9em;
-        padding: 1em;
+        padding: 12px;
       }
       h1 {
         font-size: 1.8em;
       }
     }
     @media print {
+      html {
+        background-color: white;
+      }
       body {
         background-color: transparent;
         color: black;
@@ -62,6 +62,10 @@
       color: #1a1a1a;
     }
     img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
       max-width: 100%;
     }
     h1, h2, h3, h4, h5, h6 {
@@ -88,9 +92,10 @@
       color: #606060;
     }
     code {
-      font-family: Menlo, Monaco, 'Lucida Console', Consolas, monospace;
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
       font-size: 85%;
       margin: 0;
+      hyphens: manual;
     }
     pre {
       margin: 1em 0;
@@ -152,10 +157,18 @@
     }
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
-    span.underline{text-decoration: underline;}
-    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-    ul.task-list{list-style: none;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
     .display.math{display: block; text-align: center; margin: 0.5rem auto;}
     html {
         background-color: #eee;
@@ -182,7 +195,7 @@
 </head>
 <body>
 <header id="title-block-header">
-<h1 class="title">Subjectively pretty drawings I have made</h1>
+<h1 class="title">Drawings</h1>
 </header>
 <h1 id="sierpiński-birds">Sierpiński birds</h1>
 <p><img src="./Sierpiński-birds.jpg"
@@ -212,14 +225,13 @@ favicon, because even though it is quite noisy and not as symmetrical as
 I would like, it is quite recognisable. It also features my three
 favorite colors. The Bash code used to generate all the favicon sizes
 can be found <a href="./favicon.html">here</a>.</p>
-<h1 id="stairs-unfinished">Stairs, unfinished</h1>
-<p><img src="./unfinished-stairs.jpg" /></p>
-<p>This scan was done before the drawing was completed so construction
-lines are still visible and various blobs are not properly filled. I
-made the mistake of not starting this drawing properly in the center so
-there was not enough room on the left side. Even so it is one of my
-favorites, if not my favorite.</p>
-<p>I hope to eventually find a scan of the completed version.</p>
+<h1 id="stairs">Stairs</h1>
+<p><img src="./stairs.jpeg" /></p>
+<p>I made the mistake of not starting this drawing properly in the
+center so there was not enough room on the left side. Even so it is one
+of my favorites, if not my favorite.</p>
+<p>A scan of an unfinished version can also be seen <a
+href="./unfinished-stairs.jpg">here</a>.</p>
 <h1 id="octanet-hexacubes-and-a-stairs-arch">Octanet, hexacubes and a
 stairs arch</h1>
 <p><img src="./octanet-hexacubes-stairsarch.jpeg" /></p>
@@ -247,17 +259,15 @@ of the octahedron net is quite displeasing.</p>
 <p>I don't remember when this one was drawn but I love it. One thing
 that could be better are some lines on the right that are a bit too
 swirly. I love the confusing perspective in the top part.</p>
-<section class="footnotes footnotes-end-of-document"
+<section id="footnotes" class="footnotes footnotes-end-of-document"
 role="doc-endnotes">
 <hr />
 <ol>
-<li id="fn1" role="doc-endnote"><p>Stairs should ideally be themselves
-neverending but I never managed to make a convincing Escher-style
-drawing.<a href="#fnref1" class="footnote-back"
-role="doc-backlink">↩︎</a></p></li>
-<li id="fn2" role="doc-endnote"><p>Everyone ought to have a favorite
-platonic solid.<a href="#fnref2" class="footnote-back"
-role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>Stairs should ideally be themselves neverending but I
+never managed to make a convincing Escher-style drawing.<a
+href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Everyone ought to have a favorite platonic solid.<a
+href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 </body>
