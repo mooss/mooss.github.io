@@ -11,7 +11,7 @@ all: draw/index.html draw/favicon.html draw/imgen.html
 ##############
 # Submodules #
 
-.PHONY: submodules yliss/litlib init pull copy-assets update cli
+.PHONY: submodules yliss/litlib init pull copy-assets update cli noisy
 
 submodules:
 	git submodule init
@@ -35,3 +35,7 @@ update: pull copy-assets all
 
 cli: yliss/litlib
 	cd repo/yliss && make clean && make cli
+
+noisy:
+	make -C repo/noisy/web build
+	./scripts/release-noisy.bash
