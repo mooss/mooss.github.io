@@ -1,16 +1,16 @@
 ###################
 # HTML generation #
-###################
+
 .PHONY: all
 
 all: draw/index.html draw/favicon.html draw/imgen.html
 
 %.html: %.org
-	./script/org-to-html.bash "$^" "$@"
+	./scripts/org-to-html.bash "$^" "$@"
 
 ##############
 # Submodules #
-##############
+
 .PHONY: submodules yliss/litlib init pull copy-assets update cli
 
 submodules:
@@ -29,7 +29,7 @@ pull:
 	cd repo/litlib && git checkout main && git pull
 
 copy-assets:
-	./script/copy-assets.bash
+	./scripts/copy-assets.bash
 
 update: pull copy-assets all
 
