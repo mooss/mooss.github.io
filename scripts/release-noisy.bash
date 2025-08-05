@@ -12,7 +12,7 @@ function footer() {
 <div style="position: fixed; bottom: 0; width: 100%; background-color: rgba(0,0,0,0.7); color: white; padding: 6px; text-align: center; font-size: 14px;">
     <span>&copy; 2025 mooss</span> |
     <span><a href="mailto:mooss@protonmail.com" style="color: #4da6ff;">mooss@protonmail.com</a></span> |
-    <!-- <span>GitHub coming later<a href="https://github.com/" target="_blank" style="color: #4da6ff;"></a></span> | -->
+    <span><a href="https://github.com/mooss/noisy" style="color: #4da6ff;">GitHub</a></span> |
     <span>Version: $VERSION_CODE / $VERSION_NAME / $SHORT_REF</span>
 </div>
 EOF
