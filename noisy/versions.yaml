@@ -1,4 +1,8 @@
 acorn:
   period: alpha
   number: 1
-  commit: bb81e34
+  commit: 853450dbc99e84f23497f47411c35ba32136d2a0
+bean:
+  period: alpha
+  number: 2
+  commit: 076b5b20470ad26c994e38d3023c537e9e29b84c

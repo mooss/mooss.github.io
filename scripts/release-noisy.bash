@@ -13,6 +13,7 @@ VERSION_PERIOD=$(grepver PERIOD)
 VERSION_NUMBER=$(grepver NUMBER)
 VERSION_NAME=$(grepver NAME)
 SHORT_REF=$(git -C $SOURCE rev-parse --short HEAD)
+LONG_REF=$(git -C $SOURCE rev-parse HEAD)
 RELEASE_DIR="noisy/$VERSION_NAME"
 echo "Will release $VERSION_PERIOD $VERSION_NUMBER ($VERSION_NAME) - $SHORT_REF to $RELEASE_DIR"
 
@@ -50,7 +51,7 @@ function version-reminder() {
 ${VERSION_NAME}:
   period: ${VERSION_PERIOD}
   number: ${VERSION_NUMBER}
-  commit: ${SHORT_REF}
+  commit: ${LONG_REF}
 EOF
 }
 

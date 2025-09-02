@@ -1,0 +1,285 @@
+{
+  "camera": {
+    "params": {
+      "cameraMode": "Follow",
+      "position": {
+        "x": 142.13058670379513,
+        "y": 87.42486416010992,
+        "z": 578.5992645407941
+      },
+      "focus": {
+        "x": 142.13059016905495,
+        "y": 87.42544277471622,
+        "z": 2.401087492554293e-23
+      }
+    },
+    "meta": {
+      "class": "CameraState"
+    }
+  },
+  "chunks": {
+    "params": {
+      "_power": 8,
+      "loadRadius": 1,
+      "radiusType": "square",
+      "previousSize": 256
+    },
+    "meta": {
+      "class": "ChunkState"
+    }
+  },
+  "avatar": {
+    "params": {
+      "size": 1,
+      "heightOffset": 0,
+      "position": {
+        "x": 0.5,
+        "y": 0.5,
+        "z": 0.3072687211346421
+      }
+    },
+    "meta": {
+      "class": "AvatarState"
+    }
+  },
+  "render": {
+    "params": {
+      "style": "surface",
+      "paletteName": "Rainbow",
+      "light": {
+        "ambient": {
+          "intensity": 0.6
+        },
+        "directional": {
+          "intensity": 4
+        }
+      },
+      "heightMultiplier": 0
+    },
+    "meta": {
+      "class": "RenderState"
+    }
+  },
+  "noise": {
+    "meta": {
+      "class": "ProcessingPipeline"
+    },
+    "params": {
+      "top": {
+        "meta": {
+          "class": "ProcessingMap"
+        },
+        "params": {
+          "algorithms": {
+            "Constant": {
+              "meta": {
+                "class": "Terracing"
+              },
+              "params": {
+                "steps": 17
+              }
+            },
+            "Noisy": {
+              "meta": {
+                "class": "NoisyTerracing"
+              },
+              "params": {
+                "min": 6,
+                "max": 14,
+                "terracer": {
+                  "meta": {
+                    "class": "Layered"
+                  },
+                  "params": {
+                    "noise": {
+                      "meta": {
+                        "class": "Simplex"
+                      },
+                      "params": {
+                        "seed": 23
+                      }
+                    },
+                    "layers": {
+                      "fundamental": 1.3,
+                      "octaves": 1,
+                      "persistence": 0.65,
+                      "lacunarity": 1.5
+                    },
+                    "sampling": {
+                      "size": 30,
+                      "threshold": 2.5,
+                      "fundamental": 3
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "current": "Noisy",
+          "wrapped": {
+            "meta": {
+              "class": "Warping"
+            },
+            "params": {
+              "frequency": 2.25,
+              "strength": 0.17,
+              "warper": {
+                "meta": {
+                  "class": "Simplex"
+                },
+                "params": {
+                  "seed": 23
+                }
+              },
+              "wrapped": {
+                "meta": {
+                  "class": "Tiling"
+                },
+                "params": {
+                  "coorscale": 3,
+                  "noisescale": 2,
+                  "enabled": false,
+                  "wrapped": {
+                    "meta": {
+                      "class": "Map"
+                    },
+                    "params": {
+                      "algorithms": {
+                        "Simplex": {
+                          "meta": {
+                            "class": "Layered"
+                          },
+                          "params": {
+                            "noise": {
+                              "meta": {
+                                "class": "Simplex"
+                              },
+                              "params": {
+                                "seed": 30
+                              }
+                            },
+                            "layers": {
+                              "fundamental": 1.3,
+                              "octaves": 7,
+                              "persistence": 0.6,
+                              "lacunarity": 1.85
+                            },
+                            "sampling": {
+                              "size": 30,
+                              "threshold": 2.5,
+                              "fundamental": 3
+                            }
+                          }
+                        },
+                        "Ridge": {
+                          "meta": {
+                            "class": "Layered"
+                          },
+                          "params": {
+                            "noise": {
+                              "meta": {
+                                "class": "Ridge"
+                              },
+                              "params": {
+                                "invert": true,
+                                "square": false,
+                                "seed": 23
+                              }
+                            },
+                            "layers": {
+                              "fundamental": 0.5,
+                              "octaves": 8,
+                              "persistence": 0.7,
+                              "lacunarity": 1.6
+                            },
+                            "sampling": {
+                              "size": 30,
+                              "threshold": 2.5,
+                              "fundamental": 3
+                            }
+                          }
+                        },
+                        "Continental mix": {
+                          "meta": {
+                            "class": "ContinentalMix"
+                          },
+                          "params": {
+                            "bass": {
+                              "meta": {
+                                "class": "Layered"
+                              },
+                              "params": {
+                                "noise": {
+                                  "meta": {
+                                    "class": "Simplex"
+                                  },
+                                  "params": {
+                                    "seed": 29
+                                  }
+                                },
+                                "layers": {
+                                  "fundamental": 0.3,
+                                  "octaves": 7,
+                                  "persistence": 0.65,
+                                  "lacunarity": 1.5
+                                },
+                                "sampling": {
+                                  "size": 30,
+                                  "threshold": 2.5,
+                                  "fundamental": 3
+                                }
+                              }
+                            },
+                            "treble": {
+                              "meta": {
+                                "class": "Layered"
+                              },
+                              "params": {
+                                "noise": {
+                                  "meta": {
+                                    "class": "Ridge"
+                                  },
+                                  "params": {
+                                    "invert": true,
+                                    "square": false,
+                                    "seed": 32
+                                  }
+                                },
+                                "layers": {
+                                  "fundamental": 0.4,
+                                  "octaves": 8,
+                                  "persistence": 0.65,
+                                  "lacunarity": 1.55
+                                },
+                                "sampling": {
+                                  "size": 30,
+                                  "threshold": 2.5,
+                                  "fundamental": 3
+                                }
+                              }
+                            },
+                            "threshold": {
+                              "low": 0.28,
+                              "mid": 0.64,
+                              "high": 0.56
+                            }
+                          }
+                        }
+                      },
+                      "current": "Simplex"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "version": {
+    "period": "alpha",
+    "number": "2",
+    "name": "bean"
+  }
+}
