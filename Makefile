@@ -39,3 +39,6 @@ cli: yliss/litlib
 noisy:
 	make -C repo/noisy/web build
 	./scripts/release-noisy.bash
+
+serve-noisy:
+	./scripts/serve-latest-noisy.bash
