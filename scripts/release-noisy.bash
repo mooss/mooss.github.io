@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-SOURCE=repo/noisy/web
+SOURCE=repo/noisy/build/web
 INDEX=$SOURCE/dist/index.html
 
 function grepver() {

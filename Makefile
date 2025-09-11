@@ -37,7 +37,7 @@ cli: yliss/litlib
 	cd repo/yliss && make clean && make cli
 
 noisy:
-	make -C repo/noisy/web build
+	cd repo/noisy && make dist
 	./scripts/release-noisy.bash
 
 serve-noisy:

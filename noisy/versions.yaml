@@ -6,3 +6,7 @@ bean:
   period: alpha
   number: 2
   commit: 076b5b20470ad26c994e38d3023c537e9e29b84c
+coriander:
+  period: alpha
+  number: 3
+  commit: 718a1b1fdf1a30ff7d9de4b99fbc75bc34d3eeb9
