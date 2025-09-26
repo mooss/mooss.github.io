@@ -10,3 +10,7 @@ coriander:
   period: alpha
   number: 3
   commit: 718a1b1fdf1a30ff7d9de4b99fbc75bc34d3eeb9
+dandelion:
+  period: alpha
+  number: 4
+  commit: 9a2ddc5bf71d300bd9e72bde86d7b12f4672eb0a

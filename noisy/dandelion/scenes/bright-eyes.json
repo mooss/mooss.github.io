@@ -1,0 +1,286 @@
+{
+  "camera": {
+    "cameraMode": "Follow",
+    "position": {
+      "x": 130.9417737601347,
+      "y": 131.28417500230657,
+      "z": 585.3490786294487
+    },
+    "focus": {
+      "x": 130.94177502989936,
+      "y": 131.283675842326,
+      "z": 86.20966956521696
+    },
+    "#meta": {
+      "class": "CameraState"
+    }
+  },
+  "chunks": "$a",
+  "avatar": {
+    "size": 1,
+    "heightOffset": 0,
+    "position": {
+      "x": 0.6169999999999995,
+      "y": 0.4750000000000001,
+      "z": 0.14200000000000002
+    },
+    "#meta": {
+      "class": "AvatarState"
+    }
+  },
+  "render": {
+    "style": "Box",
+    "paletteName": "Fantasy",
+    "light": {
+      "ambient": {
+        "intensity": 2
+      },
+      "directional": {
+        "intensity": 3
+      }
+    },
+    "heightMultiplier": 0,
+    "#meta": {
+      "class": "RenderState"
+    }
+  },
+  "noise": {
+    "#meta": {
+      "class": "NoisePipeline"
+    },
+    "base": {
+      "#meta": {
+        "class": "AlgoPicker"
+      },
+      "algorithms": {
+        "Simplex": {
+          "#meta": {
+            "class": "Layered"
+          },
+          "noise": {
+            "#meta": {
+              "class": "Simplex"
+            },
+            "seed": 27
+          },
+          "layers": {
+            "fundamental": 0.7,
+            "octaves": 8,
+            "persistence": 0.65,
+            "lacunarity": 1.5
+          },
+          "sampling": {
+            "size": 30,
+            "threshold": 4,
+            "fundamental": 3
+          }
+        },
+        "Ridge": {
+          "#meta": {
+            "class": "Layered"
+          },
+          "noise": {
+            "#meta": {
+              "class": "Ridge"
+            },
+            "invert": true,
+            "square": true,
+            "seed": 53
+          },
+          "layers": {
+            "fundamental": 0.6,
+            "octaves": 8,
+            "persistence": 0.65,
+            "lacunarity": 1.5
+          },
+          "sampling": {
+            "size": 30,
+            "threshold": 4,
+            "fundamental": 3
+          }
+        },
+        "Continental mix": {
+          "#meta": {
+            "class": "ContinentalMix"
+          },
+          "bass": {
+            "#meta": {
+              "class": "Layered"
+            },
+            "noise": {
+              "#meta": {
+                "class": "Simplex"
+              },
+              "seed": 23
+            },
+            "layers": {
+              "fundamental": 0.3,
+              "octaves": 7,
+              "persistence": 0.65,
+              "lacunarity": 1.5
+            },
+            "sampling": {
+              "size": 30,
+              "threshold": 4,
+              "fundamental": 3
+            }
+          },
+          "treble": {
+            "#meta": {
+              "class": "Layered"
+            },
+            "noise": {
+              "#meta": {
+                "class": "Ridge"
+              },
+              "invert": true,
+              "square": true,
+              "seed": 100
+            },
+            "layers": {
+              "fundamental": 0.5,
+              "octaves": 8,
+              "persistence": 0.65,
+              "lacunarity": 1.56
+            },
+            "sampling": {
+              "size": 30,
+              "threshold": 4,
+              "fundamental": 3
+            }
+          },
+          "threshold": {
+            "low": 0.28,
+            "mid": 0.64,
+            "high": 0.56
+          }
+        }
+      },
+      "current": "Ridge"
+    },
+    "pipeline": [
+      {
+        "#meta": {
+          "class": "Clustering"
+        },
+        "coorscale": 3,
+        "noisescale": 2,
+        "enabled": false
+      },
+      {
+        "#meta": {
+          "class": "Warping"
+        },
+        "frequency": 1.35,
+        "strength": 0.13,
+        "warper": {
+          "#meta": {
+            "class": "Simplex"
+          },
+          "seed": 28
+        }
+      },
+      {
+        "#meta": {
+          "class": "PipelinePicker"
+        },
+        "algorithms": {
+          "None": {
+            "#meta": {
+              "class": "Identity"
+            }
+          },
+          "Quad": {
+            "#meta": {
+              "class": "QuadTiling"
+            },
+            "normalizeX": true,
+            "normalizeY": false
+          },
+          "Mirrored": {
+            "#meta": {
+              "class": "MirroredTiling"
+            },
+            "normalizeX": true,
+            "normalizeY": true
+          },
+          "Sine": {
+            "#meta": {
+              "class": "SineTiling"
+            },
+            "normalizeX": true,
+            "normalizeY": false
+          }
+        },
+        "current": "Mirrored",
+        "tag": "Tiling"
+      },
+      {
+        "#meta": {
+          "class": "PipelinePicker"
+        },
+        "algorithms": {
+          "Constant": {
+            "#meta": {
+              "class": "Terracing"
+            },
+            "steps": 15
+          },
+          "Voxel": {
+            "#meta": {
+              "class": "VoxelTerracing"
+            },
+            "chunks": "$a"
+          },
+          "Noisy": {
+            "#meta": {
+              "class": "NoisyTerracing"
+            },
+            "min": 40,
+            "max": 50,
+            "terracer": {
+              "#meta": {
+                "class": "Layered"
+              },
+              "noise": {
+                "#meta": {
+                  "class": "Simplex"
+                },
+                "seed": 23
+              },
+              "layers": {
+                "fundamental": 3,
+                "octaves": 1,
+                "persistence": 0.65,
+                "lacunarity": 1.5
+              },
+              "sampling": {
+                "size": 30,
+                "threshold": 4,
+                "fundamental": 3
+              }
+            }
+          }
+        },
+        "current": "Constant",
+        "tag": "Terracing"
+      }
+    ]
+  },
+  "version": {
+    "period": "alpha",
+    "number": "4",
+    "name": "dandelion"
+  },
+  "$": {
+    "a": {
+      "_power": 6,
+      "loadRadius": 1,
+      "radiusType": "square",
+      "previousSize": 64,
+      "#meta": {
+        "class": "ChunkState"
+      }
+    }
+  }
+}

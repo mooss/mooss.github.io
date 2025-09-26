@@ -3,10 +3,10 @@
 set -euo pipefail
 
 SOURCE=repo/noisy/build/web
-INDEX=$SOURCE/dist/index.html
+INDEX=$SOURCE/src/app/noisy/dist/index.html
 
 function grepver() {
-    grep VERSION_$1 $SOURCE/constants.ts | head -n1 | sed -r "s/.*'(.*)';$/\1/"
+    grep VERSION_$1 $SOURCE/config/constants.ts | head -n1 | sed -r "s/.*'(.*)';$/\1/"
 }
 
 VERSION_PERIOD=$(grepver PERIOD)
@@ -41,7 +41,7 @@ function release() {
     mkdir -vp "$RELEASE_DIR/assets"
     rm -v "$RELEASE_DIR/assets/"* || true
     new-html > "$RELEASE_DIR"/index.html
-    cp -vt "$RELEASE_DIR/assets" "$SOURCE/dist/assets/"*.js
+    cp -vt "$RELEASE_DIR/assets" "$SOURCE/src/app/noisy/dist/assets/"*.js
     tree "$RELEASE_DIR"
 }
 
