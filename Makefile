@@ -1,7 +1,7 @@
+.PHONY: all submodules yliss/litlib init pull copy-assets update cli noisy serve-noisy noisy-redirects
+
 ###################
 # HTML generation #
-
-.PHONY: all
 
 all: draw/index.html draw/favicon.html draw/imgen.html
 
@@ -11,7 +11,6 @@ all: draw/index.html draw/favicon.html draw/imgen.html
 ##############
 # Submodules #
 
-.PHONY: submodules yliss/litlib init pull copy-assets update cli noisy
 
 submodules:
 	git submodule init
@@ -35,6 +34,15 @@ update: pull copy-assets all
 
 cli: yliss/litlib
 	cd repo/yliss && make clean && make cli
+
+#########
+# Noisy #
+
+NOISY_URLS := $(wildcard noisy/*/scenes/*.url)
+NOISY_REDIRECTS := $(NOISY_URLS:.url=.html)
+noisy-redirects: $(NOISY_REDIRECTS)
+noisy/%.html: noisy/%.url
+	./scripts/url2HTMLredirect.bash $< > $@
 
 noisy:
 	cd repo/noisy && make dist
