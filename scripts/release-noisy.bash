@@ -46,13 +46,14 @@ function release() {
 }
 
 function version-reminder() {
-    echo "Don't forget to update noisy/versions.yaml with:"
+    echo "Don't forget to update noisy/meta.yaml with:"
     cat <<EOF
-${VERSION_NAME}:
-  period: ${VERSION_PERIOD}
-  number: ${VERSION_NUMBER}
-  commit: ${LONG_REF}
+  ${VERSION_NAME}:
+    period: ${VERSION_PERIOD}
+    number: ${VERSION_NUMBER}
+    commit: ${LONG_REF}
 EOF
+    echo "And to redirect noisy/index.html to ${VERSION_NAME}."
 }
 
 release

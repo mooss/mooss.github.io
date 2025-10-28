@@ -1,0 +1,257 @@
+{
+  "camera": {
+    "cameraMode": "Follow",
+    "position": {
+      "x": 129.31151766969347,
+      "y": 121.44108899051729,
+      "z": 1403.828250604382
+    },
+    "focus": {
+      "x": 129.31151766993187,
+      "y": 121.44249319283084,
+      "z": -2.1519141272346985e-28
+    },
+    "#meta": {
+      "class": "CameraState"
+    }
+  },
+  "chunks": "$a",
+  "avatar": {
+    "size": 3,
+    "heightOffset": 0,
+    "position": {
+      "x": 0.5,
+      "y": 0.5,
+      "z": 0
+    },
+    "#meta": {
+      "class": "AvatarState"
+    }
+  },
+  "render": {
+    "geometryStyle": "Pixel",
+    "painterStyle": "Palette",
+    "paletteName": "Black & white",
+    "colorLowShift": 0.84,
+    "colorHighShift": 0.27,
+    "texturePath": "",
+    "light": {
+      "ambient": {
+        "intensity": 2
+      },
+      "directional": {
+        "intensity": 3
+      }
+    },
+    "heightMultiplier": 1,
+    "#meta": {
+      "class": "RenderState"
+    }
+  },
+  "noise": {
+    "#meta": {
+      "class": "NoisePipeline"
+    },
+    "base": {
+      "#meta": {
+        "class": "AlgoPicker"
+      },
+      "algorithms": {
+        "Simplex": {
+          "#meta": {
+            "class": "Layered"
+          },
+          "noise": {
+            "#meta": {
+              "class": "Simplex"
+            },
+            "seed": 23
+          },
+          "layers": {
+            "fundamental": 5,
+            "octaves": 6,
+            "persistence": 0.65,
+            "lacunarity": 1.62
+          },
+          "sampling": {
+            "size": 30,
+            "threshold": 4,
+            "fundamental": 3
+          }
+        },
+        "Ridge": {
+          "#meta": {
+            "class": "Layered"
+          },
+          "noise": {
+            "#meta": {
+              "class": "Ridge"
+            },
+            "invert": false,
+            "square": true,
+            "seed": 37
+          },
+          "layers": {
+            "fundamental": 1.4,
+            "octaves": 6,
+            "persistence": 0.5,
+            "lacunarity": 1.6
+          },
+          "sampling": {
+            "size": 30,
+            "threshold": 4,
+            "fundamental": 3
+          }
+        },
+        "Continental mix": {
+          "#meta": {
+            "class": "ContinentalMix"
+          },
+          "bass": {
+            "#meta": {
+              "class": "Layered"
+            },
+            "noise": {
+              "#meta": {
+                "class": "Simplex"
+              },
+              "seed": 23
+            },
+            "layers": {
+              "fundamental": 0.3,
+              "octaves": 7,
+              "persistence": 0.65,
+              "lacunarity": 1.5
+            },
+            "sampling": {
+              "size": 30,
+              "threshold": 4,
+              "fundamental": 3
+            }
+          },
+          "treble": {
+            "#meta": {
+              "class": "Layered"
+            },
+            "noise": {
+              "#meta": {
+                "class": "Ridge"
+              },
+              "invert": true,
+              "square": false,
+              "seed": 23
+            },
+            "layers": {
+              "fundamental": 0.4,
+              "octaves": 8,
+              "persistence": 0.65,
+              "lacunarity": 1.56
+            },
+            "sampling": {
+              "size": 30,
+              "threshold": 4,
+              "fundamental": 3
+            }
+          },
+          "threshold": {
+            "low": 0.28,
+            "mid": 0.64,
+            "high": 0.56
+          }
+        }
+      },
+      "current": "Ridge"
+    },
+    "pipeline": [
+      {
+        "#meta": {
+          "class": "Clustering"
+        },
+        "coorscale": 3,
+        "noisescale": 2,
+        "enabled": false
+      },
+      {
+        "#meta": {
+          "class": "Warping"
+        },
+        "frequency": 1,
+        "strength": 0.16,
+        "warper": {
+          "#meta": {
+            "class": "Simplex"
+          },
+          "seed": 23
+        }
+      },
+      {
+        "#meta": {
+          "class": "PipelinePicker"
+        },
+        "algorithms": {
+          "None": {
+            "#meta": {
+              "class": "Identity"
+            }
+          },
+          "Quad": {
+            "#meta": {
+              "class": "QuadTiling"
+            }
+          },
+          "Mirrored": {
+            "#meta": {
+              "class": "MirroredTiling"
+            },
+            "normalizeX": false,
+            "normalizeY": false
+          },
+          "Sine": {
+            "#meta": {
+              "class": "SineTiling"
+            }
+          }
+        },
+        "current": "Quad",
+        "tag": "Tiling"
+      },
+      {
+        "#meta": {
+          "class": "PipelinePicker"
+        },
+        "algorithms": {
+          "Constant": {
+            "#meta": {
+              "class": "Terracing"
+            },
+            "steps": 0
+          },
+          "Voxel": {
+            "#meta": {
+              "class": "VoxelTerracing"
+            },
+            "chunks": "$a"
+          }
+        },
+        "current": "Constant",
+        "tag": "Terracing"
+      }
+    ]
+  },
+  "version": {
+    "period": "alpha",
+    "number": "5",
+    "name": "elderberry"
+  },
+  "$": {
+    "a": {
+      "_power": 7,
+      "loadRadius": 1,
+      "radiusType": "square",
+      "previousSize": 128,
+      "#meta": {
+        "class": "ChunkState"
+      }
+    }
+  }
+}
