@@ -1,0 +1,159 @@
+{
+  "camera": {
+    "cameraMode": "Follow",
+    "position": {
+      "x": 274.5709717592689,
+      "y": -476.6348495746216,
+      "z": 352.76629087807993
+    },
+    "focus": {
+      "x": 196.99192293668796,
+      "y": -78.71635264129759,
+      "z": -1.2193416025596526e-15
+    },
+    "#meta": {
+      "class": "CameraState"
+    }
+  },
+  "chunks": {
+    "power": 7,
+    "loadRadius": 7,
+    "radiusType": "circle",
+    "#meta": {
+      "class": "ChunkState"
+    }
+  },
+  "avatar": {
+    "size": 3,
+    "heightOffset": 0,
+    "position": {
+      "x": 0.5,
+      "y": 0.5,
+      "z": 0.4660687384195363
+    },
+    "#meta": {
+      "class": "AvatarState"
+    }
+  },
+  "render": {
+    "geometryStyle": "Surface",
+    "painterStyle": "Palette",
+    "paletteName": "Savanna",
+    "colorLowShift": 0,
+    "colorHighShift": 0,
+    "_colorSlope": 3,
+    "light": {
+      "ambient": {
+        "intensity": 2
+      },
+      "directional": {
+        "intensity": 3
+      }
+    },
+    "heightMultiplier": 1,
+    "texturePath": "https://mooss.github.io/noisy/textures/cobbly.png",
+    "textureRepeat": 5,
+    "textureBumpScale": 4,
+    "flatShading": false,
+    "#meta": {
+      "class": "RenderState"
+    }
+  },
+  "noise": {
+    "#meta": {
+      "class": "NoisePipeline"
+    },
+    "base": {
+      "#meta": {
+        "class": "ContinentalMix"
+      },
+      "bass": {
+        "#meta": {
+          "class": "Layered"
+        },
+        "noise": {
+          "#meta": {
+            "class": "Simplex"
+          },
+          "seed": 23
+        },
+        "layers": {
+          "fundamental": 0.1,
+          "octaves": 7,
+          "persistence": 0.7,
+          "lacunarity": 1.64
+        }
+      },
+      "treble": {
+        "#meta": {
+          "class": "Layered"
+        },
+        "noise": {
+          "#meta": {
+            "class": "Ridge"
+          },
+          "invert": true,
+          "square": false,
+          "seed": 23
+        },
+        "layers": {
+          "fundamental": 0.2,
+          "octaves": 8,
+          "persistence": 0.65,
+          "lacunarity": 1.56
+        }
+      },
+      "threshold": {
+        "low": 0.28,
+        "mid": 0.64,
+        "high": 0.56
+      }
+    },
+    "pipeline": [
+      {
+        "#meta": {
+          "class": "PipelinePicker"
+        },
+        "algorithms": {
+          "None": {
+            "#meta": {
+              "class": "Identity"
+            }
+          },
+          "Exponentiation": {
+            "#meta": {
+              "class": "Exponentiation"
+            },
+            "exponent": 1.5
+          },
+          "Steepness": {
+            "#meta": {
+              "class": "Steepness"
+            },
+            "factor": 1.5
+          }
+        },
+        "current": "Exponentiation",
+        "tag": "Transform"
+      },
+      {
+        "#meta": {
+          "class": "Warping"
+        },
+        "frequency": 2.25,
+        "strength": 0.08,
+        "warper": {
+          "#meta": {
+            "class": "Simplex"
+          },
+          "seed": 23
+        }
+      }
+    ]
+  },
+  "version": {
+    "period": "alpha",
+    "number": "5",
+    "name": "elderberry"
+  }
+}

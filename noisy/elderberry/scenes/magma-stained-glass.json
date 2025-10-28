@@ -1,0 +1,236 @@
+{
+  "camera": {
+    "cameraMode": "Follow",
+    "position": {
+      "x": 78.55457155239532,
+      "y": 123.58549333342081,
+      "z": 816.7238719711165
+    },
+    "focus": {
+      "x": 78.5545674004264,
+      "y": 123.58631008304225,
+      "z": 4.5085650843049105e-23
+    },
+    "#meta": {
+      "class": "CameraState"
+    }
+  },
+  "chunks": "$a",
+  "avatar": {
+    "size": 3,
+    "heightOffset": 0,
+    "position": {
+      "x": 0.5,
+      "y": 0.5,
+      "z": 0
+    },
+    "#meta": {
+      "class": "AvatarState"
+    }
+  },
+  "render": {
+    "geometryStyle": "Pixel",
+    "painterStyle": "Palette",
+    "paletteName": "Praclarush",
+    "colorLowShift": -0.09,
+    "colorHighShift": 0,
+    "_colorSlope": 3,
+    "light": {
+      "ambient": {
+        "intensity": 2
+      },
+      "directional": {
+        "intensity": 3
+      }
+    },
+    "heightMultiplier": 1,
+    "texturePath": "https://mooss.github.io/noisy/textures/cobbly.png",
+    "textureRepeat": 5,
+    "textureBumpScale": 4,
+    "flatShading": false,
+    "#meta": {
+      "class": "RenderState"
+    }
+  },
+  "noise": {
+    "#meta": {
+      "class": "NoisePipeline"
+    },
+    "base": {
+      "#meta": {
+        "class": "Union"
+      },
+      "operation": "max",
+      "fundamental": 0.3,
+      "octaves": [
+        {
+          "name": "Peaks 1",
+          "frequency": 1.7,
+          "amplitude": 50,
+          "noise": {
+            "#meta": {
+              "class": "Ridge"
+            },
+            "seed": 70,
+            "invert": false,
+            "square": true
+          }
+        },
+        {
+          "name": "Peaks 2",
+          "frequency": 3.1,
+          "amplitude": 45,
+          "noise": {
+            "#meta": {
+              "class": "Ridge"
+            },
+            "seed": 43,
+            "invert": true,
+            "square": false
+          }
+        },
+        {
+          "name": "Hills 1",
+          "frequency": 1.8,
+          "amplitude": 39,
+          "noise": {
+            "#meta": {
+              "class": "Simplex"
+            },
+            "seed": 48
+          }
+        },
+        {
+          "name": "Hills 2",
+          "frequency": 3,
+          "amplitude": 52,
+          "noise": {
+            "#meta": {
+              "class": "Simplex"
+            },
+            "seed": 12
+          }
+        },
+        {
+          "name": "Hills 3",
+          "frequency": 5.1,
+          "amplitude": 41,
+          "noise": {
+            "#meta": {
+              "class": "Simplex"
+            },
+            "seed": 23
+          }
+        }
+      ]
+    },
+    "pipeline": [
+      {
+        "#meta": {
+          "class": "PipelinePicker"
+        },
+        "algorithms": {
+          "None": {
+            "#meta": {
+              "class": "Identity"
+            }
+          },
+          "Exponentiation": {
+            "#meta": {
+              "class": "Exponentiation"
+            },
+            "exponent": 1.5
+          },
+          "Steepness": {
+            "#meta": {
+              "class": "Steepness"
+            },
+            "factor": 1.5
+          }
+        },
+        "current": "Exponentiation",
+        "tag": "Transform"
+      },
+      {
+        "#meta": {
+          "class": "Warping"
+        },
+        "frequency": 2.25,
+        "strength": 0.08,
+        "warper": {
+          "#meta": {
+            "class": "Simplex"
+          },
+          "seed": 23
+        }
+      },
+      {
+        "#meta": {
+          "class": "PipelinePicker"
+        },
+        "algorithms": {
+          "None": {
+            "#meta": {
+              "class": "Identity"
+            }
+          },
+          "Quad": {
+            "#meta": {
+              "class": "QuadTiling"
+            }
+          },
+          "Mirrored": {
+            "#meta": {
+              "class": "MirroredTiling"
+            },
+            "normalizeX": true,
+            "normalizeY": true
+          },
+          "Sine": {
+            "#meta": {
+              "class": "SineTiling"
+            }
+          }
+        },
+        "current": "Mirrored",
+        "tag": "Tiling"
+      },
+      {
+        "#meta": {
+          "class": "PipelinePicker"
+        },
+        "algorithms": {
+          "Constant": {
+            "#meta": {
+              "class": "Terracing"
+            },
+            "steps": 0
+          },
+          "Voxel": {
+            "#meta": {
+              "class": "VoxelTerracing"
+            },
+            "chunks": "$a"
+          }
+        },
+        "current": "Constant",
+        "tag": "Terracing"
+      }
+    ]
+  },
+  "version": {
+    "period": "alpha",
+    "number": "5",
+    "name": "elderberry"
+  },
+  "$": {
+    "a": {
+      "power": 7,
+      "loadRadius": 1,
+      "radiusType": "square",
+      "#meta": {
+        "class": "ChunkState"
+      }
+    }
+  }
+}

@@ -45,8 +45,8 @@ noisy/%.html: noisy/%.url
 	./scripts/url2HTMLredirect.bash $< > $@
 
 noisy:
-	cd repo/noisy && make dist
+	cd repo/noisy && make clean-build
 	./scripts/release-noisy.bash
 
 serve-noisy:
-	./scripts/serve-latest-noisy.bash
+	./scripts/serve-latest-noisy.rb
