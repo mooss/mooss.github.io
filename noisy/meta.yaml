@@ -1,0 +1,22 @@
+published-versions:
+  acorn:
+    period: alpha
+    number: 1
+    commit: 853450dbc99e84f23497f47411c35ba32136d2a0
+  bean:
+    period: alpha
+    number: 2
+    commit: 076b5b20470ad26c994e38d3023c537e9e29b84c
+  coriander:
+    period: alpha
+    number: 3
+    commit: 718a1b1fdf1a30ff7d9de4b99fbc75bc34d3eeb9
+  dandelion:
+    period: alpha
+    number: 4
+    commit: 9a2ddc5bf71d300bd9e72bde86d7b12f4672eb0a
+  elderberry:
+    period: alpha
+    number: 5
+    commit: e10aa878eb25bde1128e89d7c80cac000a60e0d4
+latest-released-version: dandelion

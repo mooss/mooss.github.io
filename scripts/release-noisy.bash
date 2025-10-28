@@ -17,18 +17,26 @@ LONG_REF=$(git -C $SOURCE rev-parse HEAD)
 RELEASE_DIR="noisy/$VERSION_NAME"
 echo "Will release $VERSION_PERIOD $VERSION_NUMBER ($VERSION_NAME) - $SHORT_REF to $RELEASE_DIR"
 
+function imglink() {
+    local href="$1"; local img="$2"; local alt="$3"
+    cat <<EOF
+<span>
+  <a href="$href" target="_blank" rel="noopener"><img src="$img" alt="$alt" width="18" height="18" style="line-height: 0; vertical-align: middle"></a>
+</span>
+EOF
+}
+
 function footer() {
     cat <<EOF | tr -d '\n'
-<div style="position: fixed; bottom: 0; width: 100%; background-color: rgba(0,0,0,0.7); color: white; padding: 6px; text-align: center; font-size: 14px;">
-    <span>&copy; 2025 mooss</span> |
-    <span><a href="mailto:mooss@protonmail.com" style="color: #4da6ff;">contact</a></span> |
-    <span><a href="https://github.com/mooss/noisy" style="color: #4da6ff;">GitHub</a></span> |
-    <span>Version: $VERSION_PERIOD $VERSION_NUMBER / $VERSION_NAME / $SHORT_REF</span>
-</div>
+<span>&copy; 2025 mooss</span> | 
+$(imglink https://x.com/noisy_mooss https://upload.wikimedia.org/wikipedia/commons/c/cc/X_icon.svg "Follow me on X") |
+$(imglink https://github.com/mooss/noisy https://upload.wikimedia.org/wikipedia/commons/2/24/Github_logo_svg.svg "Source code on GitHub") | 
+<span><a href="mailto:mooss@protonmail.com" style="color: #4da6ff;">contact</a></span> | 
+<span>Version $VERSION_PERIOD $VERSION_NUMBER / $VERSION_NAME / $SHORT_REF</span>
 EOF
 }
 export FOOT=$(footer)
-export FAV='<link rel="icon" type="image/png" href="/favicon-192x192.png">'
+export FAV='<link rel="icon" type="image/png" href="/noisy/res/icons/logo-cropped-rounded-tiny-192x192.png">'
 
 function new-html() {
     perl -0777 -pe '
@@ -46,13 +54,14 @@ function release() {
 }
 
 function version-reminder() {
-    echo "Don't forget to update noisy/versions.yaml with:"
+    echo "Don't forget to update noisy/meta.yaml with:"
     cat <<EOF
-${VERSION_NAME}:
-  period: ${VERSION_PERIOD}
-  number: ${VERSION_NUMBER}
-  commit: ${LONG_REF}
+  ${VERSION_NAME}:
+    period: ${VERSION_PERIOD}
+    number: ${VERSION_NUMBER}
+    commit: ${LONG_REF}
 EOF
+    echo "And to redirect noisy/index.html to ${VERSION_NAME}."
 }
 
 release

@@ -1,0 +1,389 @@
+{
+  "camera": {
+    "cameraMode": "Follow",
+    "position": {
+      "x": 274.5709717592687,
+      "y": -476.6348495743507,
+      "z": 352.7662908778843
+    },
+    "focus": {
+      "x": 196.99192293668796,
+      "y": -78.71635264129759,
+      "z": -1.2193416025596526e-15
+    },
+    "#meta": {
+      "class": "CameraState"
+    }
+  },
+  "chunks": "$a",
+  "avatar": {
+    "size": 3,
+    "heightOffset": 0,
+    "position": {
+      "x": 0.5,
+      "y": 0.5,
+      "z": 0.4740625
+    },
+    "#meta": {
+      "class": "AvatarState"
+    }
+  },
+  "render": {
+    "geometryStyle": "Box",
+    "painterStyle": "Palette",
+    "paletteName": "Glacier",
+    "colorLowShift": 0,
+    "colorHighShift": 0,
+    "_colorSlope": 3,
+    "light": {
+      "ambient": {
+        "intensity": 2
+      },
+      "directional": {
+        "intensity": 3
+      }
+    },
+    "heightMultiplier": 1,
+    "texturePath": "https://mooss.github.io/noisy/textures/cobbly.png",
+    "textureRepeat": 5,
+    "textureBumpScale": 4,
+    "flatShading": false,
+    "#meta": {
+      "class": "RenderState"
+    }
+  },
+  "noise": {
+    "#meta": {
+      "class": "NoisePipeline"
+    },
+    "base": {
+      "#meta": {
+        "class": "AlgoPicker"
+      },
+      "algorithms": {
+        "Simplex": {
+          "#meta": {
+            "class": "Layered"
+          },
+          "noise": {
+            "#meta": {
+              "class": "Simplex"
+            },
+            "seed": 23
+          },
+          "layers": {
+            "fundamental": 0.3,
+            "octaves": 8,
+            "persistence": 0.65,
+            "lacunarity": 1.5
+          }
+        },
+        "Ridge": {
+          "#meta": {
+            "class": "Layered"
+          },
+          "noise": {
+            "#meta": {
+              "class": "Ridge"
+            },
+            "invert": true,
+            "square": false,
+            "seed": 23
+          },
+          "layers": {
+            "fundamental": 0.3,
+            "octaves": 8,
+            "persistence": 0.65,
+            "lacunarity": 1.5
+          }
+        },
+        "Continental mix": {
+          "#meta": {
+            "class": "ContinentalMix"
+          },
+          "bass": {
+            "#meta": {
+              "class": "Layered"
+            },
+            "noise": {
+              "#meta": {
+                "class": "Simplex"
+              },
+              "seed": 23
+            },
+            "layers": {
+              "fundamental": 0.1,
+              "octaves": 7,
+              "persistence": 0.7,
+              "lacunarity": 1.64
+            }
+          },
+          "treble": {
+            "#meta": {
+              "class": "Layered"
+            },
+            "noise": {
+              "#meta": {
+                "class": "Ridge"
+              },
+              "invert": true,
+              "square": false,
+              "seed": 23
+            },
+            "layers": {
+              "fundamental": 0.2,
+              "octaves": 8,
+              "persistence": 0.65,
+              "lacunarity": 1.56
+            }
+          },
+          "threshold": {
+            "low": 0.28,
+            "mid": 0.64,
+            "high": 0.56
+          }
+        },
+        "Cursive mountains": {
+          "#meta": {
+            "class": "Union"
+          },
+          "operation": "sum",
+          "fundamental": 0.3,
+          "octaves": [
+            {
+              "name": "Peaks 1",
+              "frequency": 0.1,
+              "amplitude": 94,
+              "noise": {
+                "#meta": {
+                  "class": "Ridge"
+                },
+                "seed": 23,
+                "invert": true,
+                "square": false
+              }
+            },
+            {
+              "name": "Peaks 2",
+              "frequency": 0.4,
+              "amplitude": 82,
+              "noise": {
+                "#meta": {
+                  "class": "Ridge"
+                },
+                "seed": 23,
+                "invert": true,
+                "square": false
+              }
+            },
+            {
+              "name": "Hills 1",
+              "frequency": 0.8,
+              "amplitude": 85,
+              "noise": {
+                "#meta": {
+                  "class": "Simplex"
+                },
+                "seed": 23
+              }
+            },
+            {
+              "name": "Hills 2",
+              "frequency": 1.6,
+              "amplitude": 85,
+              "noise": {
+                "#meta": {
+                  "class": "Simplex"
+                },
+                "seed": 23
+              }
+            },
+            {
+              "name": "Hills 3",
+              "frequency": 6,
+              "amplitude": 70,
+              "noise": {
+                "#meta": {
+                  "class": "Simplex"
+                },
+                "seed": 23
+              }
+            }
+          ]
+        },
+        "Cursed mountains": {
+          "#meta": {
+            "class": "Union"
+          },
+          "operation": "min",
+          "fundamental": 0.3,
+          "octaves": [
+            {
+              "name": "Peaks 1",
+              "frequency": 0.4,
+              "amplitude": 4,
+              "noise": {
+                "#meta": {
+                  "class": "Ridge"
+                },
+                "seed": 23,
+                "invert": true,
+                "square": false
+              }
+            },
+            {
+              "name": "Hills 1",
+              "frequency": 0.2,
+              "amplitude": 8,
+              "noise": {
+                "#meta": {
+                  "class": "Simplex"
+                },
+                "seed": 23
+              }
+            },
+            {
+              "name": "Hills 2",
+              "frequency": 0.3,
+              "amplitude": 19,
+              "noise": {
+                "#meta": {
+                  "class": "Simplex"
+                },
+                "seed": 23
+              }
+            },
+            {
+              "name": "Hills 3",
+              "frequency": 1.5,
+              "amplitude": 19,
+              "noise": {
+                "#meta": {
+                  "class": "Simplex"
+                },
+                "seed": 23
+              }
+            }
+          ]
+        }
+      },
+      "current": "Continental mix"
+    },
+    "pipeline": [
+      {
+        "#meta": {
+          "class": "PipelinePicker"
+        },
+        "algorithms": {
+          "None": {
+            "#meta": {
+              "class": "Identity"
+            }
+          },
+          "Exponentiation": {
+            "#meta": {
+              "class": "Exponentiation"
+            },
+            "exponent": 1.5
+          },
+          "Steepness": {
+            "#meta": {
+              "class": "Steepness"
+            },
+            "factor": 1.5
+          }
+        },
+        "current": "Exponentiation",
+        "tag": "Transform"
+      },
+      {
+        "#meta": {
+          "class": "Clustering"
+        },
+        "coorscale": 3,
+        "noisescale": 2,
+        "enabled": false
+      },
+      {
+        "#meta": {
+          "class": "Warping"
+        },
+        "frequency": 2.25,
+        "strength": 0.08,
+        "warper": {
+          "#meta": {
+            "class": "Simplex"
+          },
+          "seed": 23
+        }
+      },
+      {
+        "#meta": {
+          "class": "PipelinePicker"
+        },
+        "algorithms": {
+          "None": {
+            "#meta": {
+              "class": "Identity"
+            }
+          },
+          "Quad": {
+            "#meta": {
+              "class": "QuadTiling"
+            }
+          },
+          "Mirrored": {
+            "#meta": {
+              "class": "MirroredTiling"
+            },
+            "normalizeX": true,
+            "normalizeY": true
+          },
+          "Sine": {
+            "#meta": {
+              "class": "SineTiling"
+            }
+          }
+        },
+        "current": "None",
+        "tag": "Tiling"
+      },
+      {
+        "#meta": {
+          "class": "PipelinePicker"
+        },
+        "algorithms": {
+          "Constant": {
+            "#meta": {
+              "class": "Terracing"
+            },
+            "steps": 0
+          },
+          "Voxel": {
+            "#meta": {
+              "class": "VoxelTerracing"
+            },
+            "chunks": "$a"
+          }
+        },
+        "current": "Voxel",
+        "tag": "Terracing"
+      }
+    ]
+  },
+  "version": {
+    "period": "alpha",
+    "number": "5",
+    "name": "elderberry"
+  },
+  "$": {
+    "a": {
+      "power": 6,
+      "loadRadius": 6,
+      "radiusType": "circle",
+      "#meta": {
+        "class": "ChunkState"
+      }
+    }
+  }
+}
