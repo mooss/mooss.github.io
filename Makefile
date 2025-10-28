@@ -49,4 +49,4 @@ noisy:
 	./scripts/release-noisy.bash
 
 serve-noisy:
-	./scripts/serve-latest-noisy.bash
+	./scripts/serve-latest-noisy.rb
