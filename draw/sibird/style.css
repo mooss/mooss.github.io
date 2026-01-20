@@ -20,6 +20,15 @@ h1 {
     flex-shrink: 0;
 }
 
+.description {
+    margin: 10px;
+    max-width: 800px;
+    line-height: 1.5;
+    text-align: justify;
+    color: #222;
+    flex-shrink: 0;
+}
+
 .controls {
     margin: 10px;
     flex-shrink: 0;

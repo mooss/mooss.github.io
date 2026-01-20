@@ -107,7 +107,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('triangle-canvas');
     const levelSlider = document.getElementById('level-slider');
     const levelValue = document.getElementById('level-value');
-    levelSlider.value = clamp(getParam('level'), levelSlider.min, levelSlider.max);
+    levelSlider.value = clamp(getParam('level') || levelSlider.value, levelSlider.min, levelSlider.max);
 
     levelValue.textContent = levelSlider.value;
 

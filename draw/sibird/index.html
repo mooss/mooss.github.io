@@ -3,15 +3,29 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sierpiński triangle</title>
+    <title>Sierpiński bird</title>
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
     <div class="container">
-      <h1>Sierpiński triangle</h1>
+      <h1>Sierpiński bird</h1>
+
+      <div class="description">
+        <p>
+          This interactive visualization shows the Sierpiński triangle fractal superposed with the related Sierpiński bird curve.
+          The pink triangles form the classic fractal pattern, while the blue lines traces the bird curve.
+        </p>
+        <p>
+          The inspiration for this curve comes from <a href="../index.html#sierpiński-birds">one of my drawings</a>.
+        </p>
+        <p>
+          Adjust the recursion level with the slider to see more detailed iterations.
+        </p>
+      </div>
+
       <div class="controls">
-        <label for="level-slider">Recursion level: <span id="level-value">0</span></label>
-        <input type="range" id="level-slider" min="0" max="7" value="0">
+        <label for="level-slider">Recursion level: <span id="level-value">4</span></label>
+        <input type="range" id="level-slider" min="0" max="7" value="4">
       </div>
       <canvas id="triangle-canvas"></canvas>
     </div>
