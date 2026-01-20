@@ -143,9 +143,14 @@ window.addEventListener('DOMContentLoaded', () => {
     // Start application //
 
     function resizeCanvas() {
-        const container = canvas.parentElement;
-        canvas.width = container.clientWidth;
-        canvas.height = container.clientHeight;
+        // Force a square drawing area to prevent ugly horizontal or vertical stretching.
+        const wrapper = canvas.parentElement;
+        const size = Math.min(wrapper.clientWidth, wrapper.clientHeight);
+        canvas.width = size;
+        canvas.height = size;
+        canvas.style.width = `${size}px`;
+        canvas.style.height = `${size}px`;
+
         draw(parseInt(levelSlider.value));
     }
 
