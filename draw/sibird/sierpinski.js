@@ -86,37 +86,57 @@ function drawBirdRec(draw, left, mid, right, depth) {
     drawBirdRec(draw, lemi, mid, miri, depth - 1);
 }
 
+function clamp(x, min, max) {
+    if (x <= min) return min;
+    if (x >= max) return max;
+    return x;
+}
+
+function getParam(name) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+}
+
+function setParam(level) {
+    const url = new URL(window.location);
+    url.searchParams.set('level', level);
+    window.history.replaceState({}, '', url);
+}
+
 window.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('triangle-canvas');
-    const slider = document.getElementById('recursion-slider');
+    const levelSlider = document.getElementById('level-slider');
     const levelValue = document.getElementById('level-value');
-    levelValue.textContent = slider.value;
+    levelSlider.value = clamp(getParam('level'), levelSlider.min, levelSlider.max);
+
+    levelValue.textContent = levelSlider.value;
+
     const draw = (level) => {
         canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
         drawSierpinski(canvas, level);
         drawBird(canvas, level);
-    }
+    };
 
     //////////////////
     // Slider setup //
 
     // Redraw on value change.
-    slider.addEventListener('input', () => {
-        const level = parseInt(slider.value);
+    levelSlider.addEventListener('input', () => {
+        const level = parseInt(levelSlider.value);
         levelValue.textContent = level;
+        setParam(level);
         draw(level);
     });
 
     // Move slider with mouse wheel and trigger redraw.
-    slider.addEventListener('wheel', (event) => {
+    levelSlider.addEventListener('wheel', (event) => {
         event.preventDefault();
         const delta = Math.sign(event.deltaY);
-        let newValue = parseInt(slider.value) - delta;
-        if (newValue < parseInt(slider.min)) newValue = parseInt(slider.min);
-        if (newValue > parseInt(slider.max)) newValue = parseInt(slider.max);
-        slider.value = newValue;
-        levelValue.textContent = newValue;
-        draw(newValue);
+        let value = clamp(levelSlider.value, levelSlider.min, levelSlider.max) - delta;
+        levelSlider.value = value;
+        levelValue.textContent = value;
+        setParam(value);
+        draw(value);
     });
 
     ///////////////////////
@@ -126,7 +146,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const container = canvas.parentElement;
         canvas.width = container.clientWidth;
         canvas.height = container.clientHeight;
-        draw(parseInt(slider.value));
+        draw(parseInt(levelSlider.value));
     }
 
     window.addEventListener('resize', resizeCanvas);
