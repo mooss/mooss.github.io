@@ -48,7 +48,7 @@ function drawSierpinski(canvas, level) {
 }
 
 function drawSierpinskiRec(ctx, p1, p2, p3, depth) {
-    if (depth === 0) return;
+    if (depth <= 0) return;
 
     const m1 = p1.midpoint(p2);
     const m2 = p2.midpoint(p3);
@@ -61,7 +61,7 @@ function drawSierpinskiRec(ctx, p1, p2, p3, depth) {
 }
 
 function drawBird(canvas, level) {
-    if (level === 0) return;
+    if (level <= 0) return;
     const [ctx, top, left, right] = prepareContext(canvas);
     ctx.beginPath();
     drawBirdRec((point) => ctx.lineTo(point.x, point.y), left, top, right, level);
@@ -132,7 +132,7 @@ window.addEventListener('DOMContentLoaded', () => {
     levelSlider.addEventListener('wheel', (event) => {
         event.preventDefault();
         const delta = Math.sign(event.deltaY);
-        let value = clamp(levelSlider.value, levelSlider.min, levelSlider.max) - delta;
+        let value = clamp(levelSlider.value - delta, levelSlider.min, levelSlider.max);
         levelSlider.value = value;
         levelValue.textContent = value;
         setParam(value);
