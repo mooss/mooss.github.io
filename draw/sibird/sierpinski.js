@@ -1,8 +1,17 @@
-function triangle(ctx, x1, y1, x2, y2, x3, y3) {
+class Point {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    midpoint(other) { return new Point((this.x + other.x) / 2, (this.y + other.y) / 2) }
+}
+
+function triangle(ctx, p1, p2, p3) {
     ctx.beginPath();
-    ctx.moveTo(x1, y1);
-    ctx.lineTo(x2, y2);
-    ctx.lineTo(x3, y3);
+    ctx.moveTo(p1.x, p1.y);
+    ctx.lineTo(p2.x, p2.y);
+    ctx.lineTo(p3.x, p3.y);
     ctx.closePath();
     ctx.strokeStyle = '#000';
     ctx.stroke();
@@ -17,35 +26,27 @@ function drawSierpinski(canvas, level) {
 
     ctx.clearRect(0, 0, width, height);
 
-    const x1 = width / 2;
-    const y1 = margin;
-    const x2 = x1 - side / 2;
-    const y2 = margin + side * Math.sin(Math.PI / 3);
-    const x3 = x1 + side / 2;
-    const y3 = y2;
+    const p1 = new Point(width / 2, margin);
+    const p2 = new Point(p1.x - side / 2, margin + side * Math.sin(Math.PI / 3));
+    const p3 = new Point(p1.x + side / 2, p2.y);
 
-    triangle(ctx, x1, y1, x2, y2, x3, y3);
-
-    drawSierpinskiRec(ctx, x1, y1, x2, y2, x3, y3, level);
+    triangle(ctx, p1, p2, p3);
+    drawSierpinskiRec(ctx, p1, p2, p3, level);
 }
 
-function drawSierpinskiRec(ctx, x1, y1, x2, y2, x3, y3, depth) {
+function drawSierpinskiRec(ctx, p1, p2, p3, depth) {
     if (depth === 0) {
         return;
     }
 
-    const mx1 = (x1 + x2) / 2;
-    const my1 = (y1 + y2) / 2;
-    const mx2 = (x2 + x3) / 2;
-    const my2 = (y2 + y3) / 2;
-    const mx3 = (x3 + x1) / 2;
-    const my3 = (y3 + y1) / 2;
+    const m1 = p1.midpoint(p2);
+    const m2 = p2.midpoint(p3);
+    const m3 = p3.midpoint(p1);
 
-    triangle(ctx, mx1, my1, mx2, my2, mx3, my3);
-
-    drawSierpinskiRec(ctx, x1, y1, mx1, my1, mx3, my3, depth - 1);
-    drawSierpinskiRec(ctx, mx1, my1, x2, y2, mx2, my2, depth - 1);
-    drawSierpinskiRec(ctx, mx3, my3, mx2, my2, x3, y3, depth - 1);
+    triangle(ctx, m1, m2, m3);
+    drawSierpinskiRec(ctx, p1, m1, m3, depth - 1);
+    drawSierpinskiRec(ctx, m1, p2, m2, depth - 1);
+    drawSierpinskiRec(ctx, m3, m2, p3, depth - 1);
 }
 
 window.addEventListener('DOMContentLoaded', () => {
