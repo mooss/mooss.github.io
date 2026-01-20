@@ -34,8 +34,8 @@ h1 {
     flex-shrink: 0;
 }
 
-#recursion-slider {
-    width: 300px;
+#level-slider {
+    width: 150px;
     margin: 0 10px;
     vertical-align: middle;
 }
