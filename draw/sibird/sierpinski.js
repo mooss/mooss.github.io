@@ -23,7 +23,7 @@ function triangle(ctx, p1, p2, p3) {
     ctx.lineTo(p2.x, p2.y);
     ctx.lineTo(p3.x, p3.y);
     ctx.closePath();
-    ctx.strokeStyle = '#000';
+    ctx.strokeStyle = 'rgba(218, 112, 214, .4)';
     ctx.stroke();
 }
 
@@ -38,7 +38,6 @@ function prepareContext(canvas) {
     const left = new Point(top.x - side / 2, margin + side * Math.sin(Math.PI / 3));
     const right = new Point(top.x + side / 2, left.y);
 
-    ctx.clearRect(0, 0, width, height);
     return [ctx, top, left, right];
 }
 
@@ -66,8 +65,8 @@ function drawBird(canvas, level) {
     const [ctx, top, left, right] = prepareContext(canvas);
     ctx.beginPath();
     drawBirdRec((point) => ctx.lineTo(point.x, point.y), left, top, right, level);
-    ctx.closePath();
-    ctx.strokeStyle = '#000';
+    ctx.strokeStyle = 'deepskyblue';
+    ctx.lineWidth = 2;
     ctx.stroke();
 }
 
@@ -83,7 +82,7 @@ function drawBirdRec(draw, left, mid, right, depth) {
     // drawing a triangle but a path.
     drawBirdRec(draw, left, lemi, leri, depth - 1);
     drawBirdRec(draw, lemi, leri, miri, depth - 1);
-    drawBirdRec(draw, lemi, miri, right, depth - 1);
+    drawBirdRec(draw, leri, miri, right, depth - 1);
     drawBirdRec(draw, lemi, mid, miri, depth - 1);
 }
 
@@ -93,6 +92,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const levelValue = document.getElementById('level-value');
     levelValue.textContent = slider.value;
     const draw = (level) => {
+        canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
         drawSierpinski(canvas, level);
         drawBird(canvas, level);
     }
