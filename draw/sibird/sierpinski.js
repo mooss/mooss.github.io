@@ -43,6 +43,7 @@ function prepareContext(canvas) {
 
 function drawSierpinski(canvas, level) {
     const [ctx, top, left, right] = prepareContext(canvas);
+    ctx.lineWidth = 1;
     triangle(ctx, top, left, right);
     drawSierpinskiRec(ctx, top, left, right, level);
 }
